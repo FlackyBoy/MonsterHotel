@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2c949caf50da74243a1a1730b7ed4894
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 203438
+  packageName: Physics Character Controller
+  packageVersion: 5.0.0
+  assetPath: Assets/Nappin/PhysicsCharacterController/Animations/(Anim)Idle.anim
+  uploadId: 657120

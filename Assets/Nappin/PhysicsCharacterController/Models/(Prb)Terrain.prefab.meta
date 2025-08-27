@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 016565f1f4c96ea4e9ff7611f4ef81de
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 203438
+  packageName: Physics Character Controller
+  packageVersion: 5.0.0
+  assetPath: Assets/Nappin/PhysicsCharacterController/Models/(Prb)Terrain.prefab
+  uploadId: 657120

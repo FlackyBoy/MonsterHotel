@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 135df6e678a9ba840af4b8262166de6f
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 203438
+  packageName: Physics Character Controller
+  packageVersion: 5.0.0
+  assetPath: Assets/Nappin/PhysicsCharacterController/Animations/(Anim)Blink.anim
+  uploadId: 657120

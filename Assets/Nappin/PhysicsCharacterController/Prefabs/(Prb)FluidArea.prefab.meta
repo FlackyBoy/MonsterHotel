@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 3b2a872352c65b444b94cf4fc53a49b0
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 203438
+  packageName: Physics Character Controller
+  packageVersion: 5.0.0
+  assetPath: Assets/Nappin/PhysicsCharacterController/Prefabs/(Prb)FluidArea.prefab
+  uploadId: 657120

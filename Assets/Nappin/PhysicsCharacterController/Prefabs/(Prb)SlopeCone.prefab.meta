@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 180bc4f9625b9044a85a20709235bfa6
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 203438
+  packageName: Physics Character Controller
+  packageVersion: 5.0.0
+  assetPath: Assets/Nappin/PhysicsCharacterController/Prefabs/(Prb)SlopeCone.prefab
+  uploadId: 657120

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 93b935bc5ccb53c47a8897a194af1e3a
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 203438
+  packageName: Physics Character Controller
+  packageVersion: 5.0.0
+  assetPath: Assets/Nappin/PhysicsCharacterController/Prefabs/(Prb)Character.prefab
+  uploadId: 657120

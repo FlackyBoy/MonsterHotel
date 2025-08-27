@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c70c7660792bc524193d77a2df89539a
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 203438
+  packageName: Physics Character Controller
+  packageVersion: 5.0.0
+  assetPath: Assets/Nappin/PhysicsCharacterController/Materials/(Mat)BodyFace.mat
+  uploadId: 657120

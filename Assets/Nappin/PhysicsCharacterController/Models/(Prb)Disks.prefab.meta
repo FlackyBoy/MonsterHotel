@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: a94136958165ffb4e91f034a7974d498
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 203438
+  packageName: Physics Character Controller
+  packageVersion: 5.0.0
+  assetPath: Assets/Nappin/PhysicsCharacterController/Models/(Prb)Disks.prefab
+  uploadId: 657120

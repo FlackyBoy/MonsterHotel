@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 98a0f2f9421d51c41912a51c60739ecc
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 203438
+  packageName: Physics Character Controller
+  packageVersion: 5.0.0
+  assetPath: Assets/Nappin/PhysicsCharacterController/Prefabs/(Prb)Ladder.prefab
+  uploadId: 657120

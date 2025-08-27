@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 341e9b8977d6d734c8edeb00889eacab
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 203438
+  packageName: Physics Character Controller
+  packageVersion: 5.0.0
+  assetPath: Assets/Nappin/PhysicsCharacterController/Models/(Prb)Stairs.prefab
+  uploadId: 657120

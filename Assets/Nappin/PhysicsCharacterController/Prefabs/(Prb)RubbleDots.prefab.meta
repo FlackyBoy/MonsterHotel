@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 048e6d455f851f140bf5df0f43f7747e
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 203438
+  packageName: Physics Character Controller
+  packageVersion: 5.0.0
+  assetPath: Assets/Nappin/PhysicsCharacterController/Prefabs/(Prb)RubbleDots.prefab
+  uploadId: 657120

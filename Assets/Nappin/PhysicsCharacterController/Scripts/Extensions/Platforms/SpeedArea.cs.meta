@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 39542d4d16f7a6c4b930ac309c422939
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 203438
+  packageName: Physics Character Controller
+  packageVersion: 5.0.0
+  assetPath: Assets/Nappin/PhysicsCharacterController/Scripts/Extensions/Platforms/SpeedArea.cs
+  uploadId: 657120

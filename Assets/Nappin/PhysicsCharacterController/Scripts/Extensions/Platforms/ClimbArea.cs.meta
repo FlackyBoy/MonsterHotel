@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 7cbd37314c27c8747bb16a22deeb1a7e
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 203438
+  packageName: Physics Character Controller
+  packageVersion: 5.0.0
+  assetPath: Assets/Nappin/PhysicsCharacterController/Scripts/Extensions/Platforms/ClimbArea.cs
+  uploadId: 657120

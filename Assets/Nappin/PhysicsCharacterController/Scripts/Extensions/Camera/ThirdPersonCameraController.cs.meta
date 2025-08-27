@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 1e74dbb2e7dbd1b47bc6ed0dfe4103bd
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 203438
+  packageName: Physics Character Controller
+  packageVersion: 5.0.0
+  assetPath: Assets/Nappin/PhysicsCharacterController/Scripts/Extensions/Camera/ThirdPersonCameraController.cs
+  uploadId: 657120
