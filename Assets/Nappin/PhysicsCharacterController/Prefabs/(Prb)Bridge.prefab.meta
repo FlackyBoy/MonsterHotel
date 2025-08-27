@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: bab102f11e052da4f812440b4e2552f6
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 203438
+  packageName: Physics Character Controller
+  packageVersion: 5.0.0
+  assetPath: Assets/Nappin/PhysicsCharacterController/Prefabs/(Prb)Bridge.prefab
+  uploadId: 657120

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 32d5f0cabfc0be846a4c217337d74479
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 203438
+  packageName: Physics Character Controller
+  packageVersion: 5.0.0
+  assetPath: Assets/Nappin/PhysicsCharacterController/Models/(Prb)Rubble.prefab
+  uploadId: 657120

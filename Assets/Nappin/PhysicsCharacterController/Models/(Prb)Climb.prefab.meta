@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 83cdd184a3eace340b4dedb44e652290
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 203438
+  packageName: Physics Character Controller
+  packageVersion: 5.0.0
+  assetPath: Assets/Nappin/PhysicsCharacterController/Models/(Prb)Climb.prefab
+  uploadId: 657120

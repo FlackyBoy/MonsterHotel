@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 9e4757aed32f476419bb6acd9168541a
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 203438
+  packageName: Physics Character Controller
+  packageVersion: 5.0.0
+  assetPath: Assets/Nappin/PhysicsCharacterController/Prefabs/(Prb)Shooter.prefab
+  uploadId: 657120

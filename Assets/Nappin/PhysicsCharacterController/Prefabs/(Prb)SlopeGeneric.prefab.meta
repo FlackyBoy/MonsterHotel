@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 9b059dc6477a3be49baa04addc732e67
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 203438
+  packageName: Physics Character Controller
+  packageVersion: 5.0.0
+  assetPath: Assets/Nappin/PhysicsCharacterController/Prefabs/(Prb)SlopeGeneric.prefab
+  uploadId: 657120

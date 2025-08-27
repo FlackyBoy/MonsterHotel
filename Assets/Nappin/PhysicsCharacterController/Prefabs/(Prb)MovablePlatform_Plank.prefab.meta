@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: f47091266aceec646a411325962aaaec
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 203438
+  packageName: Physics Character Controller
+  packageVersion: 5.0.0
+  assetPath: Assets/Nappin/PhysicsCharacterController/Prefabs/(Prb)MovablePlatform_Plank.prefab
+  uploadId: 657120

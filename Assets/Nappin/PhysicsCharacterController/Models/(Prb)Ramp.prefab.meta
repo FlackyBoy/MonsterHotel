@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 193ad1fe34a53bb448f9e76740531510
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 203438
+  packageName: Physics Character Controller
+  packageVersion: 5.0.0
+  assetPath: Assets/Nappin/PhysicsCharacterController/Models/(Prb)Ramp.prefab
+  uploadId: 657120

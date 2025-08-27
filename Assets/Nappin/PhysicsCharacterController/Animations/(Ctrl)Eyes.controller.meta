@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ac054854941e66044b2648ca7a630471
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 203438
+  packageName: Physics Character Controller
+  packageVersion: 5.0.0
+  assetPath: Assets/Nappin/PhysicsCharacterController/Animations/(Ctrl)Eyes.controller
+  uploadId: 657120

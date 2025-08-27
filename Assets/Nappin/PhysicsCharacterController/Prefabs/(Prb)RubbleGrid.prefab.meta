@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 8c1ffa3fac709614a82ea5ffa2a8ac44
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 203438
+  packageName: Physics Character Controller
+  packageVersion: 5.0.0
+  assetPath: Assets/Nappin/PhysicsCharacterController/Prefabs/(Prb)RubbleGrid.prefab
+  uploadId: 657120

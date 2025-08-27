@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 61a3037e0014c5345be9034239b44458
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 203438
+  packageName: Physics Character Controller
+  packageVersion: 5.0.0
+  assetPath: Assets/Nappin/PhysicsCharacterController/Scripts/Extensions/Platforms/PlatformSensor.cs
+  uploadId: 657120

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: afd6880a243c0854882e6dc680d01b5c
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 203438
+  packageName: Physics Character Controller
+  packageVersion: 5.0.0
+  assetPath: Assets/Nappin/PhysicsCharacterController/ExampleSceneHumanoid.unity
+  uploadId: 657120

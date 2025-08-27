@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: fe987b373409bdd4e92698a48f7505b8
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 203438
+  packageName: Physics Character Controller
+  packageVersion: 5.0.0
+  assetPath: Assets/Nappin/PhysicsCharacterController/Prefabs/(Prb)Projectile.prefab
+  uploadId: 657120

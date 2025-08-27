@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: bc1ede39bf3643ee8e493720e4259791
+timeCreated: 1463704911
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 203438
+  packageName: Physics Character Controller
+  packageVersion: 5.0.0
+  assetPath: Assets/Nappin/PhysicsCharacterController/TextMesh Pro/Resources/Shaders/TMP_SDF-Mobile
+    Masking.shader
+  uploadId: 657120

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 2508951d6b5158047b8c53425a720d81
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 203438
+  packageName: Physics Character Controller
+  packageVersion: 5.0.0
+  assetPath: Assets/Nappin/PhysicsCharacterController/Prefabs/(Prb)MovingPlatform_Small.prefab
+  uploadId: 657120

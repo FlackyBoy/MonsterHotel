@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 41504c86d9c4ebd41a7896c0fcc071e4
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 203438
+  packageName: Physics Character Controller
+  packageVersion: 5.0.0
+  assetPath: Assets/Nappin/PhysicsCharacterController/Scripts/Extensions/Camera/CameraManager.cs
+  uploadId: 657120
