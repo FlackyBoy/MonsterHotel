@@ -23,7 +23,7 @@ namespace PhysicsCharacterController
                 for (int i = 0; i < rigidbodies.Count; i++)
                 {
                     Rigidbody rb = rigidbodies[i];
-                    rb.velocity = new Vector3(rb.velocity.x * gravityForce.x, gravityForce.y, rb.velocity.z * gravityForce.z);
+                    rb.linearVelocity = new Vector3(rb.linearVelocity.x * gravityForce.x, gravityForce.y, rb.linearVelocity.z * gravityForce.z);
                 }
             }
         }

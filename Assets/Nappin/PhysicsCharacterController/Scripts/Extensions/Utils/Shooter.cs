@@ -30,7 +30,7 @@ namespace PhysicsCharacterController
             if (originalTimer < 0)
             {
                 GameObject instantiatedProjectile = GameObject.Instantiate(projectile, transform.position, transform.rotation);
-                instantiatedProjectile.GetComponent<Rigidbody>().velocity = transform.TransformDirection(new Vector3(0, 0, speed));
+                instantiatedProjectile.GetComponent<Rigidbody>().linearVelocity = transform.TransformDirection(new Vector3(0, 0, speed));
                 originalTimer = timer;
             }
         }

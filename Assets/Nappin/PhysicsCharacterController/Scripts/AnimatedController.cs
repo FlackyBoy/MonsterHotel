@@ -39,7 +39,7 @@ namespace PhysicsCharacterController
 
         private void Update()
         {
-            anim.SetFloat("velocity", rigidbodyCharacter.velocity.magnitude * velocityAnimationMultiplier);
+            anim.SetFloat("velocity", rigidbodyCharacter.linearVelocity.magnitude * velocityAnimationMultiplier);
 
             anim.SetBool("isGrounded", CheckAnimationGrounded());
 
@@ -48,7 +48,7 @@ namespace PhysicsCharacterController
             anim.SetBool("isTouchWall", characterManager.GetTouchingWall());
             if (lockRotationOnWall) characterManager.SetLockRotation(characterManager.GetTouchingWall());
 
-            anim.SetBool("isClimb", characterManager.GetTouchingWall() && rigidbodyCharacter.velocity.y > climbThreshold);
+            anim.SetBool("isClimb", characterManager.GetTouchingWall() && rigidbodyCharacter.linearVelocity.y > climbThreshold);
 
             anim.SetBool("isCrouch", characterManager.GetCrouching());
         }

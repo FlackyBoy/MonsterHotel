@@ -23,7 +23,7 @@ namespace PhysicsCharacterController
         private void OnTriggerEnter(Collider other)
         {
             Rigidbody rigidbody = other.GetComponent<Rigidbody>();
-            if (rigidbody != null && rigidbody != trampolinePlatform.GetComponent<Rigidbody>()) trampolinePlatform.Add(rigidbody, rigidbody.velocity.y);
+            if (rigidbody != null && rigidbody != trampolinePlatform.GetComponent<Rigidbody>()) trampolinePlatform.Add(rigidbody, rigidbody.linearVelocity.y);
         }
 
 

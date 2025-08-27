@@ -24,7 +24,7 @@ namespace PhysicsCharacterController
                 for (int i = 0; i < rigidbodies.Count; i++)
                 {
                     Rigidbody rb = rigidbodies[i];
-                    rb.velocity *= velocityMultiplier;
+                    rb.linearVelocity *= velocityMultiplier;
                 }
             }
         }

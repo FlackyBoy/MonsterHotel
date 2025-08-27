@@ -20,7 +20,7 @@ namespace PhysicsCharacterController
 
         private void FixedUpdate()
         {
-            if (player != null) player.velocity = new Vector3(player.velocity.x * climbSpeed.x, climbSpeed.y * inputReader.axisInput.y, player.velocity.z * climbSpeed.z);
+            if (player != null) player.linearVelocity = new Vector3(player.linearVelocity.x * climbSpeed.x, climbSpeed.y * inputReader.axisInput.y, player.linearVelocity.z * climbSpeed.z);
         }
 
 

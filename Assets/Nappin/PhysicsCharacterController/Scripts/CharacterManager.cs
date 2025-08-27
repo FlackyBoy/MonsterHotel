@@ -483,10 +483,10 @@ namespace PhysicsCharacterController
             {
                 targetAngle = Mathf.Atan2(axisInput.x, axisInput.y) * Mathf.Rad2Deg + characterCamera.transform.eulerAngles.y;
 
-                if (!sprint) rigidbody.velocity = Vector3.SmoothDamp(rigidbody.velocity, forward * movementSpeed * crouchMultiplier, ref currVelocity, dampSpeedUp);
-                else rigidbody.velocity = Vector3.SmoothDamp(rigidbody.velocity, forward * sprintSpeed * crouchMultiplier, ref currVelocity, dampSpeedUp);
+                if (!sprint) rigidbody.linearVelocity = Vector3.SmoothDamp(rigidbody.linearVelocity, forward * movementSpeed * crouchMultiplier, ref currVelocity, dampSpeedUp);
+                else rigidbody.linearVelocity = Vector3.SmoothDamp(rigidbody.linearVelocity, forward * sprintSpeed * crouchMultiplier, ref currVelocity, dampSpeedUp);
             }
-            else rigidbody.velocity = Vector3.SmoothDamp(rigidbody.velocity, Vector3.zero * crouchMultiplier, ref currVelocity, dampSpeedDown);
+            else rigidbody.linearVelocity = Vector3.SmoothDamp(rigidbody.linearVelocity, Vector3.zero * crouchMultiplier, ref currVelocity, dampSpeedDown);
         }
 
 
@@ -517,13 +517,13 @@ namespace PhysicsCharacterController
             //jumped
             if (jump && isGrounded && ((isTouchingSlope && currentSurfaceAngle <= maxClimbableSlopeAngle) || !isTouchingSlope) && !isTouchingWall)
             {
-                rigidbody.velocity += Vector3.up * jumpVelocity;
+                rigidbody.linearVelocity += Vector3.up * jumpVelocity;
                 isJumping = true;
             }
             //jumped from wall
             else if (jump && !isGrounded && isTouchingWall)
             {
-                rigidbody.velocity += wallNormal * jumpFromWallMultiplier + (Vector3.up * jumpFromWallMultiplier) * multiplierVerticalLeap;
+                rigidbody.linearVelocity += wallNormal * jumpFromWallMultiplier + (Vector3.up * jumpFromWallMultiplier) * multiplierVerticalLeap;
                 isJumping = true;
 
                 targetAngle = Mathf.Atan2(wallNormal.x, wallNormal.z) * Mathf.Rad2Deg;
@@ -534,8 +534,8 @@ namespace PhysicsCharacterController
             }
 
             //is falling
-            if (rigidbody.velocity.y < 0 && !isGrounded) coyoteJumpMultiplier = fallMultiplier;
-            else if (rigidbody.velocity.y > 0.1f && (currentSurfaceAngle <= maxClimbableSlopeAngle || isTouchingStep))
+            if (rigidbody.linearVelocity.y < 0 && !isGrounded) coyoteJumpMultiplier = fallMultiplier;
+            else if (rigidbody.linearVelocity.y > 0.1f && (currentSurfaceAngle <= maxClimbableSlopeAngle || isTouchingStep))
             {
                 //is short jumping
                 if (!jumpHold || !canLongJump) coyoteJumpMultiplier = 1f;
@@ -577,7 +577,7 @@ namespace PhysicsCharacterController
             }
 
             //friction when touching wall
-            if (isTouchingWall && rigidbody.velocity.y < 0) gravity *= frictionAgainstWall;
+            if (isTouchingWall && rigidbody.linearVelocity.y < 0) gravity *= frictionAgainstWall;
 
             rigidbody.AddForce(gravity);
         }
@@ -590,9 +590,9 @@ namespace PhysicsCharacterController
         private void UpdateEvents()
         {
             if ((jump && isGrounded && ((isTouchingSlope && currentSurfaceAngle <= maxClimbableSlopeAngle) || !isTouchingSlope)) || (jump && !isGrounded && isTouchingWall)) OnJump.Invoke();
-            if (isGrounded && !prevGrounded && rigidbody.velocity.y > -minimumVerticalSpeedToLandEvent) OnLand.Invoke();
-            if (Mathf.Abs(rigidbody.velocity.x) + Mathf.Abs(rigidbody.velocity.z) > minimumHorizontalSpeedToFastEvent) OnFast.Invoke();
-            if (isTouchingWall && rigidbody.velocity.y < 0) OnWallSlide.Invoke();
+            if (isGrounded && !prevGrounded && rigidbody.linearVelocity.y > -minimumVerticalSpeedToLandEvent) OnLand.Invoke();
+            if (Mathf.Abs(rigidbody.linearVelocity.x) + Mathf.Abs(rigidbody.linearVelocity.z) > minimumHorizontalSpeedToFastEvent) OnFast.Invoke();
+            if (isTouchingWall && rigidbody.linearVelocity.y < 0) OnWallSlide.Invoke();
             if (sprint) OnSprint.Invoke();
             if (isCrouch) OnCrouch.Invoke();
         }
@@ -607,8 +607,8 @@ namespace PhysicsCharacterController
             collider.material.dynamicFriction = 0.6f * _frictionWall;
             collider.material.staticFriction = 0.6f * _frictionWall;
 
-            if (_isMinimum) collider.material.frictionCombine = PhysicMaterialCombine.Minimum;
-            else collider.material.frictionCombine = PhysicMaterialCombine.Maximum;
+            if (_isMinimum) collider.material.frictionCombine = PhysicsMaterialCombine.Minimum;
+            else collider.material.frictionCombine = PhysicsMaterialCombine.Maximum;
         }
 
 

@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using Cinemachine;
+using Unity.Cinemachine;
 
 //DISABLE if using old input system
 using UnityEngine.InputSystem;
