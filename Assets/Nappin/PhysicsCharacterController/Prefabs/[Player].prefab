@@ -45,9 +45,11 @@ GameObject:
   - component: {fileID: 6212462410201203774}
   - component: {fileID: 6212462410201203769}
   - component: {fileID: 6212462410201203773}
+  - component: {fileID: 3310737253945469796}
+  - component: {fileID: 8753571549704136356}
   m_Layer: 8
   m_Name: '[Player]'
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -189,13 +191,12 @@ MonoBehaviour:
   crouchHeightMultiplier: 0.5
   POV_normalHeadHeight: {x: 0, y: 0.5, z: -0.1}
   POV_crouchHeadHeight: {x: 0, y: -0.1, z: -0.1}
-  characterCamera: {fileID: 0}
+  characterCamera: {fileID: 7823351807975455078, guid: 60542c78ea7861c4381d91d66fa28c9a, type: 3}
   characterModel: {fileID: 6212462410187470976}
   characterModelRotationSmooth: 0.1
   meshCharacter: {fileID: 6554549952702375995}
   meshCharacterCrouch: {fileID: 6554549952155786429}
   headPoint: {fileID: 6212462411298747933}
-  input: {fileID: 0}
   debug: 1
   OnJump:
     m_PersistentCalls:
@@ -254,6 +255,68 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   targetAngle: 47.939434
+--- !u!114 &3310737253945469796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6212462410201203770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Actions: {fileID: -944628639613478452, guid: 010bd85fdf203f34d94abf6f5ad3e876, type: 3}
+  m_NotificationBehavior: 2
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9da37897-9fab-42a1-b5d8-6fefc98ba3e4
+    m_ActionName: 'Gameplay/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow,/XInputControllerWindows/leftStick/up,/XInputControllerWindows/leftStick/down,/XInputControllerWindows/leftStick/left,/XInputControllerWindows/leftStick/right,/XInputControllerWindows/dpad/up,/XInputControllerWindows/dpad/down,/XInputControllerWindows/dpad/left,/XInputControllerWindows/dpad/right]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 317b44b6-69a2-4f16-8459-7ff071438999
+    m_ActionName: 'Gameplay/Jump[/Keyboard/space,/XInputControllerWindows/buttonSouth]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 8725746c-06a8-441d-bf9c-5007f0e83960
+    m_ActionName: 'Gameplay/Camera[/Mouse/delta,/XInputControllerWindows/rightStick/up,/XInputControllerWindows/rightStick/down,/XInputControllerWindows/rightStick/left,/XInputControllerWindows/rightStick/right]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 7f7ed9af-28be-4f44-aed9-9d05eb3bb529
+    m_ActionName: 'Gameplay/Sprint[/Keyboard/shift,/XInputControllerWindows/buttonEast]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 74f5759e-e5ac-4210-8db2-9d512e6f664d
+    m_ActionName: 'Gameplay/Crouch[/Keyboard/ctrl,/XInputControllerWindows/rightShoulder]'
+  m_NeverAutoSwitchControlSchemes: 1
+  m_DefaultControlScheme: Keyboard&Mouse
+  m_DefaultActionMap: Gameplay
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!114 &8753571549704136356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6212462410201203770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b72dc05eaf1cc74190d19f5de66d776, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6212462411298747934
 GameObject:
   m_ObjectHideFlags: 0
