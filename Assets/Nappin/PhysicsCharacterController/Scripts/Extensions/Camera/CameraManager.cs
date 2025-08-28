@@ -11,9 +11,10 @@ namespace PhysicsCharacterController
     public class CameraManager : MonoBehaviour
     {
         [Header("Camera properties")]
-        public CinemachineVirtualCamera firstPersonCamera;
-        public CinemachineFreeLook thirdPersonCamera;
+        //public CinemachineVirtualCamera firstPersonCamera;
+        public CinemachineCamera thirdPersonCamera;
         public Camera mainCamera;
+        public GameObject player;
         public CharacterManager characterManager;
         [Space(10)]
 
@@ -31,8 +32,8 @@ namespace PhysicsCharacterController
         public bool activeDebug = true;
 
 
-        private FirstPersonCameraController firstPersonCameraController;
-        private CinemachinePOV firstPersonCameraControllerPOV;
+        //private FirstPersonCameraController firstPersonCameraController;
+        //private CinemachinePOV firstPersonCameraControllerPOV;
 
         private ThirdPersonCameraController thirdPersonCameraController;
 
@@ -40,20 +41,30 @@ namespace PhysicsCharacterController
         /**/
 
 
+
         private void Awake()
         {
-            firstPersonCameraController = firstPersonCamera.GetComponent<FirstPersonCameraController>();
-            firstPersonCameraControllerPOV = firstPersonCamera.GetCinemachineComponent<CinemachinePOV>();
+            // Ne touche pas à characterManager ici
+            if (thirdPersonCamera != null)
+                thirdPersonCameraController = thirdPersonCamera.GetComponent<ThirdPersonCameraController>();
+        }
 
-            thirdPersonCameraController = thirdPersonCamera.GetComponent<ThirdPersonCameraController>();
+        private void Start()
+        {
+            player = GameObject.FindWithTag("Player");
+            if (player == null) { Debug.LogError("[CameraManager] Tag 'Player' introuvable."); enabled = false; return; }
 
-            SetCamera();
+            characterManager = player.GetComponent<CharacterManager>();
+            if (characterManager == null) { Debug.LogError("[CameraManager] CharacterManager manquant sur Player."); enabled = false; return; }
+
+            SetCamera();   // Maintenant characterManager est prêt
             SetDebug();
         }
 
-
         private void Update()
         {
+            Debug.Log("Player "+player.name);
+
             //DISABLE if using old input system
 
             if (Keyboard.current.mKey.wasPressedThisFrame)
@@ -93,10 +104,10 @@ namespace PhysicsCharacterController
             {
                 characterManager.SetLockToCamera(false);
 
-                firstPersonCamera.gameObject.SetActive(false);
+                //firstPersonCamera.gameObject.SetActive(false);
                 thirdPersonCamera.gameObject.SetActive(true);
 
-                thirdPersonCameraController.SetInitialValue(firstPersonCameraControllerPOV.m_HorizontalAxis.Value, thirdPersonHeightOnTransition);
+               // thirdPersonCameraController.SetInitialValue(firstPersonCameraControllerPOV.m_HorizontalAxis.Value, thirdPersonHeightOnTransition);
 
                 StartCoroutine(UpdateMask(thirdPersonMaskChangeDelay, thirdPersonMask));
             }
@@ -104,10 +115,10 @@ namespace PhysicsCharacterController
             {
                 characterManager.SetLockToCamera(true);
 
-                firstPersonCamera.gameObject.SetActive(true);
+               // firstPersonCamera.gameObject.SetActive(true);
                 thirdPersonCamera.gameObject.SetActive(false);
 
-                firstPersonCameraController.SetInitialValue(thirdPersonCamera.m_XAxis.Value, firstPersonHeightOnTransition);
+                //firstPersonCameraController.SetInitialValue(thirdPersonCamera.m_XAxis.Value, firstPersonHeightOnTransition);
 
                 StartCoroutine(UpdateMask(firstPersonMaskChangeDelay, firstPersonMask));
             }
