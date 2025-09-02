@@ -160,6 +160,5 @@ public class AdaptiveSplitBinderPD : MonoBehaviour
     {
         if (!log) return;
         var names = string.Join(",", splitEffect.Screens.Select(s => s.Target ? s.Target.name : "null"));
-        Debug.Log($"[BinderPD] Screens={splitEffect.Screens.Count} [{names}]");
     }
 }

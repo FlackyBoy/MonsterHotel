@@ -5,19 +5,20 @@ TagManager:
   serializedVersion: 3
   tags:
   - InputSystem
+  - HallArea
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Player
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Room
+  - Item
+  - NoBuild
+  - Ground
+  - Corridor
+  - RoomVolume
   - 
   - 
   - 

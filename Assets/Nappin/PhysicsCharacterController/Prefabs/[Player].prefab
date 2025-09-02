@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6212462410187470983}
-  m_Layer: 8
+  m_Layer: 3
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,7 +47,11 @@ GameObject:
   - component: {fileID: 6212462410201203773}
   - component: {fileID: 3310737253945469796}
   - component: {fileID: 8753571549704136356}
-  m_Layer: 8
+  - component: {fileID: 5838943373800292606}
+  - component: {fileID: -900554366613211192}
+  - component: {fileID: 1931362722133761081}
+  - component: {fileID: -6070889656533198472}
+  m_Layer: 3
   m_Name: '[Player]'
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -300,6 +304,26 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: 74f5759e-e5ac-4210-8db2-9d512e6f664d
     m_ActionName: 'Gameplay/Crouch[/Keyboard/ctrl,/XInputControllerWindows/rightShoulder]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d4cf2b22-44e9-4707-9abb-2c95414297c0
+    m_ActionName: 'Gameplay/Build[/Keyboard/a,/XInputControllerWindows/buttonNorth]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 30086723-192c-4dfe-a97b-578e97b8946a
+    m_ActionName: 'Gameplay/Place[/Keyboard/e,/XInputControllerWindows/buttonSouth]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5fdb2c79-bd4b-4524-96cb-40a29f4da2dd
+    m_ActionName: 'Gameplay/Cancel[/Keyboard/q,/XInputControllerWindows/buttonEast]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 929382de-7f32-46bb-8e66-dda62460f2af
+    m_ActionName: 'Gameplay/RotateCW[/Keyboard/r,/XInputControllerWindows/rightShoulder]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ea2d893a-76df-4f17-90f6-99515ab0b44d
+    m_ActionName: 'Gameplay/RotateCCW[/Keyboard/f,/XInputControllerWindows/leftShoulder]'
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Gameplay
@@ -317,6 +341,72 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b72dc05eaf1cc74190d19f5de66d776, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &5838943373800292606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6212462410201203770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e80cc36fdeb8ac04594b3bd320c9dd5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentRoom: {fileID: 0}
+  inHall: 0
+--- !u!135 &-900554366613211192
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6212462410201203770}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1931362722133761081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6212462410201203770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 014fb9f28c0f0e543ae6e0d15ad9167b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerInput: {fileID: 3310737253945469796}
+  rules: {fileID: 11400000, guid: 6cd88e39098f9484fb1a008b2bb3b022, type: 2}
+  catalog: {fileID: 11400000, guid: 826d9f8f11ee03141a60bb40ae300dd7, type: 2}
+  context: {fileID: 5838943373800292606}
+  ghostDistance: 2
+  rotateStepDeg: 15
+  debugLogs: 1
+--- !u!114 &-6070889656533198472
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6212462410201203770}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 267dc741ecd18e74890cb355be6940c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6212462411298747934
 GameObject:
   m_ObjectHideFlags: 0
@@ -326,7 +416,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6212462411298747933}
-  m_Layer: 8
+  m_Layer: 3
   m_Name: HeadPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -359,6 +449,14 @@ PrefabInstance:
     - target: {fileID: 6121134019321951799, guid: 93b935bc5ccb53c47a8897a194af1e3a, type: 3}
       propertyPath: m_Name
       value: character
+      objectReference: {fileID: 0}
+    - target: {fileID: 6121134019321951799, guid: 93b935bc5ccb53c47a8897a194af1e3a, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6851738765728388928, guid: 93b935bc5ccb53c47a8897a194af1e3a, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6897670030982261901, guid: 93b935bc5ccb53c47a8897a194af1e3a, type: 3}
       propertyPath: m_RootOrder
@@ -403,6 +501,10 @@ PrefabInstance:
     - target: {fileID: 6897670030982261901, guid: 93b935bc5ccb53c47a8897a194af1e3a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7290596354871419044, guid: 93b935bc5ccb53c47a8897a194af1e3a, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -476,8 +578,20 @@ PrefabInstance:
       value: character_small
       objectReference: {fileID: 0}
     - target: {fileID: 917347272827809202, guid: 4990112ecf119944baa60b7f6690e8e4, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 917347272827809202, guid: 4990112ecf119944baa60b7f6690e8e4, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6823535751109874589, guid: 4990112ecf119944baa60b7f6690e8e4, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7006326916080156327, guid: 4990112ecf119944baa60b7f6690e8e4, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
