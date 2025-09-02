@@ -40,7 +40,6 @@ public class PlayerInputBinder : MonoBehaviour
         crouch.performed += cm.Input_Crouch;
         crouch.canceled += cm.Input_Crouch;
 
-        Debug.Log($"Binder OK (scheme={pi.currentControlScheme}, map={pi.currentActionMap?.name})");
     }
 
     void OnDisable()
