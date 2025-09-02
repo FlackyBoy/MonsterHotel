@@ -1,24 +1,21 @@
-﻿using UnityEngine;
-using UnityEngine.InputSystem;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.InputSystem;
 
-
-// Par joueur : gère le ghost et la pose. Menu UI minimal viendra après.
 [DefaultExecutionOrder(90)]
 public class PlayerBuildController : MonoBehaviour
 {
     [Header("Refs")]
-    public PlayerInput playerInput;         // assigne le PlayerInput de ce joueur
-    public BuildRules rules;                // asset BuildRules
-    public BuildCatalog catalog;            // asset BuildCatalog
-    public BuildContextDetector context;    // sur le joueur (trigger)
+    public PlayerInput playerInput;
+    public BuildRules rules;
+    public BuildCatalog catalog;
+    public BuildContextDetector context;
 
     [Header("Ghost follow")]
-    public float ghostDistance = 2.0f;
-    public float rotateStepDeg = 15f;
-    [SerializeField] bool debugLogs = true;
-    // état courant
+    [SerializeField] float ghostDistance = 2.0f;
+    [SerializeField] float rotateStepDeg = 15f;
+
     enum Mode { None, RoomGhost, ItemGhost }
     Mode mode;
     RoomTypeDef currRoom;
@@ -26,109 +23,107 @@ public class PlayerBuildController : MonoBehaviour
     PlacementGhost ghost;
     Quaternion ghostRot = Quaternion.identity;
 
-    // actions
-    InputAction actBuild, actPlace, actCancel, actRotCW, actRotCCW, actNext, actPrev, actSwitch;
+    // Input actions
+    InputAction actBuild, actPlace, actCancel, actRotCW, actRotCCW;
 
-    int selIndex = 0;
+    void OnEnable()
+    {
+        CacheActions();
+        EnableGameplayMap();
+    }
 
     void Awake()
     {
         if (!playerInput) playerInput = GetComponent<PlayerInput>();
         if (!context) context = GetComponent<BuildContextDetector>();
-
-        var a = playerInput ? playerInput.actions : null;
-        if (a == null)
-        {
-            Debug.LogError("[Build] PlayerInput.actions est NULL. Assigne MovementActions sur PlayerInput.");
-            return;
-        }
-
-        // Log les maps et actions trouvées
-        if (debugLogs)
-        {
-            var maps = string.Join(", ", a.actionMaps.Select(m => m.name));
-            Debug.Log($"[Build] Maps actives dans l’asset: {maps}");
-            var gameplay = a.FindActionMap("Gameplay", true);
-            var acts = string.Join(", ", gameplay.actions.Select(x => x.name));
-            Debug.Log($"[Build] Actions dans Gameplay: {acts}");
-            Debug.Log($"[Build] DefaultActionMap PlayerInput: {playerInput.defaultActionMap}");
-        }
-
-        actBuild = a["Build"];
-        actPlace = a["Place"];
-        actCancel = a["Cancel"];
-        actRotCW = a["RotateCW"];
-        actRotCCW = a["RotateCCW"];
-        actNext = a["Next"];
-        actPrev = a["Prev"];
-        actSwitch = a["Switch"];
-
-        // Garde-fou: si Build est introuvable, on le dit clairement
-        if (actBuild == null)
-            Debug.LogError("[Build] Action 'Build' introuvable dans la map 'Gameplay'. Vérifie le NOM EXACT et sauvegarde l’asset.");
     }
 
+    void CacheActions()
+    {
+        var asset = playerInput ? playerInput.actions : null;
+        if (asset == null) { Debug.LogError("[Build] PlayerInput.actions NULL"); return; }
+
+        actBuild = asset.FindAction("Build", throwIfNotFound: false);
+        actPlace = asset.FindAction("Place", throwIfNotFound: false);
+        actCancel = asset.FindAction("Cancel", throwIfNotFound: false);
+        actRotCW = asset.FindAction("RotateCW", throwIfNotFound: false);
+        actRotCCW = asset.FindAction("RotateCCW", throwIfNotFound: false);
+    }
+
+    void EnableGameplayMap()
+    {
+        if (playerInput == null || playerInput.actions == null) return;
+        var map = playerInput.actions.FindActionMap("Gameplay", true);
+        if (!map.enabled) map.Enable();
+    }
 
     void Update()
     {
-        // Debug sans UI : appuie Build -> démarre un ghost selon contexte
+        // 1) Toggle du mode build
         if (actBuild != null && actBuild.WasPressedThisFrame())
         {
-            StartGhostAuto();
+            if (mode == Mode.None) StartGhostAuto();
+            else StopGhost(); // re-appuyer sur Build ferme le mode
         }
-        if (actBuild != null && actBuild.WasPressedThisFrame())
-            Debug.Log("[Build] Input Action 'Build' fired");
-        if (mode != Mode.None)
+
+        // Si pas en mode build, rien n’est visible
+        if (mode == Mode.None) return;
+
+        // 2) Rotation du ghost
+        if (actRotCW != null && actRotCW.WasPressedThisFrame())
+            ghostRot = Quaternion.Euler(0, +rotateStepDeg, 0) * ghostRot;
+        if (actRotCCW != null && actRotCCW.WasPressedThisFrame())
+            ghostRot = Quaternion.Euler(0, -rotateStepDeg, 0) * ghostRot;
+
+        // 3) Placement du ghost autour du joueur + snap
+        Vector3 target = transform.position + transform.forward * ghostDistance;
+        float grid = mode == Mode.RoomGhost ? rules.gridSizeRoom : rules.gridSizeItem;
+        target = Snap(target, grid);
+        ghost.transform.SetPositionAndRotation(target, ghostRot);
+
+        // 4) Validation
+        bool ok; string reason;
+        if (mode == Mode.RoomGhost)
         {
-            if (actRotCW != null && actRotCW.WasPressedThisFrame()) ghostRot = Quaternion.Euler(0, rotateStepDeg, 0) * ghostRot;
-            if (actRotCCW != null && actRotCCW.WasPressedThisFrame()) ghostRot = Quaternion.Euler(0, -rotateStepDeg, 0) * ghostRot;
-
-            // déplacement autour du joueur + snap
-            Vector3 target = transform.position + transform.forward * ghostDistance;
-            float grid = mode == Mode.RoomGhost ? rules.gridSizeRoom : rules.gridSizeItem;
-            target = Snap(target, grid);
-            ghost.transform.SetPositionAndRotation(target, ghostRot);
-
-            // validation
-            bool ok = false; string reason = "";
-            if (mode == Mode.RoomGhost)
-            {
-                var res = PlacementValidator.ValidateRoomPose(currRoom, rules, target, ghostRot);
-                ok = res.ok; reason = res.reason;
-            }
-            else if (mode == Mode.ItemGhost)
-            {
-                var res = PlacementValidator.ValidateItemPose(currItem, rules, target, ghostRot, context.currentRoom, context.inHall);
-                ok = res.ok; reason = res.reason;
-            }
-            ghost.SetOK(ok);
-
-            // place
-            if (ok && actPlace != null && actPlace.WasPressedThisFrame())
-            {
-                Place(target, ghostRot);
-                StopGhost();
-            }
-
-            // cancel
-            if (actCancel != null && actCancel.WasPressedThisFrame())
-            {
-                StopGhost();
-            }
+            var res = PlacementValidator.ValidateRoomPose(currRoom, rules, target, ghostRot);
+            ok = res.ok; reason = res.reason;
         }
+        else
+        {
+            var res = PlacementValidator.ValidateItemPose(currItem, rules, target, ghostRot, context.currentRoom, context.inHall);
+            ok = res.ok; reason = res.reason;
+        }
+        ghost.SetOK(ok);
+        if (!ok) Debug.Log($"[Build] NOK: {reason}");
+
+        // 5) Place uniquement sur input Place, puis on ferme le mode
+        if (ok && actPlace != null && actPlace.WasPressedThisFrame())
+        {
+            Place(target, ghostRot);
+            StopGhost(); // IMPORTANT: cache le ghost après pose
+        }
+
+        // 6) Annuler
+        if (actCancel != null && actCancel.WasPressedThisFrame())
+            StopGhost();
     }
+
 
     void StartGhostAuto()
     {
-        // Forcer une chambre pour debug, index 0 du catalog
-        if (catalog == null || catalog.roomTypes == null || catalog.roomTypes.Length == 0)
+        // Dans une chambre -> item ; sinon -> room
+        if (context != null && context.currentRoom != null)
         {
-            Debug.LogError("[Build] Catalog.roomTypes vide");
-            return;
+            var list = FilterItemsForRoomContext();
+            if (list.Length == 0) return;
+            StartItemGhost(list[0]); // simple: premier item valide
         }
-        StartRoomGhost(catalog.roomTypes[0]);
+        else
+        {
+            if (catalog == null || catalog.roomTypes == null || catalog.roomTypes.Length == 0) return;
+            StartRoomGhost(catalog.roomTypes[0]); // simple: premier type
+        }
     }
-
 
     void StartRoomGhost(RoomTypeDef def)
     {
@@ -136,9 +131,12 @@ public class PlayerBuildController : MonoBehaviour
         currRoom = def;
         mode = Mode.RoomGhost;
         ghostRot = Quaternion.identity;
+
         ghost = new GameObject($"Ghost_{def.displayName}").AddComponent<PlacementGhost>();
-        ghost.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast"); // couche neutre
-        ghost.InitFromPrefab(def.prefabGhostOptional, def.footprintSize, rules.ghostOK, rules.ghostNOK);
+        ghost.gameObject.layer = LayerMask.NameToLayer("Ghost");
+        var ok = rules && rules.ghostOK ? rules.ghostOK : new Material(Shader.Find("Universal Render Pipeline/Lit")) { color = Color.green };
+        var nok = rules && rules.ghostNOK ? rules.ghostNOK : new Material(Shader.Find("Universal Render Pipeline/Lit")) { color = Color.red };
+        ghost.InitFromPrefab(def.prefabGhostOptional, def.footprintSize, ok, nok);
     }
 
     void StartItemGhost(ItemBlueprint def)
@@ -147,9 +145,12 @@ public class PlayerBuildController : MonoBehaviour
         currItem = def;
         mode = Mode.ItemGhost;
         ghostRot = Quaternion.identity;
+
         ghost = new GameObject($"Ghost_{def.displayName}").AddComponent<PlacementGhost>();
-        ghost.gameObject.layer = LayerMask.NameToLayer("Ignore Raycast");
-        ghost.InitFromPrefab(def.prefabGhostOptional, def.size, rules.ghostOK, rules.ghostNOK);
+        ghost.gameObject.layer = LayerMask.NameToLayer("Ghost");
+        var ok = rules && rules.ghostOK ? rules.ghostOK : new Material(Shader.Find("Universal Render Pipeline/Lit")) { color = Color.green };
+        var nok = rules && rules.ghostNOK ? rules.ghostNOK : new Material(Shader.Find("Universal Render Pipeline/Lit")) { color = Color.red };
+        ghost.InitFromPrefab(def.prefabGhostOptional, def.size, ok, nok);
     }
 
     void StopGhost()
@@ -170,10 +171,11 @@ public class PlayerBuildController : MonoBehaviour
             if (!room) room = go.AddComponent<Room>();
             room.type = currRoom;
 
-            // Assure un volume enfant
+            // Volume enfant si absent
             if (!room.volume)
             {
                 var volGO = new GameObject("Volume");
+                volGO.layer = LayerMask.NameToLayer("RoomVolume");
                 volGO.transform.SetParent(go.transform, false);
                 var box = volGO.AddComponent<BoxCollider>();
                 box.isTrigger = true;
@@ -183,13 +185,13 @@ public class PlayerBuildController : MonoBehaviour
                 rv.ownerRoom = room;
             }
 
-            // TODO: Budget.TrySpend(currRoom.costCents) avant d'instancier
+            // TODO: Budget.TrySpend(currRoom.costCents)
             // TODO: GameplayEventBus.Raise(new RoomBuilt(...))
         }
-        else if (mode == Mode.ItemGhost)
+        else
         {
-            Transform parent = context.inHall ? FindOrCreate("Hall/Content") :
-                               (context.currentRoom ? context.currentRoom.ownerRoom.transform : null);
+            Transform parent = context.inHall ? FindOrCreate("Hall/Content")
+                               : (context.currentRoom ? context.currentRoom.ownerRoom.transform : null);
             var go = Instantiate(currItem.prefabFinal, pos, rot, parent);
             // TODO: Budget.TrySpend(currItem.costCents)
             // TODO: GameplayEventBus.Raise(new DecorPlaced(...))
@@ -198,15 +200,20 @@ public class PlayerBuildController : MonoBehaviour
 
     Transform FindOrCreate(string path)
     {
-        var root = GameObject.Find(path);
-        if (root) return root.transform;
+        var existing = GameObject.Find(path);
+        if (existing) return existing.transform;
         var parts = path.Split('/');
         Transform current = null;
         for (int i = 0; i < parts.Length; i++)
         {
             var name = parts[i];
-            Transform t = (current ? current.Find(name) : GameObject.Find(name)?.transform);
-            if (!t) { var go = new GameObject(name); t = go.transform; if (current) t.SetParent(current); }
+            Transform t = current ? current.Find(name) : GameObject.Find(name)?.transform;
+            if (!t)
+            {
+                var go = new GameObject(name);
+                t = go.transform;
+                if (current) t.SetParent(current);
+            }
             current = t;
         }
         return current;
@@ -214,19 +221,15 @@ public class PlayerBuildController : MonoBehaviour
 
     static Vector3 Snap(Vector3 p, float g)
     {
-        return new Vector3(
-            Mathf.Round(p.x / g) * g,
-            p.y,
-            Mathf.Round(p.z / g) * g
-        );
+        return new Vector3(Mathf.Round(p.x / g) * g, p.y, Mathf.Round(p.z / g) * g);
     }
+
+    // ————— Filtrage items selon contexte —————
     ItemBlueprint[] FilterItemsForRoomContext()
     {
-        // Sécurité
         if (catalog == null || catalog.items == null || catalog.items.Length == 0)
             return System.Array.Empty<ItemBlueprint>();
 
-        // Dans une chambre → items autorisés pour cette chambre
         if (context != null && context.currentRoom != null)
         {
             var room = context.currentRoom.ownerRoom;
@@ -239,11 +242,8 @@ public class PlayerBuildController : MonoBehaviour
             var list = new List<ItemBlueprint>(catalog.items.Length);
             foreach (var it in catalog.items)
             {
-                // Contexte: pas d’items Hall-only dans une chambre
-                if (it.allowedContext == BuildContext.Hall)
-                    continue;
+                if (it.allowedContext == BuildContext.Hall) continue;
 
-                // Filtre catégorie de pièce si défini sur l’item
                 if (it.allowedRoomCategories != null && it.allowedRoomCategories.Length > 0)
                 {
                     bool okCat = false;
@@ -252,7 +252,6 @@ public class PlayerBuildController : MonoBehaviour
                     if (!okCat) continue;
                 }
 
-                // Filtre type de monstre si défini sur l’item
                 if (it.allowedMonsterTypes != null && it.allowedMonsterTypes.Length > 0)
                 {
                     bool okMon = false;
@@ -261,7 +260,6 @@ public class PlayerBuildController : MonoBehaviour
                     if (!okMon) continue;
                 }
 
-                // Filtre tags (optionnel) selon allowedItemTags de la RoomType
                 if (allowedTags != null && allowedTags.Count > 0)
                 {
                     bool okTag = false;
@@ -270,32 +268,22 @@ public class PlayerBuildController : MonoBehaviour
                         for (int i = 0; i < it.tags.Length; i++)
                             if (allowedTags.Contains(it.tags[i])) { okTag = true; break; }
                     }
-                    else
-                    {
-                        okTag = true; // item sans tag accepté
-                    }
+                    else okTag = true;
                     if (!okTag) continue;
                 }
-
                 list.Add(it);
             }
             return list.ToArray();
         }
 
-        // Dans le hall → items Hall ou Any
         if (context != null && context.inHall)
         {
             var list = new List<ItemBlueprint>(catalog.items.Length);
             foreach (var it in catalog.items)
-            {
-                if (it.allowedContext == BuildContext.Room) continue; // exclut Room-only
-                list.Add(it);
-            }
+                if (it.allowedContext != BuildContext.Room) list.Add(it);
             return list.ToArray();
         }
 
-        // Zone neutre → pas d’items (on proposera des pièces)
         return System.Array.Empty<ItemBlueprint>();
     }
-
 }

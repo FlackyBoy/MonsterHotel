@@ -50,7 +50,6 @@ GameObject:
   - component: {fileID: 5838943373800292606}
   - component: {fileID: -900554366613211192}
   - component: {fileID: 1931362722133761081}
-  - component: {fileID: -6070889656533198472}
   m_Layer: 3
   m_Name: '[Player]'
   m_TagString: Player
@@ -324,6 +323,18 @@ MonoBehaviour:
       m_Calls: []
     m_ActionId: ea2d893a-76df-4f17-90f6-99515ab0b44d
     m_ActionName: 'Gameplay/RotateCCW[/Keyboard/f,/XInputControllerWindows/leftShoulder]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9035a5bf-81d8-4bb6-9d56-165f76a1a7d0
+    m_ActionName: 'Gameplay/Next[/Keyboard/v]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d7338403-5059-4b9e-9881-55d565703e22
+    m_ActionName: 'Gameplay/Prev[/Keyboard/c]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 33a88193-af03-46f8-8b49-50e1034b9744
+    m_ActionName: 'Gameplay/Switch[/Keyboard/tab]'
   m_NeverAutoSwitchControlSchemes: 1
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Gameplay
@@ -392,21 +403,8 @@ MonoBehaviour:
   rules: {fileID: 11400000, guid: 6cd88e39098f9484fb1a008b2bb3b022, type: 2}
   catalog: {fileID: 11400000, guid: 826d9f8f11ee03141a60bb40ae300dd7, type: 2}
   context: {fileID: 5838943373800292606}
-  ghostDistance: 2
+  ghostDistance: 10
   rotateStepDeg: 15
-  debugLogs: 1
---- !u!114 &-6070889656533198472
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6212462410201203770}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 267dc741ecd18e74890cb355be6940c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6212462411298747934
 GameObject:
   m_ObjectHideFlags: 0

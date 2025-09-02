@@ -180,6 +180,33 @@ public partial class @MovementActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Next"",
+                    ""type"": ""Button"",
+                    ""id"": ""9035a5bf-81d8-4bb6-9d56-165f76a1a7d0"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Prev"",
+                    ""type"": ""Button"",
+                    ""id"": ""d7338403-5059-4b9e-9881-55d565703e22"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Switch"",
+                    ""type"": ""Button"",
+                    ""id"": ""33a88193-af03-46f8-8b49-50e1034b9744"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -538,7 +565,7 @@ public partial class @MovementActions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""13e7e2e9-96a5-4d76-90ee-35c7783cd0fa"",
-                    ""path"": ""<Keyboard>/a"",
+                    ""path"": ""<Keyboard>/#(B)"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
@@ -644,6 +671,72 @@ public partial class @MovementActions: IInputActionCollection2, IDisposable
                     ""action"": ""RotateCCW"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""73325147-104b-4edc-8216-b610d907a91f"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Next"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9c1e6784-0bf6-4bc7-869f-dd187d1db49b"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Next"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8904a13b-ae42-4185-b584-6b4d39b2d5d0"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Prev"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8a22135d-3e5a-417c-9486-0efad8d35b4a"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Prev"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1d569efb-ad2e-4cf1-9eb4-7ead1c6b7de0"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Switch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b53daaa1-ab24-4363-8efb-7a47b71f5bc0"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Switch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -712,6 +805,9 @@ public partial class @MovementActions: IInputActionCollection2, IDisposable
         m_Gameplay_Cancel = m_Gameplay.FindAction("Cancel", throwIfNotFound: true);
         m_Gameplay_RotateCW = m_Gameplay.FindAction("RotateCW", throwIfNotFound: true);
         m_Gameplay_RotateCCW = m_Gameplay.FindAction("RotateCCW", throwIfNotFound: true);
+        m_Gameplay_Next = m_Gameplay.FindAction("Next", throwIfNotFound: true);
+        m_Gameplay_Prev = m_Gameplay.FindAction("Prev", throwIfNotFound: true);
+        m_Gameplay_Switch = m_Gameplay.FindAction("Switch", throwIfNotFound: true);
     }
 
     ~@MovementActions()
@@ -802,6 +898,9 @@ public partial class @MovementActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_Cancel;
     private readonly InputAction m_Gameplay_RotateCW;
     private readonly InputAction m_Gameplay_RotateCCW;
+    private readonly InputAction m_Gameplay_Next;
+    private readonly InputAction m_Gameplay_Prev;
+    private readonly InputAction m_Gameplay_Switch;
     /// <summary>
     /// Provides access to input actions defined in input action map "Gameplay".
     /// </summary>
@@ -853,6 +952,18 @@ public partial class @MovementActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Gameplay/RotateCCW".
         /// </summary>
         public InputAction @RotateCCW => m_Wrapper.m_Gameplay_RotateCCW;
+        /// <summary>
+        /// Provides access to the underlying input action "Gameplay/Next".
+        /// </summary>
+        public InputAction @Next => m_Wrapper.m_Gameplay_Next;
+        /// <summary>
+        /// Provides access to the underlying input action "Gameplay/Prev".
+        /// </summary>
+        public InputAction @Prev => m_Wrapper.m_Gameplay_Prev;
+        /// <summary>
+        /// Provides access to the underlying input action "Gameplay/Switch".
+        /// </summary>
+        public InputAction @Switch => m_Wrapper.m_Gameplay_Switch;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -909,6 +1020,15 @@ public partial class @MovementActions: IInputActionCollection2, IDisposable
             @RotateCCW.started += instance.OnRotateCCW;
             @RotateCCW.performed += instance.OnRotateCCW;
             @RotateCCW.canceled += instance.OnRotateCCW;
+            @Next.started += instance.OnNext;
+            @Next.performed += instance.OnNext;
+            @Next.canceled += instance.OnNext;
+            @Prev.started += instance.OnPrev;
+            @Prev.performed += instance.OnPrev;
+            @Prev.canceled += instance.OnPrev;
+            @Switch.started += instance.OnSwitch;
+            @Switch.performed += instance.OnSwitch;
+            @Switch.canceled += instance.OnSwitch;
         }
 
         /// <summary>
@@ -950,6 +1070,15 @@ public partial class @MovementActions: IInputActionCollection2, IDisposable
             @RotateCCW.started -= instance.OnRotateCCW;
             @RotateCCW.performed -= instance.OnRotateCCW;
             @RotateCCW.canceled -= instance.OnRotateCCW;
+            @Next.started -= instance.OnNext;
+            @Next.performed -= instance.OnNext;
+            @Next.canceled -= instance.OnNext;
+            @Prev.started -= instance.OnPrev;
+            @Prev.performed -= instance.OnPrev;
+            @Prev.canceled -= instance.OnPrev;
+            @Switch.started -= instance.OnSwitch;
+            @Switch.performed -= instance.OnSwitch;
+            @Switch.canceled -= instance.OnSwitch;
         }
 
         /// <summary>
@@ -1112,5 +1241,26 @@ public partial class @MovementActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnRotateCCW(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Next" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnNext(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Prev" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPrev(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Switch" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSwitch(InputAction.CallbackContext context);
     }
 }

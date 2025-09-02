@@ -1,15 +1,15 @@
-﻿// Assets/Scripts/Build/PlacementValidator.cs
+﻿// Assets/Script/Build/PlacementValidator.cs
 using UnityEngine;
 
 public static class PlacementValidator
 {
     public struct Result { public bool ok; public string reason; }
 
-    // PIECE : support + collisions (PAS de porte/couloir)
+    // ── Pièce : collisions + support sol (PAS de couloir)
     public static Result ValidateRoomPose(RoomTypeDef def, BuildRules rules, Vector3 pos, Quaternion rot)
     {
-        // 1) collisions avec Room/Item/NoBuild
-        var half = def.footprintSize * 0.5f;
+        // 1) collisions contre Room/Item/NoBuild
+        Vector3 half = def.footprintSize * 0.5f;
         if (Physics.CheckBox(pos + rot * def.footprintCenter, half, rot, rules.blockMask, QueryTriggerInteraction.Ignore))
             return new Result { ok = false, reason = "Collision" };
 
@@ -17,35 +17,37 @@ public static class PlacementValidator
         if (!RaycastSupport(rules, pos, rot, half))
             return new Result { ok = false, reason = "Sol invalide" };
 
-        // Pas de test de porte/couloir
         return new Result { ok = true };
     }
 
-    // OBJET : inchangé (contexte chambre/hall, collisions, ancrage, containment)
+    // ── Objet : contexte + collisions + ancrage + containment (dans la chambre si besoin)
     public static Result ValidateItemPose(ItemBlueprint def, BuildRules rules, Vector3 pos, Quaternion rot, RoomVolume roomOrNull, bool inHall)
     {
+        // Contexte
         if (def.allowedContext == BuildContext.Room && roomOrNull == null)
             return new Result { ok = false, reason = "Hors chambre" };
         if (def.allowedContext == BuildContext.Hall && !inHall)
             return new Result { ok = false, reason = "Hors hall" };
 
-        var half = def.size * 0.5f;
+        // Collision
+        Vector3 half = def.size * 0.5f;
         if (Physics.CheckBox(pos + rot * def.center, half, rot, rules.blockMask, QueryTriggerInteraction.Ignore))
             return new Result { ok = false, reason = "Collision" };
 
+        // Ancrage
         if (def.anchor == ItemAnchor.Sol)
         {
             if (!RaycastSupport(rules, pos, rot, half))
                 return new Result { ok = false, reason = "Sol invalide" };
         }
-        else
+        else // Mur
         {
-            // Ancrage mur simple
             Vector3 dir = rot * Vector3.forward;
             if (!Physics.Raycast(pos, dir, out _, 0.6f, rules.blockMask, QueryTriggerInteraction.Ignore))
                 return new Result { ok = false, reason = "Pas de mur" };
         }
 
+        // Doit rester dans le volume de la chambre (si pas Hall)
         if (def.allowedContext != BuildContext.Hall && roomOrNull != null)
         {
             if (!roomOrNull.ContainsBox(pos + rot * def.center, half, rot))
@@ -55,11 +57,19 @@ public static class PlacementValidator
         return new Result { ok = true };
     }
 
+    // Rayon long et pente tolérée
     static bool RaycastSupport(BuildRules rules, Vector3 pos, Quaternion rot, Vector3 half)
     {
-        Vector3 start = pos + rot * new Vector3(0, half.y + 0.1f, 0);
-        if (!Physics.Raycast(start, Vector3.down, out var hit, rules.supportRay, rules.groundMask, QueryTriggerInteraction.Ignore))
+        float up = half.y + 5f;
+        Vector3 start = pos + Vector3.up * up;
+        float maxDist = up + 20f;
+
+        // Debug visuel (optionnel) :
+        // Debug.DrawLine(start, start + Vector3.down * maxDist, Color.yellow, 0f, false);
+
+        if (!Physics.Raycast(start, Vector3.down, out var hit, maxDist, rules.groundMask, QueryTriggerInteraction.Ignore))
             return false;
+
         float angle = Vector3.Angle(hit.normal, Vector3.up);
         return angle <= rules.maxSlopeDeg;
     }

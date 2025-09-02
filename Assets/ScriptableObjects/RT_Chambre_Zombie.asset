@@ -16,8 +16,8 @@ MonoBehaviour:
   category: 0
   monsterType: 
   costCents: 6000
-  prefabFinal: {fileID: 1445947215998863727, guid: bee4c1d4ba0bc2c4f8f728dfaa1847ed, type: 3}
-  prefabGhostOptional: {fileID: 0}
+  prefabFinal: {fileID: 5497568788348981709, guid: 5a5c18c153751544897e7f18a81b6781, type: 3}
+  prefabGhostOptional: {fileID: 5497568788348981709, guid: 5a5c18c153751544897e7f18a81b6781, type: 3}
   footprintSize: {x: 3, y: 2.8, z: 3}
   footprintCenter: {x: 0, y: 0, z: 1.5}
   doorsLocal: []
