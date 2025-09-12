@@ -405,6 +405,10 @@ MonoBehaviour:
   context: {fileID: 5838943373800292606}
   ghostDistance: 10
   rotateStepDeg: 15
+  pickerPrefab: {fileID: 0}
+  uiCanvas: {fileID: 0}
+  buildUICanvasName: BuildUI
+  pickerResourcePath: UI/ItemPickerPanel
 --- !u!1 &6212462411298747934
 GameObject:
   m_ObjectHideFlags: 0

@@ -17,7 +17,7 @@ MonoBehaviour:
     m_Bits: 512
   blockMask:
     serializedVersion: 2
-    m_Bits: 448
+    m_Bits: 8640
   corridorMask:
     serializedVersion: 2
     m_Bits: 1024

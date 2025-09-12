@@ -47,12 +47,13 @@ namespace PhysicsCharacterController
             // Ne touche pas à characterManager ici
             if (thirdPersonCamera != null)
                 thirdPersonCameraController = thirdPersonCamera.GetComponent<ThirdPersonCameraController>();
+            player = GameObject.FindWithTag("Player");
+            if (player == null) { Debug.LogError("[CameraManager] Tag 'Player' introuvable."); enabled = false; return; }
         }
 
         private void Start()
         {
-            player = GameObject.FindWithTag("Player");
-            if (player == null) { Debug.LogError("[CameraManager] Tag 'Player' introuvable."); enabled = false; return; }
+            
 
             characterManager = player.GetComponent<CharacterManager>();
             if (characterManager == null) { Debug.LogError("[CameraManager] CharacterManager manquant sur Player."); enabled = false; return; }
