@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 3a2a94df471c0ec49a3022a2f83b08ce
+timeCreated: 1531228794
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Mecanim/male_strafing_run_left.controller
+  uploadId: 537816

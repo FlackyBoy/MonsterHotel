@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 60465b64a73a38e4a97b7abfec66fefc
+timeCreated: 1546870793
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Motion/02_Move/root_motion/female_move_run_right_root_motion.anim
+  uploadId: 537816

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 68792fae2bf40bc4bb9da157518809d6
+timeCreated: 1530714638
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Motion/05_Act/female_act_strafing.anim
+  uploadId: 537816

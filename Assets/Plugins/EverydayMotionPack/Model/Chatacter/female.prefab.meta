@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: c84f7b255fee11a4f93c1c6b46cc712e
+timeCreated: 1513601523
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Model/Chatacter/female.prefab
+  uploadId: 537816

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: eaebeca591823684dbd8a73a9135977d
+timeCreated: 1531229358
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Mecanim/female_strafing_walk_back_right.controller
+  uploadId: 537816

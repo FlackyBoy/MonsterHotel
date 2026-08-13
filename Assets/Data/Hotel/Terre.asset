@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d3c3130e8fb23e4caa92ee40064c8e7, type: 3}
+  m_Name: Terre
+  m_EditorClassIdentifier: Assembly-CSharp::BlockData
+  blockName: Terre
+  blockColor: {r: 0.55, g: 0.35, b: 0.15, a: 1}
+  blockTexture: {fileID: 2800000, guid: b960d7c8f24ddf041adc9915c347dd4c, type: 3}
+  cost: 40
+  digDuration: 0.5

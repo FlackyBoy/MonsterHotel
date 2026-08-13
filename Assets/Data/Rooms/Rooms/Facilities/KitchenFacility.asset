@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1db9bd887f555040ab78b9457516095, type: 3}
+  m_Name: KitchenFacility
+  m_EditorClassIdentifier: Assembly-CSharp::RoomData
+  roomName: Kitchen
+  cost: 50
+  roomType: {fileID: 0}
+  baseRevenue: 20
+  attractiveness: 1
+  quality: 1
+  upgradeCost: 0
+  nextUpgrade: {fileID: 0}
+  placementOffset: {x: 0, y: 0, z: 0}
+  size: {x: 20, y: 20}
+  height: 8
+  prefab: {fileID: 8141491352577092653, guid: 528593c62e5377c489dff4984d53c0fb, type: 3}
+  requiredFurniture:
+  - {fileID: 11400000, guid: ed6b3f46bd1b01946b53f7653a28f080, type: 2}
+  - {fileID: 11400000, guid: 63d2836fbf35f2e41b421648239a840d, type: 2}
+  - {fileID: 11400000, guid: e46d47a0642fb9c49a8abf57331f93b8, type: 2}
+  - {fileID: 11400000, guid: 1375af015ab92274aad8b5ed22e2eb05, type: 2}
+  - {fileID: 11400000, guid: 23edb8a37792a1c459354ed4c4b84cfb, type: 2}
+  - {fileID: 11400000, guid: ed6b3f46bd1b01946b53f7653a28f080, type: 2}
+  optionalFurniture:
+  - {fileID: 11400000, guid: e88bc87457077154ea15e3a6df6885c2, type: 2}
+  isFacility: 1
+  isBreakRoom: 0
+  needFulfilled: {fileID: 11400000, guid: f09f6bc256abb78419a99ce4783ae6c6, type: 2}
+  fillAmount: 0.8
+  serviceTime: 10
+  capacity: 2
+  playerServiceOnly: 1
+  serviceQuality: 0.8
+  furnitureDirtyChance: 0.7
+  furnitureDamageChance: 0.15
+  debrisPrefabs: []
+  maxDebris: 2

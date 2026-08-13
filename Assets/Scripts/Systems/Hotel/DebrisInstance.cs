@@ -1,0 +1,58 @@
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+/// <summary>
+/// Détritus laissé au sol par un monstre après son départ.
+/// Ramassable par le joueur sans item spécifique (action Interact).
+/// Notifie sa chambre d'origine quand détruit pour mettre à jour l'état de propreté.
+/// </summary>
+public class DebrisInstance : MonoBehaviour
+{
+    public static readonly HashSet<DebrisInstance> All = new();
+
+    void Awake()     { All.Add(this); }
+    /// <summary>Déclenché quand ce détritus est retiré (ramassé ou détruit par autre moyen).</summary>
+    public event System.Action OnRemoved;
+
+    void OnDestroy() { All.Remove(this); Room?.RemoveDebris(this); OnRemoved?.Invoke(); }
+
+    [Tooltip("Distance d'interaction joueur")]
+    public float  pickupRange        = 1.5f;
+    public string interactActionName = "Interact";
+
+    public RoomInstance Room { get; private set; }
+
+    /// <summary>True tant qu'un employé de nettoyage a réservé ce détritus — empêche un doublon.</summary>
+    public bool IsReserved { get; private set; }
+
+    public void Reserve()           => IsReserved = true;
+    public void ReleaseReservation() => IsReserved = false;
+
+    public void Init(RoomInstance room) => Room = room;
+
+    void Update()
+    {
+        foreach (var placer in RoomPlacer.All)
+        {
+            if (placer == null) continue;
+            if (Vector3.Distance(transform.position, placer.transform.position) > pickupRange) continue;
+
+            var pi = placer.GetComponent<PlayerInput>();
+            if (pi == null) continue;
+
+            var action = pi.actions.FindAction(interactActionName, throwIfNotFound: false);
+            if (action == null || !action.WasPressedThisFrame()) continue;
+
+            PickUp();
+            return;
+        }
+    }
+
+    /// <summary>Ramasse et détruit ce détritus (joueur ou employé).</summary>
+    public void PickUp()
+    {
+        Room?.RemoveDebris(this);
+        Destroy(gameObject);
+    }
+}

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: d250e3f9969b8c64aa1b3fb7c36a9249
+timeCreated: 1546863115
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Motion/02_Move/female_move_walk_back_left.anim
+  uploadId: 537816

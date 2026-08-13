@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: f398bfa0af7a8b341bfd76d497a9cc44
+timeCreated: 1522121009
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Mecanim/male_stair_up.controller
+  uploadId: 537816

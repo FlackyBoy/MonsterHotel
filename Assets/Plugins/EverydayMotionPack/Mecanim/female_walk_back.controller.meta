@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: da646b2a3a6cab74e9d7eae16c7e790e
+timeCreated: 1525060383
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Mecanim/female_walk_back.controller
+  uploadId: 537816

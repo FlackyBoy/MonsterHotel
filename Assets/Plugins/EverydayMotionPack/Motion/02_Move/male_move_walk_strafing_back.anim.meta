@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 63f5f0ea96586fe4499f988a15b623d0
+timeCreated: 1531228898
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Motion/02_Move/male_move_walk_strafing_back.anim
+  uploadId: 537816

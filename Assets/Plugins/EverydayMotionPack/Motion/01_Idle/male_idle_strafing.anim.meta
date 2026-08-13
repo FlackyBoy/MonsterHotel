@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 04ec5c82a23eb5b4a95b47f2988295f2
+timeCreated: 1530713346
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Motion/01_Idle/male_idle_strafing.anim
+  uploadId: 537816

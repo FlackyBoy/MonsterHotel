@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: df01758c6890ce94fa1072fcba003870
+timeCreated: 1522122120
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Mecanim/male_handshake.controller
+  uploadId: 537816

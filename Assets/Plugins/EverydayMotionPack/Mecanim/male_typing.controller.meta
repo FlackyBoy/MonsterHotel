@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: bdea21c5500d8114a8c24a381b0c77fd
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Mecanim/male_typing.controller
+  uploadId: 537816

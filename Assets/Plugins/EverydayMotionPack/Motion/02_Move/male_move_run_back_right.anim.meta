@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: afb83ae7045148643bca2ebfed5ff08a
+timeCreated: 1546870789
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Motion/02_Move/male_move_run_back_right.anim
+  uploadId: 537816

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: e8c0e131e5c615e45b75a66e332c1f61
+timeCreated: 1526800300
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Mecanim/male_meditate.controller
+  uploadId: 537816

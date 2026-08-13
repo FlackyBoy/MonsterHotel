@@ -1,0 +1,67 @@
+# Ce .gitignore doit rester à la racine du projet Unity.
+# Basé sur le template officiel https://github.com/github/gitignore/blob/main/Unity.gitignore
+# + les mêmes exclusions que ignore.conf (Plastic SCM), pour rester cohérent entre les deux outils.
+
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+/[Bb]ackups/
+
+# IDE
+.vs/
+.vscode/
+.idea/
+.gradle/
+.consulo/
+
+# Fichiers générés par Unity/VS/Rider à chaque ouverture — pas de valeur à versionner
+ExportedObj/
+*.csproj
+*.unityproj
+*.sln
+*.slnx
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+sysinfo.txt
+crashlytics-build.properties
+
+# Builds
+*.apk
+*.aab
+*.app
+
+# Addressables générés
+/[Aa]ssets/[Aa]ddressableAssetsData/*/*.bin*
+/[Aa]ssets/[Ss]treamingAssets/aa.meta
+/[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# OS
+.DS_Store*
+Thumbs.db
+Desktop.ini
+
+# Fichiers Plastic SCM (pas pertinents dans l'historique Git)
+.plastic/
+ignore.conf
+
+# Config locale Claude Code (pas du contenu projet)
+.claude/

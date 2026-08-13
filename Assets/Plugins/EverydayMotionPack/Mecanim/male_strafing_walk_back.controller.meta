@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 5481af866fd2063419f8d888676f9feb
+timeCreated: 1531228794
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Mecanim/male_strafing_walk_back.controller
+  uploadId: 537816

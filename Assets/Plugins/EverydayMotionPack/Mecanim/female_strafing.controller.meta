@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 37706d98b7a7cbe4ab543ac61b645817
+timeCreated: 1526468477
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Mecanim/female_strafing.controller
+  uploadId: 537816

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 087a5d54b381d234d9d3b828146eb05c
+timeCreated: 1546863116
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Motion/02_Move/root_motion/female_move_walk_front_root_motion.anim
+  uploadId: 537816

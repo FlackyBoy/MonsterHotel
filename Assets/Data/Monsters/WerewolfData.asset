@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b22151ac5c12554c8dd204bd2d1eeb8, type: 3}
+  m_Name: WerewolfData
+  m_EditorClassIdentifier: Assembly-CSharp::MonsterData
+  monsterName: Werewolf
+  monsterType: 2
+  icon: {fileID: 0}
+  prefab: {fileID: 8076749505103883583, guid: 611e3320524980848930483ac0683c11, type: 3}
+  revenuePerNight: 50
+  mealRevenue: 15
+  stayMinNights: 1
+  stayMaxNights: 2
+  maxWaitTime: 30
+  compatibleRoomTypes:
+  - {fileID: 11400000, guid: e582d5d635cbd604a825ff3f00206af7, type: 2}
+  moveSpeed: 4
+  spawnOffset: {x: 0, y: 0, z: 0}
+  spawnWeight: 1
+  spawnInterval: 70
+  maxPending: 3
+  needs: []
+  needOverrides: []
+  preferredSpawnTime: 2
+  checkoutWindowStart: 8
+  checkoutWindowEnd: 10
+  isLegendary: 0
+  roamLitterChance: 0.1
+  litterPrefabs:
+  - {fileID: 7800008161810468366, guid: 1864f56f60d38814d96adfe34c8ae249, type: 3}
+  compatibleSocialTypes: 00000000
+  incompatibleTypes: 01000000

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 35c58f12c01827f44887c5be7ce0fe01
+timeCreated: 1560830840
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 61492
+  packageName: 'ZOMBIE Starter: MoCap Animation Pack'
+  packageVersion: V2.7
+  assetPath: Assets/Zombie_27/Demo Animator Controller.controller
+  uploadId: 316804

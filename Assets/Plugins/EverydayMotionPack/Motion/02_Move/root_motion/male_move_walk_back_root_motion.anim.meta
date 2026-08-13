@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 24ed6168648a5944a89003e4ac9dc704
+timeCreated: 1546871128
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Motion/02_Move/root_motion/male_move_walk_back_root_motion.anim
+  uploadId: 537816

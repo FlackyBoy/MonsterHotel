@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 2ec628ee03021aa4ba2a73292c7627ef
+timeCreated: 1540129569
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Motion/02_Move/male_move_run_jogging_strafing_left.anim
+  uploadId: 537816

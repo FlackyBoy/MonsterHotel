@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 15f0a099f21bfbd42a1f840c22a6dfdb
+timeCreated: 1530714572
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Motion/01_Idle/female_idle_strafing.anim
+  uploadId: 537816

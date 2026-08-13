@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: ed097e32a42d17e49a16204c1489905e
+timeCreated: 1546870792
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Motion/02_Move/female_move_run_back_right.anim
+  uploadId: 537816

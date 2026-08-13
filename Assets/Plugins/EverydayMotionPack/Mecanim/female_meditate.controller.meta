@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 12d83cd4007575c46948ef15eebbf158
+timeCreated: 1526800300
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Mecanim/female_meditate.controller
+  uploadId: 537816

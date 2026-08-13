@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: bdc8ea30f3b520440be51845f8a1e6f4
+timeCreated: 1526393234
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Mecanim/male_strafing.controller
+  uploadId: 537816

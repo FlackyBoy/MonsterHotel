@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 66e28629fb69e8f41bb8f75783efeea2
+timeCreated: 1549028127
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 31900000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 194348
+  packageName: Floating Animations
+  packageVersion: 1.0
+  assetPath: Assets/Polygonmaker/Polygonmaker Animations/_Source 1.2/Source/PolygonmakerRig_Ogre_1-2_Mask.mask
+  uploadId: 713353

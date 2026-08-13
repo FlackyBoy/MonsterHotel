@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 87d4d8ae396096f458680c7fd9397833
+timeCreated: 1531229446
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Motion/02_Move/female_move_walk_strafing_back.anim
+  uploadId: 537816

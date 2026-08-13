@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: cfa2ec30b8db4ce4797fd615ed6d1c10
+timeCreated: 1525922962
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Mecanim/female_say_no.controller
+  uploadId: 537816

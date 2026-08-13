@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 7908422afb985de47bc13719888ad4c0
+timeCreated: 1531228794
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Mecanim/male_strafing_run_back_right.controller
+  uploadId: 537816

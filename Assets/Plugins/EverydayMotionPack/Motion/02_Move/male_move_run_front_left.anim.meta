@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 96c40ba981f30e74d878321730cfc47f
+timeCreated: 1546870797
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Motion/02_Move/male_move_run_front_left.anim
+  uploadId: 537816

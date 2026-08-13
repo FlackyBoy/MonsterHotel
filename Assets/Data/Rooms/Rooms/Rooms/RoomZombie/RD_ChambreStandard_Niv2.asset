@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1db9bd887f555040ab78b9457516095, type: 3}
+  m_Name: RD_ChambreStandard_Niv2
+  m_EditorClassIdentifier: Assembly-CSharp::RoomData
+  roomName: Chambre
+  cost: 100
+  roomType: {fileID: 11400000, guid: 84c800b7496d4304ea563e8ccbfc1353, type: 2}
+  baseRevenue: 45
+  attractiveness: 2
+  quality: 2
+  upgradeCost: 0
+  nextUpgrade: {fileID: 0}
+  placementOffset: {x: 0, y: 0, z: 0}
+  size: {x: 10, y: 15}
+  height: 5
+  prefab: {fileID: 8141491352577092653, guid: 905f374b522a0394abdcc38ce988a08a, type: 3}
+  requiredFurniture: []
+  optionalFurniture:
+  - {fileID: 11400000, guid: dcb93570d2559bc4cbb8058c8d70c936, type: 2}
+  isFacility: 0
+  isBreakRoom: 0
+  needFulfilled: {fileID: 0}
+  fillAmount: 0.8
+  serviceTime: 10
+  capacity: 2
+  playerServiceOnly: 0
+  serviceQuality: 0.8
+  furnitureDirtyChance: 0.7
+  furnitureDamageChance: 0.15
+  debrisPrefabs: []
+  maxDebris: 2

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 413442c086f5f6048ae61dc223d3338d
+timeCreated: 1531320175
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Mecanim/female_strafing_run_right.controller
+  uploadId: 537816

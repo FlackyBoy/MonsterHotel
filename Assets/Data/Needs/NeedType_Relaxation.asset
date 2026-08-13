@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63ccd99d6ea4bdc49b6a74866bd88ec7, type: 3}
+  m_Name: NeedType_Relaxation
+  m_EditorClassIdentifier: Assembly-CSharp::NeedType
+  needName: Relaxation
+  icon: {fileID: 0}
+  decayRate: 0.05
+  unsatisfiedThreshold: 0.3
+  criticalThreshold: 0.1
+  satisfactionDecayPerSecond: 10
+  satisfactionBonus: 10
+  satisfactionPenalty: 5
+  goodServiceWaitTime: 30
+  goodQualityThreshold: 0.6

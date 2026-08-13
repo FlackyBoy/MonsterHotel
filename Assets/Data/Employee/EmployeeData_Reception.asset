@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d69edd3a5d8b7544bbee404833a4522, type: 3}
+  m_Name: EmployeeData_Reception
+  m_EditorClassIdentifier: Assembly-CSharp::EmployeeData
+  employeeName: "Employ\xE9"
+  role: 0
+  portrait: {fileID: 0}
+  characterPrefabs:
+  - {fileID: 5886390143863646496, guid: 56b10ca7c0cc96b4ca1ff9ba01574bcc, type: 3}
+  - {fileID: 5886390143863646496, guid: dae675faf2f4ae547b861246a3419b93, type: 3}
+  - {fileID: 5886390143863646496, guid: 706d8bd88563ce548b2918dac1ad74cf, type: 3}
+  moveSpeed: 3.5
+  rating: 10
+  dailySalary: 30
+  hiringFee: 50
+  workStartHour: 0
+  workEndHour: 24
+  breakInterval: 120
+  breakDuration: 30

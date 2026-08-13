@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 9fb513a0250804e4cb1b7c729e7ef8e0
+timeCreated: 1530713535
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Motion/05_Act/male_act_strafing.anim
+  uploadId: 537816

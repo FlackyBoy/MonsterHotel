@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: cc51c4b8ef037674884c004327e98b3e
+timeCreated: 1539695589
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Mecanim/male_happy.controller
+  uploadId: 537816

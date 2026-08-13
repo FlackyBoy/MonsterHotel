@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: cfdf718f71330e44899aee4d2956694b
+timeCreated: 1546863109
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Motion/02_Move/root_motion/male_move_walk_left_root_motion.anim
+  uploadId: 537816

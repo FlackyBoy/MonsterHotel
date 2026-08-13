@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 52f8c9f8d82521f4687a18c2eed79b17
+timeCreated: 1540130391
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Motion/02_Move/root_motion/female_move_run_jogging_strafing_front_root_motion.anim
+  uploadId: 537816

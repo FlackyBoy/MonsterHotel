@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99aed24b23652914d98f37bcf0b34473, type: 3}
+  m_Name: Furniture_Table
+  m_EditorClassIdentifier: Assembly-CSharp::FurnitureData
+  furnitureName: Table
+  furnitureType: 0
+  cost: 50
+  prefab: {fileID: 26970520352351257, guid: 27706d5142a79514db7f558d504e48df, type: 3}
+  placementOffset: {x: 0, y: 0, z: 0}
+  revenueBonus: 0
+  attractivenessBonus: 0
+  requiresChairSlot: 0
+  multiPlace: 1
+  matchingChair: {fileID: 11400000, guid: 23edb8a37792a1c459354ed4c4b84cfb, type: 2}
+  upgradeCost: 0
+  nextUpgrade: {fileID: 0}

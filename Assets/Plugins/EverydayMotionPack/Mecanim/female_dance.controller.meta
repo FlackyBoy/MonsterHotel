@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 129ed8d9a8471bb45808fce0c84bbe23
+timeCreated: 1535117075
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Mecanim/female_dance.controller
+  uploadId: 537816

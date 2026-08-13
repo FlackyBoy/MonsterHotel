@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: a97ceb11f66c8884cb5c539b0be8ae56
+timeCreated: 1535117075
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Mecanim/male_dance.controller
+  uploadId: 537816

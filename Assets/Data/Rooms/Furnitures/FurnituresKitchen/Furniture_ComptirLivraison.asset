@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99aed24b23652914d98f37bcf0b34473, type: 3}
+  m_Name: Furniture_ComptirLivraison
+  m_EditorClassIdentifier: Assembly-CSharp::FurnitureData
+  furnitureName: Comptoire de livraison
+  furnitureType: 0
+  cost: 50
+  prefab: {fileID: 7358359378795613222, guid: 083dd9224c7220f4887f44ecfd56f882, type: 3}
+  placementOffset: {x: 0, y: 0, z: 0}
+  revenueBonus: 0
+  attractivenessBonus: 0
+  upgradeCost: 0
+  nextUpgrade: {fileID: 0}

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: fbd86c8cede907741babf36ca1c2cd3f
+timeCreated: 1540129568
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116611
+  packageName: Everyday Motion Pack
+  packageVersion: 2.1
+  assetPath: Assets/EverydayMotionPack/Motion/02_Move/male_move_run_jogging_strafing_back.anim
+  uploadId: 537816

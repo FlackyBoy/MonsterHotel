@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1841a6e6d17738b409e566bb4d8afcb3, type: 3}
+  m_Name: Rug3
+  m_EditorClassIdentifier: Assembly-CSharp::DecorationData
+  decorationName: "D\xE9coration"
+  icon: {fileID: 0}
+  cost: 100
+  prefab: {fileID: 6879705171425082008, guid: f387001d595cba24d84813791e909949, type: 3}
+  placementOffset: {x: 0, y: 0, z: 0}
+  multiPlace: 0
+  comfortBonus: 0
+  renownBonus: 0
