@@ -15,10 +15,10 @@ MonoBehaviour:
   roomName: Chambre
   cost: 100
   roomType: {fileID: 11400000, guid: 48f9539b6a40e8b42a989079baabb1d0, type: 2}
-  baseRevenue: 20
+  baseRevenue: 120
   attractiveness: 1
   quality: 1
-  upgradeCost: 5
+  upgradeCost: 135
   nextUpgrade: {fileID: 11400000, guid: bb98ce5163c1147489ac36430143b6bf, type: 2}
   placementOffset: {x: 0, y: 0, z: 5}
   size: {x: 10, y: 10}
@@ -29,6 +29,7 @@ MonoBehaviour:
   optionalFurniture:
   - {fileID: 11400000, guid: dcb93570d2559bc4cbb8058c8d70c936, type: 2}
   isFacility: 0
+  isBreakRoom: 0
   needFulfilled: {fileID: 0}
   fillAmount: 0.8
   serviceTime: 10

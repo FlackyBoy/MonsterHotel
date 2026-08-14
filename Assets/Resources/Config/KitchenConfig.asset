@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7b63c338487e7b2439569b23ce20957, type: 3}
+  m_Name: KitchenConfig
+  m_EditorClassIdentifier: Assembly-CSharp::KitchenConfig
+  waitFoodSatisfactionDecay: 0.5
+  waitGaugeMaxTime: 40
+  deliveryRange: 2
+  cookDeliveryBonusMin: 5
+  cookDeliveryBonusMax: 25
+  waitGaugeWidth: 25
+  waitGaugeHeight: 80
+  waitGaugeOffsetY: 3.2
+  waitGaugeColor: {r: 1, g: 1, b: 1, a: 1}

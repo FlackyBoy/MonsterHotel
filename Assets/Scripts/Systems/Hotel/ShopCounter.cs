@@ -35,9 +35,9 @@ public class ShopCounter : MonoBehaviour
     {
         if (interactPrompt != null) interactPrompt.SetActive(false);
 
-        // HotelConfig.rooms est la source de vérité — prime sur l'assignation locale
+        // HotelConfig.Catalog.rooms est la source de vérité — prime sur l'assignation locale
         // de la scène pour éviter que les deux catalogues divergent.
-        var cfg = HotelConfig.Instance;
+        var cfg = HotelConfig.Catalog;
         if (cfg != null && cfg.rooms != null && cfg.rooms.Length > 0)
             catalog = cfg.rooms;
     }

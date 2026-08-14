@@ -38,7 +38,7 @@ public class EmployeeManager : MonoBehaviour
     {
         get
         {
-            var cfg = HotelConfig.Instance;
+            var cfg = HotelConfig.Employee;
             if (cfg != null && cfg.employeeMaxOverride > 0) return cfg.employeeMaxOverride;
             int rooms = RoomInstance.All.Count;
             float ratio = cfg != null ? cfg.employeeRoomRatio : 3f;
@@ -199,8 +199,8 @@ public class EmployeeManager : MonoBehaviour
     {
         var list = new List<CandidateInfo>();
 
-        float salaryPerRating = HotelConfig.Instance != null ? HotelConfig.Instance.employeeSalaryPerRating : 8f;
-        float feeMultiplier   = HotelConfig.Instance != null ? HotelConfig.Instance.employeeFeeMultiplier   : 1.5f;
+        float salaryPerRating = HotelConfig.Employee != null ? HotelConfig.Employee.employeeSalaryPerRating : 8f;
+        float feeMultiplier   = HotelConfig.Employee != null ? HotelConfig.Employee.employeeFeeMultiplier   : 1.5f;
 
         var distribution = new (EmployeeRole role, int count)[]
         {

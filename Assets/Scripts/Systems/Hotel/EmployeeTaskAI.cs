@@ -82,7 +82,7 @@ public abstract class EmployeeTaskAI : MonoBehaviour
     protected float RatingSpeedMultiplier()
     {
         int   rating  = _employee.Data != null ? _employee.Data.rating : 10;
-        float divisor = HotelConfig.Instance != null ? HotelConfig.Instance.employeeRatingCurveDivisor : 38f;
+        float divisor = HotelConfig.Employee != null ? HotelConfig.Employee.employeeRatingCurveDivisor : 38f;
         return 1f - (rating - 1f) / divisor;
     }
 }

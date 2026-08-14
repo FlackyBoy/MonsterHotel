@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a56cb22932b03d41867485df989b967, type: 3}
+  m_Name: EmployeeConfig
+  m_EditorClassIdentifier: Assembly-CSharp::EmployeeConfig
+  employeeRoomRatio: 3
+  employeeMaxOverride: 6
+  employeeFatigueRate: 2
+  employeeRecoveryRate: 5
+  employeeResignThreshold: 10
+  employeeForceWorkPenalty: 20
+  employeeSalaryPerRating: 8
+  employeeFeeMultiplier: 1.5
+  employeeBreakIntervalMinMult: 0.5
+  employeeBreakIntervalMaxMult: 1.5
+  employeeSpeedMinMult: 0.75
+  employeeSpeedMaxMult: 1.25
+  employeeFatigueRateMinMult: 1.5
+  employeeFatigueRateMaxMult: 0.5
+  employeeRecoveryRateMinMult: 0.75
+  employeeRecoveryRateMaxMult: 1.25
+  employeeCleanBaseDuration: 4
+  employeeCheckInBaseDelay: 2
+  employeeRatingCurveDivisor: 38

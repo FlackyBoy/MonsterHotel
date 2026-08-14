@@ -36,7 +36,7 @@ public class DebrisInstance : MonoBehaviour
         foreach (var placer in RoomPlacer.All)
         {
             if (placer == null) continue;
-            if (Vector3.Distance(transform.position, placer.transform.position) > pickupRange) continue;
+            if (HorizontalDistance(transform.position, placer.transform.position) > pickupRange) continue;
 
             var pi = placer.GetComponent<PlayerInput>();
             if (pi == null) continue;
@@ -54,5 +54,17 @@ public class DebrisInstance : MonoBehaviour
     {
         Room?.RemoveDebris(this);
         Destroy(gameObject);
+    }
+
+    /// <summary>
+    /// Distance horizontale (XZ) uniquement — un débris posé sur une table (ex: après un repas,
+    /// voir EatingSpot.SpawnMealDebris) est en hauteur par rapport au joueur au sol ; comparer la
+    /// distance 3D complète empêchait de le ramasser même collé à la table (même bug déjà rencontré
+    /// et corrigé côté CleaningEmployeeAI.HorizontalDistance, jamais reporté ici côté joueur).
+    /// </summary>
+    static float HorizontalDistance(Vector3 a, Vector3 b)
+    {
+        a.y = 0f; b.y = 0f;
+        return Vector3.Distance(a, b);
     }
 }

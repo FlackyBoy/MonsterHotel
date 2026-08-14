@@ -77,14 +77,19 @@ public class RoomPlacer : MonoBehaviour
         _playerInput = GetComponent<PlayerInput>();
         _controller  = GetComponent<TopDownController>();
         RoomInstance.OnAnyDestroyed += OnRoomDestroyed;
-        var cfg = HotelConfig.Instance;
+        var cfg = HotelConfig.Placement;
         if (cfg != null)
         {
             cursorMoveSpeed    = cfg.roomCursorSpeed;
             placementOffset    = cfg.roomPlacementOffset;
-            ditherFadeSpeed    = cfg.ditherFadeSpeed;
-            ditherMaxAlpha     = cfg.ditherMaxAlpha;
-            ditherHeightOffset = cfg.ditherHeightOffset;
+        }
+
+        var ditherCfg = HotelConfig.Dither;
+        if (ditherCfg != null)
+        {
+            ditherFadeSpeed    = ditherCfg.ditherFadeSpeed;
+            ditherMaxAlpha     = ditherCfg.ditherMaxAlpha;
+            ditherHeightOffset = ditherCfg.ditherHeightOffset;
         }
     }
 

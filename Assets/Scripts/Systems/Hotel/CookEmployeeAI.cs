@@ -90,7 +90,7 @@ public class CookEmployeeAI : EmployeeTaskAI
 
     RecipeData FindRecipeForMonster(MonsterData monsterData)
     {
-        var recipes = HotelConfig.Instance?.recipes;
+        var recipes = HotelConfig.Catalog?.recipes;
         if (recipes == null || recipes.Length == 0) return null;
 
         RecipeData fallback = null;
@@ -132,7 +132,7 @@ public class CookEmployeeAI : EmployeeTaskAI
     {
         int   rating = _employee.Data != null ? _employee.Data.rating : 10;
         float t      = (rating - 1f) / 19f;
-        var   cfg    = HotelConfig.Instance;
+        var   cfg    = HotelConfig.Kitchen;
         float min    = cfg != null ? cfg.cookDeliveryBonusMin : deliverySatisfactionBonus * 0.4f;
         float max    = cfg != null ? cfg.cookDeliveryBonusMax : deliverySatisfactionBonus * 1.6f;
         return Mathf.Lerp(min, max, t);

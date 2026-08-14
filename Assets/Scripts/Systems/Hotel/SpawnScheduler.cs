@@ -36,15 +36,16 @@ public class SpawnScheduler : MonoBehaviour
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
 
-        var cfg = HotelConfig.Instance;
+        var cfg = HotelConfig.Spawn;
         _defaultSpawnInterval = cfg != null ? cfg.defaultSpawnInterval : 20f;
         _openHour             = cfg != null ? cfg.spawnOpenHour        : 10f;
         _closeHour            = cfg != null ? cfg.spawnCloseHour       : 20f;
 
-        // HotelConfig.monsters est la source de vérité — prime sur l'assignation locale
+        // HotelConfig.Catalog.monsters est la source de vérité — prime sur l'assignation locale
         // de la scène pour éviter que les deux catalogues divergent.
-        if (cfg != null && cfg.monsters != null && cfg.monsters.Length > 0)
-            monsterPool = cfg.monsters;
+        var catalog = HotelConfig.Catalog;
+        if (catalog != null && catalog.monsters != null && catalog.monsters.Length > 0)
+            monsterPool = catalog.monsters;
     }
 
     void Start()
@@ -109,7 +110,7 @@ public class SpawnScheduler : MonoBehaviour
             // Les monstres légendaires n'apparaissent qu'à partir d'un seuil de Renommée
             if (data.isLegendary)
             {
-                var cfg    = HotelConfig.Instance;
+                var cfg    = HotelConfig.Spawn;
                 float threshold = cfg != null ? cfg.renownLegendaryThreshold : 30f;
                 float renown    = HotelStatsManager.Instance?.TotalRenown ?? 0f;
                 if (renown < threshold) return;
@@ -170,7 +171,7 @@ public class SpawnScheduler : MonoBehaviour
         // besoin peut arriver juste pour le satisfaire (ex: manger) sans réserver de chambre —
         // ne rejoint pas la file de réception, va directement chercher à satisfaire son besoin
         // puis repart.
-        var visitorCfg = HotelConfig.Instance;
+        var visitorCfg = HotelConfig.Spawn;
         bool canBeVisitor = data.needs != null && data.needs.Length > 0;
         float visitorChance = visitorCfg != null ? visitorCfg.mealVisitorChance : 0f;
         bool becomesVisitor = forceVisitor.HasValue ? (forceVisitor.Value && canBeVisitor) : (canBeVisitor && Random.value < visitorChance);
@@ -200,7 +201,7 @@ public class SpawnScheduler : MonoBehaviour
         float baseInterval = data.spawnInterval > 0f ? data.spawnInterval : _defaultSpawnInterval;
 
         // La Renommée réduit progressivement l'intervalle de spawn
-        var cfg = HotelConfig.Instance;
+        var cfg = HotelConfig.Spawn;
         if (cfg != null)
         {
             float renown = HotelStatsManager.Instance?.TotalRenown ?? 0f;

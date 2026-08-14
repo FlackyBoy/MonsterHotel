@@ -87,7 +87,7 @@ public class FurniturePlacer : MonoBehaviour
         _playerInput = GetComponent<PlayerInput>();
         _picker      = GetComponent<FurniturePicker>();
         _controller  = GetComponent<TopDownController>();
-        var cfg = HotelConfig.Instance;
+        var cfg = HotelConfig.Placement;
         if (cfg != null) { cursorMoveSpeed = cfg.furnitureCursorSpeed; wallMargin = cfg.furnitureWallMargin; chairSlotSnapRange = cfg.chairSnapRange; }
     }
 

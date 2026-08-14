@@ -371,7 +371,7 @@ public class RoomInstance : MonoBehaviour
 
     void ApplyPostMonsterEffects()
     {
-        bool forceAll  = HotelConfig.Instance != null && HotelConfig.Instance.debugForceFullDirtyOnVacate;
+        bool forceAll  = HotelConfig.Debug != null && HotelConfig.Debug.debugForceFullDirtyOnVacate;
         bool anyDamaged = false;
 
         foreach (var fi in _furniture)

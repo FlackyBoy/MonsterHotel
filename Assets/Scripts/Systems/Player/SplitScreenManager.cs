@@ -94,7 +94,7 @@ public class SplitScreenManager : MonoBehaviour
     /// sinon garde les défauts déclarés sur ce composant.</summary>
     void ApplyConfig()
     {
-        var cfg = HotelConfig.Instance;
+        var cfg = HotelConfig.Camera;
         if (cfg == null) return;
 
         cameraHeight         = cfg.splitScreenCameraHeight;

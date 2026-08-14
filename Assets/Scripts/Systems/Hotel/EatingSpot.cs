@@ -59,7 +59,7 @@ public class EatingSpot : MonoBehaviour
 
     void Awake()
     {
-        var cfg = HotelConfig.Instance;
+        var cfg = HotelConfig.Kitchen;
         if (cfg != null)
         {
             waitFoodSatisfactionDecay = cfg.waitFoodSatisfactionDecay;

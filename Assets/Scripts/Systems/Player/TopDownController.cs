@@ -33,7 +33,7 @@ public class TopDownController : MonoBehaviour
         _animator = GetComponentInChildren<Animator>();
         _rb.constraints = RigidbodyConstraints.FreezeRotation | RigidbodyConstraints.FreezePositionY;
         _rb.interpolation = RigidbodyInterpolation.Interpolate;
-        var cfg = HotelConfig.Instance;
+        var cfg = HotelConfig.Player;
         if (cfg != null) { moveSpeed = cfg.playerMoveSpeed; sprintSpeed = cfg.playerSprintSpeed; }
     }
 

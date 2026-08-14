@@ -248,7 +248,7 @@ public class ReservationSystem : MonoBehaviour
         var satisfaction = guest.MonsterObject?.GetComponent<SatisfactionComponent>();
         if (satisfaction != null)
         {
-            var cfg = HotelConfig.Instance;
+            var cfg = HotelConfig.Reception;
             float goodWait  = cfg != null ? cfg.receptionGoodWaitTime : 20f;
             float bonus     = cfg != null ? cfg.receptionWaitBonus    : 15f;
             float penalty   = cfg != null ? cfg.receptionWaitPenalty  : 10f;
@@ -402,7 +402,7 @@ public class ReservationSystem : MonoBehaviour
         // ── Pourboire ──
         if (monsterData != null)
         {
-            var cfg = HotelConfig.Instance;
+            var cfg = HotelConfig.Economy;
             float tipGoodThreshold   = cfg != null ? cfg.tipGoodThreshold    : 70f;
             float tipNormalThreshold = cfg != null ? cfg.tipNormalThreshold   : 40f;
             float tipGoodMultiplier  = cfg != null ? cfg.tipGoodMultiplier    : 0.3f;

@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 7099461291935337956}
   - component: {fileID: 8049813029033995355}
   - component: {fileID: 568731062033754838}
-  - component: {fileID: 7484604334723112040}
   m_Layer: 0
   m_Name: FoodDeliveryCounter
   m_TagString: Untagged
@@ -112,18 +111,3 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &7484604334723112040
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7358359378795613222}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ae6aa3019b71344b949e4c1bcf5e809, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FoodDeliveryCounter
-  interactActionName: Interact
-  monsterSearchRadius: 15
-  interactRange: 1.8

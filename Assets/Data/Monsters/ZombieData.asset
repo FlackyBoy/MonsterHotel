@@ -39,3 +39,4 @@ MonoBehaviour:
   litterPrefabs:
   - {fileID: 7800008161810468366, guid: 1864f56f60d38814d96adfe34c8ae249, type: 3}
   compatibleSocialTypes: 000000000100000002000000
+  incompatibleTypes: 00000000

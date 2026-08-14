@@ -39,7 +39,7 @@ public class RoomDither : MonoBehaviour
     void Start()
     {
         _mpb = new MaterialPropertyBlock();
-        var cfg = HotelConfig.Instance;
+        var cfg = HotelConfig.Dither;
         if (cfg != null)
         {
             fadeSpeed          = cfg.ditherFadeSpeed;

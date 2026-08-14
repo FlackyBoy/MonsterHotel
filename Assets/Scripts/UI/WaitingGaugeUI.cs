@@ -30,7 +30,7 @@ public class WaitingGaugeUI : MonoBehaviour
 
     void Awake()
     {
-        var cfg = HotelConfig.Instance;
+        var cfg = HotelConfig.Kitchen;
         if (cfg != null)
         {
             barWidth  = cfg.waitGaugeWidth;
@@ -114,7 +114,7 @@ public class WaitingGaugeUI : MonoBehaviour
         _running = true;
 
         // Relit la config à chaque Show (au cas où Awake a tourné avant que HotelConfig soit dispo)
-        var cfg = HotelConfig.Instance;
+        var cfg = HotelConfig.Kitchen;
         if (cfg != null) { barWidth = cfg.waitGaugeWidth; barHeight = cfg.waitGaugeHeight; offsetY = cfg.waitGaugeOffsetY; barColor = cfg.waitGaugeColor; }
 
         var crt = canvas?.GetComponent<RectTransform>();

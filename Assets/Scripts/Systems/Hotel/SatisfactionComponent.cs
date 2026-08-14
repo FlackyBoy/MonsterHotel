@@ -31,7 +31,7 @@ public class SatisfactionComponent : MonoBehaviour
 
     void Awake()
     {
-        var cfg = HotelConfig.Instance;
+        var cfg = HotelConfig.Satisfaction;
         if (cfg != null)
         {
             initialSatisfaction = cfg.initialSatisfaction;

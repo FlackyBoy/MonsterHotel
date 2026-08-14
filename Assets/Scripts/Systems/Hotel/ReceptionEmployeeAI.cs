@@ -33,7 +33,7 @@ public class ReceptionEmployeeAI : EmployeeTaskAI
     protected override void Awake()
     {
         base.Awake();
-        var cfg           = HotelConfig.Instance;
+        var cfg           = HotelConfig.Employee;
         _checkInBaseDelay = cfg != null ? cfg.employeeCheckInBaseDelay : 2f;
     }
 

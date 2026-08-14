@@ -134,7 +134,7 @@ public class MonsterRoamBehavior : MonoBehaviour
 
     void ApplyConfig()
     {
-        var cfg = HotelConfig.Instance;
+        var cfg = HotelConfig.Roam;
         if (cfg == null) return;
 
         minWaitInRoom    = cfg.roamMinWait;

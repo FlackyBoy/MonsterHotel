@@ -122,7 +122,7 @@ public class ExpansionBlock : MonoBehaviour
     {
         if (_completed) return;
 
-        var   cfg        = HotelConfig.Instance;
+        var   cfg        = HotelConfig.Block;
         float range      = cfg != null ? cfg.blockInteractRange      : 3f;
         float hysteresis = cfg != null ? cfg.blockTargetHysteresis   : 0.75f;
 

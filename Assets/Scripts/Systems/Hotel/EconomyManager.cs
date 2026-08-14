@@ -31,7 +31,7 @@ public class EconomyManager : MonoBehaviour
             return;
         }
         Instance = this;
-        _gold = HotelConfig.Instance != null ? HotelConfig.Instance.startingGold : 1000;
+        _gold = HotelConfig.Economy != null ? HotelConfig.Economy.startingGold : 1000;
     }
 
     // ─── Transactions ─────────────────────────────────────────────

@@ -2,6 +2,51 @@
 
 ---
 
+## 2026-08-14 (suite) — Fix : débris de table impossibles à ramasser
+
+Signalé par l'utilisateur : impossible de nettoyer les déchets laissés sur la table à manger après
+qu'un monstre a mangé (`EatingSpot.SpawnMealDebris()`). Cause : `DebrisInstance.Update()` (détection
+de portée joueur pour le ramassage manuel) comparait la distance 3D complète entre le joueur (au sol)
+et le débris (posé sur la table, donc en hauteur) — l'écart vertical à lui seul pouvait dépasser
+`pickupRange = 1.5f` même en étant collé à la table horizontalement.
+
+Exactement le même bug avait déjà été trouvé et corrigé côté employé nettoyeur
+(`CleaningEmployeeAI.HorizontalDistance()`, avec un commentaire explicite sur ce cas précis), mais le
+fix n'avait jamais été reporté côté ramassage joueur. `DebrisInstance` compare maintenant en distance
+horizontale (XZ) uniquement, même pattern que côté employé.
+
+## 2026-08-14 — R3 : éclatement de `HotelConfig` en configs par catégorie
+
+Chantier R3 du TODO : `HotelConfig.cs` (294 lignes, 29 sections `[Header]`) éclaté en 15
+ScriptableObjects par domaine (`EconomyConfig`, `SatisfactionConfig`, `ReceptionConfig`,
+`KitchenConfig`, `DayNightConfig`, `SpawnConfig`, `PlayerConfig`, `PlacementConfig`,
+`CameraConfig`, `DitherConfig`, `BlockConfig`, `RoamConfig`, `EmployeeConfig`, `DebugConfig`,
+`HotelCatalog`), chacun avec son propre asset sous `Resources/Config/` et le même pattern
+singleton (`static Instance` → `Resources.Load`) que l'ancien `HotelConfig`. Pas de câblage
+manuel entre assets : chaque catégorie se charge indépendamment.
+
+`HotelConfig.cs` devient une façade statique (`HotelConfig.Economy`, `HotelConfig.Satisfaction`,
+etc.) — garde le point d'accès central demandé par le TODO sans les risques d'un hub à références
+Inspector (slot oublié = null). Les 25 fichiers de code qui lisaient `HotelConfig.Instance.xxx`
+ont été mis à jour vers `HotelConfig.<Catégorie>.xxx`, sans changer le pattern de fallback
+existant (`cfg != null ? cfg.champ : défaut`).
+
+Vérification faite avant de découper : `cfg.monsters` (`SpawnScheduler`) et `cfg.rooms`
+(`ShopCounter`) sont bien lus — contrairement à ce qu'affirmait R2 (note obsolète sur ce point).
+`cfg.needTypes`, `cfg.blocks` et `blockHeight` restent orphelins (jamais lus), confirmé par grep
+exhaustif — conservés tels quels, ce chantier ne touche pas au nettoyage (toujours R2).
+
+Toutes les valeurs déjà réglées à la main dans l'ancien `HotelConfig.asset` ont été reportées à
+l'identique dans les nouveaux assets, y compris celles flaguées "à trier" en B6
+(`roamMinWait`/`roamMaxWait: 1`, `ditherHeightOffset: 500`, `playerMoveSpeed: 10`...) — ce
+chantier est purement structurel, pas d'équilibrage.
+
+🔍 **À faire dans l'éditeur pour vérifier** : Unity a été fermé pendant tout le découpage
+(précaution — un changement de layout de ScriptableObject avait déjà causé une erreur "script
+layout incompatible" par le passé, voir R2). À la réouverture, vérifier l'absence d'erreur dans
+la Console, puis que les 15 assets sous `Resources/Config/` affichent bien leurs valeurs migrées
+dans l'Inspector (ex: `EconomyConfig.startingGold = 10000`).
+
 ## 2026-08-13 (suite 2) — StandPoint dédié pour les comptoirs de réception
 
 Suite du diagnostic receptionniste bloqué : le log `[Réception] TryStartTask` a confirmé que la

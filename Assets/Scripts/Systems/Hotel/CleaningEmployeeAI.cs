@@ -16,7 +16,7 @@ public class CleaningEmployeeAI : EmployeeTaskAI
     protected override void Awake()
     {
         base.Awake();
-        var cfg = HotelConfig.Instance;
+        var cfg = HotelConfig.Employee;
         if (cfg != null) cleanDuration = cfg.employeeCleanBaseDuration;
     }
 

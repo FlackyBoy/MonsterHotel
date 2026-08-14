@@ -528,7 +528,6 @@ GameObject:
   - component: {fileID: 9137325412319412000}
   - component: {fileID: 2867281948268674933}
   - component: {fileID: 133751135952636247}
-  - component: {fileID: 6421839652965274456}
   - component: {fileID: 5658400131384969481}
   m_Layer: 0
   m_Name: CookingStation
@@ -645,25 +644,11 @@ MonoBehaviour:
   recipes:
   - {fileID: 11400000, guid: dc49de372df3ec94e96d1eec7d1e4cf9, type: 2}
   - {fileID: 11400000, guid: 18b04c055fc36954686ce618926df70f, type: 2}
+  - {fileID: 11400000, guid: 250034170e42e2a419a0f7e1d063b1b8, type: 2}
   qualityBar: {fileID: 5658400131384969481}
   outputPoint: {fileID: 0}
   interactActionName: Interact
   interactRange: 1.8
---- !u!114 &6421839652965274456
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8122326573316543646}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2ae6aa3019b71344b949e4c1bcf5e809, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FoodDeliveryCounter
-  interactActionName: Interact
-  interactRange: 1.8
-  facilitySearchRadius: 30
 --- !u!114 &5658400131384969481
 MonoBehaviour:
   m_ObjectHideFlags: 0

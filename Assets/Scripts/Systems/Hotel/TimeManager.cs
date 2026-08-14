@@ -27,7 +27,7 @@ public class TimeManager : MonoBehaviour
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
 
-        var cfg = HotelConfig.Instance;
+        var cfg = HotelConfig.DayNight;
         if (cfg != null)
         {
             dayDuration = cfg.dayDuration;

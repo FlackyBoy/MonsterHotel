@@ -66,7 +66,7 @@ public class DecorationPlacer : MonoBehaviour
     {
         _playerInput = GetComponent<PlayerInput>();
         _controller  = GetComponent<TopDownController>();
-        var cfg = HotelConfig.Instance;
+        var cfg = HotelConfig.Placement;
         if (cfg != null) cursorMoveSpeed = cfg.furnitureCursorSpeed;
     }
 

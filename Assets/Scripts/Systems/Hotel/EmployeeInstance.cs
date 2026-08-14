@@ -47,7 +47,7 @@ public class EmployeeInstance : MonoBehaviour
     void Awake()
     {
         All.Add(this);
-        var cfg = HotelConfig.Instance;
+        var cfg = HotelConfig.Employee;
         if (cfg != null)
         {
             _fatigueRate      = cfg.employeeFatigueRate;
@@ -84,7 +84,7 @@ public class EmployeeInstance : MonoBehaviour
     {
         if (Data == null) return;
 
-        var   cfg = HotelConfig.Instance;
+        var   cfg = HotelConfig.Employee;
         float t   = (Data.rating - 1f) / 19f; // 0 = note 1, 1 = note 20
 
         float breakMin      = cfg != null ? cfg.employeeBreakIntervalMinMult  : 0.5f;
