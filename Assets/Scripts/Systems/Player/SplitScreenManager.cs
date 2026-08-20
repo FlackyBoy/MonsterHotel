@@ -236,8 +236,8 @@ public class SplitScreenManager : MonoBehaviour
         }
 
         bool eitherBuilding =
-            (_players[0].GetComponent<TopDownController>()?.IsBuilding ?? false) ||
-            (_players[1].GetComponent<TopDownController>()?.IsBuilding ?? false);
+            (_players[0].GetComponent<TopDownController>()?.WantsCameraZoom ?? false) ||
+            (_players[1].GetComponent<TopDownController>()?.WantsCameraZoom ?? false);
 
         float distance = Vector3.Distance(_targets[0].position, _targets[1].position);
 

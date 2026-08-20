@@ -15,7 +15,7 @@ MonoBehaviour:
   defaultSpawnInterval: 20
   spawnOpenHour: 8
   spawnCloseHour: 20
-  mealVisitorChance: 0.6
+  defaultMealVisitorSpawnInterval: 30
   mealVisitorMaxDuration: 90
   renownSpawnSpeedupThreshold: 10
   renownMaxSpawnReduction: 0.4

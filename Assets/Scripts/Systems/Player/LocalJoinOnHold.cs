@@ -62,6 +62,7 @@ if (playerPrefab == null) return;
                     pi.neverAutoSwitchControlSchemes = true;
                     if (pi.currentActionMap == null || pi.currentActionMap.name != "Player")
                         pi.SwitchCurrentActionMap("Player");
+                    pi.GetComponent<PlayerSkinSelector>()?.ApplyForCurrentPlayer();
                     PositionAtSpawn(pi);
 
                     hold[pad] = 0f;
@@ -88,6 +89,7 @@ if (playerPrefab == null) return;
                         ? PlayerInput.Instantiate(playerPrefab, -1, controlSchemeKeyboardMouse, -1, kb, Mouse.current)
                         : PlayerInput.Instantiate(playerPrefab, -1, controlSchemeKeyboardMouse, -1, kb);
                     pi2.neverAutoSwitchControlSchemes = true;
+                    pi2.GetComponent<PlayerSkinSelector>()?.ApplyForCurrentPlayer();
                     PositionAtSpawn(pi2);
 
                     hold[kb] = 0f;
@@ -111,6 +113,7 @@ if (playerPrefab == null) return;
                     // Spawn P2 avec Keyboard2 (flèches)
                     var pi3 = PlayerInput.Instantiate(playerPrefab, -1, controlSchemeKeyboard, -1, kb);
                     pi3.neverAutoSwitchControlSchemes = true;
+                    pi3.GetComponent<PlayerSkinSelector>()?.ApplyForCurrentPlayer();
                     PositionAtSpawn(pi3);
                 }
             }

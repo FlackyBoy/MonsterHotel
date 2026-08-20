@@ -288,6 +288,7 @@ public class EatingSpot : MonoBehaviour
         if (data == null || data.mealRevenue <= 0) return;
 
         EconomyManager.Instance?.Earn(data.mealRevenue);
+        HotelStatsManager.Instance?.ReportMealRevenue(data.monsterType, data.mealRevenue);
         Debug.Log($"[Paiement] {data.monsterName} repas servi — +{data.mealRevenue}G (solde: {EconomyManager.Instance?.Gold}G)");
     }
 

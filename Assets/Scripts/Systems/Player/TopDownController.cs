@@ -37,9 +37,17 @@ public class TopDownController : MonoBehaviour
         if (cfg != null) { moveSpeed = cfg.playerMoveSpeed; sprintSpeed = cfg.playerSprintSpeed; }
     }
 
+    /// <summary>
+    /// Force le re-fetch de l'Animator actif — nécessaire après un changement d'enfant actif
+    /// (PlayerSkinSelector) : GetComponentInChildren ignore les enfants inactifs, donc la
+    /// référence mise en cache dans Awake() reste périmée tant qu'on ne rappelle pas ça.
+    /// </summary>
+    public void RefreshAnimator() => _animator = GetComponentInChildren<Animator>();
+
     RoomPlacer       _roomPlacer;
     FurniturePlacer  _furniturePlacer;
     DecorationPlacer _decorationPlacer;
+    FurniturePicker  _furniturePicker;
     PlayerInput      _playerInput;
 
     void Start()
@@ -47,6 +55,7 @@ public class TopDownController : MonoBehaviour
         _roomPlacer       = GetComponent<RoomPlacer>();
         _furniturePlacer  = GetComponent<FurniturePlacer>();
         _decorationPlacer = GetComponent<DecorationPlacer>();
+        _furniturePicker  = GetComponent<FurniturePicker>();
         _playerInput      = GetComponent<PlayerInput>();
     }
 
@@ -70,6 +79,15 @@ public class TopDownController : MonoBehaviour
         (_roomPlacer != null && _roomPlacer.IsPlacing) ||
         (_furniturePlacer != null && _furniturePlacer.IsPlacing && !_furniturePlacer.PanelIsControlling) ||
         (_decorationPlacer != null && _decorationPlacer.IsPlacing);
+
+    /// <summary>
+    /// True si la caméra doit dézoomer en vue construction — comme IsBuilding, plus le mode
+    /// sélection de meuble (FurniturePicker : déplacer/améliorer/retirer, voir T6). Volontairement
+    /// distinct d'IsBuilding : celui-ci verrouille aussi le déplacement du joueur (curseur libre),
+    /// alors que FurniturePicker a besoin que le joueur marche jusqu'au meuble à sélectionner.
+    /// </summary>
+    public bool WantsCameraZoom =>
+        IsBuilding || (_furniturePicker != null && _furniturePicker.IsPicking);
 
     /// <summary>Position monde du curseur du placer actuellement actif (voir IsBuilding), sinon la position du joueur.</summary>
     public Vector3 BuildCursorWorldPos

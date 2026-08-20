@@ -51,10 +51,10 @@ public class ReceptionInteractor : MonoBehaviour
         var desk = NearestDesk();
         var rs   = ReservationSystem.Instance;
 
-        // Affiche le prompt s'il y a un monstre à accueillir OU un checked-in attendant une chambre
-        var nextUnchecked = rs?.NextUnchecked;
-        // N'affiche le prompt que si le monstre est physiquement arrivé au comptoir
-        if (nextUnchecked != null && !nextUnchecked.HasArrived) nextUnchecked = null;
+        // Affiche le prompt s'il y a un monstre à accueillir OU un checked-in attendant une chambre.
+        // NextServiceableUnchecked (au lieu de NextUnchecked) saute le 1er de la file si aucune
+        // chambre compatible n'est dispo pour lui mais qu'un autre pourrait être accepté (G6-B24).
+        var nextUnchecked = rs?.NextServiceableUnchecked;
         var nextWaiting   = rs?.NextCheckedInWaiting;
         var actionGuest   = nextWaiting ?? nextUnchecked;
 
@@ -70,7 +70,16 @@ public class ReceptionInteractor : MonoBehaviour
         ShowPrompt(desk.transform.position + Vector3.up * 0.8f, label);
 
         if (_playerInput.WasPressed(interactActionName))
-            ReservationSystem.Instance.CheckInNext();
+        {
+            // nextWaiting garde le comportement existant (CheckInNext() sans argument) — cas à
+            // part, non concerné par G6-B24. Le fix ne s'applique qu'au chemin nextUnchecked : il
+            // faut repasser explicitement le guest trouvé, sinon CheckInNext() sans argument
+            // retomberait en interne sur NextUnchecked (le 1er non-servable) et annulerait le fix.
+            if (nextWaiting == null)
+                ReservationSystem.Instance.CheckInNext(nextUnchecked);
+            else
+                ReservationSystem.Instance.CheckInNext();
+        }
     }
 
     // ─── Helpers ──────────────────────────────────────────────────

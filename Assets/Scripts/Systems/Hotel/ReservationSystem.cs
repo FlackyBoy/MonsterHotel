@@ -114,6 +114,25 @@ public class ReservationSystem : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Comme NextUnchecked, mais saute ceux pour qui aucune chambre compatible n'est disponible —
+    /// utilisé par ReceptionInteractor (joueur) pour ne pas rester bloqué sur le 1er de la file si
+    /// un autre pourrait être accepté immédiatement (voir TODO G6-B24). Contrairement à
+    /// NextServiceableUnclaimed (employé), ignore volontairement IsClaimed : le joueur peut
+    /// toujours accueillir lui-même un monstre déjà réclamé par un employé en chemin.
+    /// </summary>
+    public PendingGuest NextServiceableUnchecked
+    {
+        get
+        {
+            foreach (var g in _pending)
+                if (g.MonsterObject != null && !g.IsCheckedIn && g.HasArrived &&
+                    GetCompatibleRooms(g.Data).Count > 0)
+                    return g;
+            return null;
+        }
+    }
+
     /// <summary>Prochain monstre checked-in mais sans chambre assignée.</summary>
     public PendingGuest NextCheckedInWaiting
     {
@@ -419,6 +438,10 @@ public class ReservationSystem : MonoBehaviour
 
             Debug.Log($"[Paiement] {monsterData.monsterName} check-out — satisfaction {satisfaction:F0}/100 → " +
                        $"pourboire +{tip}G (solde: {EconomyManager.Instance?.Gold}G)");
+
+            // Canal chambre, toujours "servi" : occuper la chambre EST le service (contrairement au
+            // visiteur resto qui peut repartir sans avoir été servi — voir MonsterNeedSeeker).
+            HotelStatsManager.Instance?.ReportGuestDeparture(monsterData.monsterType, satisfaction, angry: false, GuestChannel.Room, served: true);
         }
 
         room.Vacate();
@@ -488,6 +511,9 @@ public class ReservationSystem : MonoBehaviour
 
         Debug.Log($"[Paiement] {monsterData?.monsterName} départ anticipé (insatisfaction) — " +
                    $"satisfaction {satisfaction:F0}/100 → pas de pourboire (solde: {EconomyManager.Instance?.Gold}G)");
+
+        if (monsterData != null)
+            HotelStatsManager.Instance?.ReportGuestDeparture(monsterData.monsterType, satisfaction, angry: true, GuestChannel.Room, served: true);
 
         room.Vacate();
 

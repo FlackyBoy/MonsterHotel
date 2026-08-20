@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Meat
   m_EditorClassIdentifier: Assembly-CSharp::RecipeData
   recipeName: Recette
-  ingredient: {fileID: 0}
-  result: {fileID: 0}
+  ingredient: {fileID: 11400000, guid: 4d9dd55af8738c04795f7471777471fb, type: 2}
+  result: {fileID: 11400000, guid: f077aa7f21af5e84e813567e8da4140c, type: 2}
   workDuration: 5

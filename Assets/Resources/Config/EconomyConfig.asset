@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf70d2504a8b498f1130354de26fa569, type: 3}
   m_Name: EconomyConfig
   m_EditorClassIdentifier: Assembly-CSharp::EconomyConfig
-  startingGold: 10000
-  tipGoodThreshold: 70
+  startingGold: 1400
+  tipGoodThreshold: 85
   tipNormalThreshold: 40
   tipGoodMultiplier: 0.3
   tipNormalMultiplier: 0.1

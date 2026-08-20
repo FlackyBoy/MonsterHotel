@@ -49,6 +49,25 @@ public class MonsterRoamBehavior : MonoBehaviour
     /// <summary>Cède la priorité au NeedSeeker (besoin en cours), au comportement social (conversation en cours) et au comportement de bagarre (mêlée en cours).</summary>
     bool IsBlocked => (_seeker != null && _seeker.IsSeeking) || (_social != null && _social.IsBusy) || (_fight != null && _fight.IsBusy);
 
+    /// <summary>
+    /// G3 : true si ce monstre doit actuellement rester en chambre (dort) — basé sur
+    /// MonsterData.sleepTime, distinct de preferredSpawnTime (qui contrôle uniquement l'heure
+    /// d'arrivée, jamais touché ici). Any = jamais confiné. DayOnly/NightOnly = confiné pendant
+    /// cette période précise (ex: sleepTime = NightOnly → reste en chambre la nuit).
+    /// Distinct d'IsBlocked à dessein : contrairement aux besoins/conversation/bagarre (qu'on
+    /// n'interrompt jamais de force), une période de sommeil doit au contraire forcer le retour en
+    /// chambre plutôt que d'empêcher d'y rentrer — voir usages dans RoamLoop().
+    /// </summary>
+    bool IsForbiddenTime
+    {
+        get
+        {
+            var data = _dataRef?.Data;
+            if (data == null || data.sleepTime == SpawnTime.Any) return false;
+            return TimeManager.Instance != null && TimeManager.Instance.CurrentSpawnTime == data.sleepTime;
+        }
+    }
+
     /// <summary>Appelé par ReservationSystem quand la chambre est assignée.</summary>
     public void Activate()
     {
@@ -71,8 +90,9 @@ public class MonsterRoamBehavior : MonoBehaviour
             float wait = Random.Range(minWaitInRoom, maxWaitInRoom);
             yield return new WaitForSeconds(wait);
 
-            // Ne sort pas si un besoin est en cours de satisfaction ou une conversation en cours
-            if (IsBlocked) continue;
+            // Ne sort pas si un besoin est en cours de satisfaction, une conversation en cours,
+            // ou si ce n'est pas le moment autorisé pour ce monstre (G3)
+            if (IsBlocked || IsForbiddenTime) continue;
 
             // ── Phase de roam ────────────────────────────────────
             float roamEnd = Time.time + roamDuration;
@@ -84,6 +104,10 @@ public class MonsterRoamBehavior : MonoBehaviour
                     yield return new WaitForSeconds(waypointInterval);
                     continue;
                 }
+
+                // G3 : la période interdite commence pendant la balade → rentre immédiatement
+                // (contrairement à IsBlocked ci-dessus, on ne boucle pas en attendant que ça passe)
+                if (IsForbiddenTime) break;
 
                 var pt = GetRandomWalkablePoint();
                 if (pt.HasValue && _mover != null)

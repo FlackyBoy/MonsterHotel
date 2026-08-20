@@ -66,7 +66,7 @@ public class PlayerCamera : MonoBehaviour
         if (player == null) return;
 
         var controller = player.GetComponent<TopDownController>();
-        bool building   = controller != null && controller.IsBuilding;
+        bool building   = controller != null && controller.WantsCameraZoom;
 
         var cfg = HotelConfig.Camera;
         float zoomTarget   = building ? (cfg != null ? cfg.buildModeExtraDistance : 12f) : 0f;

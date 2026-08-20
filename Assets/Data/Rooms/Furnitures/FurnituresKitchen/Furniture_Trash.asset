@@ -12,12 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 99aed24b23652914d98f37bcf0b34473, type: 3}
   m_Name: Furniture_Trash
   m_EditorClassIdentifier: Assembly-CSharp::FurnitureData
-  furnitureName: Table
+  furnitureName: Poubelle
   furnitureType: 0
   cost: 50
   prefab: {fileID: 4971009910694342371, guid: 3999cd684182606428e5d558ea6c087d, type: 3}
   placementOffset: {x: 0, y: 0, z: 0}
   revenueBonus: 5
   attractivenessBonus: 2
+  requiresChairSlot: 0
+  multiPlace: 0
+  matchingChair: {fileID: 0}
   upgradeCost: 0
   nextUpgrade: {fileID: 0}

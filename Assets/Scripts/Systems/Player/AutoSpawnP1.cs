@@ -51,6 +51,8 @@ public class AutoSpawnP1 : MonoBehaviour
 
         if (pi == null) { return; }
 
+        pi.GetComponent<PlayerSkinSelector>()?.ApplyForCurrentPlayer();
+
         // Positionne au point de spawn si fourni
         if (spawnPoint)
             pi.transform.SetPositionAndRotation(spawnPoint.position, spawnPoint.rotation);

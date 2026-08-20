@@ -71,7 +71,7 @@ public class MonsterNeedSeeker : MonoBehaviour
     {
         yield return new WaitForSeconds(duration);
         if (this == null) yield break;
-        ExitHotel();
+        ExitDissatisfied("jamais servi dans le délai imparti");
     }
 
     /// <summary>Appelé après un repas réussi (à table) ou un retour normal (mode auto).</summary>
@@ -115,6 +115,7 @@ public class MonsterNeedSeeker : MonoBehaviour
         else
         {
             Debug.Log($"[Cuisine] {name} — visiteur servi, repart de l'hôtel.");
+            ReportDeparture(angry: false);
             ExitHotel();
         }
     }
@@ -135,7 +136,24 @@ public class MonsterNeedSeeker : MonoBehaviour
     {
         _seekingNeed = false;
         Debug.Log($"[Réputation] {name} quitte l'hôtel insatisfait — {reason}.");
+        ReportDeparture(angry: true);
         ExitHotel();
+    }
+
+    /// <summary>
+    /// G1 : reporte la satisfaction finale de ce visiteur (sans chambre) à son départ réel de
+    /// l'hôtel — toujours canal Resto (cette méthode n'est appelée que pour un visiteur sans
+    /// chambre, voir TryStayOrExit/ExitDissatisfied). served = !angry : ce chemin n'est atteint
+    /// qu'après un repas réussi (angry: false, OnServiceComplete → TryStayOrExit) ou un abandon/délai
+    /// dépassé sans avoir été servi (angry: true, ExitDissatisfied) — les deux cas restent
+    /// mutuellement exclusifs aujourd'hui, donc angry capture directement le "non servi".
+    /// </summary>
+    void ReportDeparture(bool angry)
+    {
+        var type = GetComponent<MonsterDataReference>()?.Data?.monsterType;
+        if (type == null) return;
+        float satisfaction = GetComponent<SatisfactionComponent>()?.Value ?? 50f;
+        HotelStatsManager.Instance?.ReportGuestDeparture(type.Value, satisfaction, angry, GuestChannel.Restaurant, served: !angry);
     }
 
     /// <summary>

@@ -2,6 +2,547 @@
 
 ---
 
+## 2026-08-20 — Score : fichier de config + Confort + attractivité des chambres dans la renommée
+
+Suite aux questions de l'utilisateur sur le calcul du score : poids/seuils étoiles n'étaient pas
+dans le système de config centralisé du jeu (`HotelConfig.X`, ScriptableObject auto-chargés depuis
+`Resources/Config/`, déjà utilisé pour Économie/Spawn/Satisfaction/etc.) — juste des champs publics
+sur `DayScoreManager`. Deux trous repérés à cette occasion : le Confort de l'hôtel
+(`HotelStatsManager.TotalComfort`, basé sur les décorations) n'entrait jamais dans le score, et
+l'attractivité des chambres (`RoomInstance.TotalAttractiveness` = base chambre + bonus meubles)
+n'existait qu'à l'affichage (`RoomManagementPanel`), connectée à rien.
+
+Nouveau `ScoreConfig.cs` (`Assets/Scripts/Systems/Hotel/`), même pattern qu'`EconomyConfig.cs`
+(`[CreateAssetMenu]` + `Resources.Load` auto-chargé) — reprend tous les poids/seuils qui étaient sur
+`DayScoreManager` (mêmes valeurs par défaut, rien perdu), accessible via nouveau `HotelConfig.Score`.
+`DayScoreManager.cs` n'a plus aucun champ de poids/seuil, lit `HotelConfig.Score.xxx` dans ses
+formules.
+
+**Attractivité des chambres → renommée** : nouveau `HotelStatsManager.RecalcRoomAttractiveness()` —
+scan live (`FindObjectsByType<RoomInstance>()`, même pattern que `RoomManagementPanel`/
+`DayScoreManager` ailleurs dans le projet plutôt qu'un système d'événements, qui n'existe pas
+aujourd'hui sur changement de meuble) sommant `TotalAttractiveness` de toutes les chambres, refondu
+dans `_totalRenown` au même titre que les décorations (base partagée par toutes les catégories, pas
+spécifique à un type de monstre). Appelé une fois par jour depuis `DayScoreManager.HandleNewDay()`
+(pas en continu — la renommée est lue très souvent ailleurs, jauge légendaire et réduction du délai
+de spawn, un scan à chaque frame serait coûteux pour un gain de fraîcheur minime). Effet systémique,
+pas juste un bonus de score ponctuel : améliorer les chambres influence désormais aussi le
+déblocage des monstres légendaires et la vitesse de spawn (`SpawnScheduler`), via la renommée
+partagée.
+
+**Confort dans le score** : nouveau terme dans le score **global** uniquement (`globalComfortWeight`)
+— pas de version journalière, le Confort n'a pas d'équivalent "gagné aujourd'hui" (c'est un
+instantané basé sur les décorations posées, pas un flux quotidien), traité comme l'Or total/la
+Satisfaction globale. Nouvelle ligne "Confort total" dans l'onglet Récap général de `DayEndPanel`
+(cohérence : chaque composante du score doit être visible).
+
+🔍 **Setup Unity requis** : dans le Project, clic droit sur `Assets/Resources/Config/` →
+`Create > Hotel > Config > Score`, nommer l'asset **exactement** `ScoreConfig` (chargement
+automatique par nom précis). Valeurs par défaut = comportement identique à avant, à équilibrer
+ensuite. Sans cet asset, `DayScoreManager.HandleNewDay()` plante (`HotelConfig.Score` serait `null`)
+— même contrat que tous les autres `HotelConfig.X` existants, pas un risque nouveau. Les anciens
+champs de poids/seuils sur le composant `DayScoreManager` en scène disparaissent silencieusement de
+l'Inspector, rien à nettoyer.
+
+Non testé en jeu par l'assistant (pas d'accès à l'éditeur Unity).
+
+---
+
+## 2026-08-20 — Récap : onglet Monstres en liste (une stat par ligne)
+
+L'onglet Monstres condensait toutes les stats d'un type sur une seule ligne dense (séparateurs `|`)
+— jugé illisible par l'utilisateur. `RebuildMonstresTab()` génère maintenant un **bloc par type**
+(titre + une ligne par stat : Présents, Satisfaction moyenne, Départs aujourd'hui, Renommée globale,
+Renommée gagnée/perdue aujourd'hui, Gain resto aujourd'hui/total), séparé du suivant par une ligne
+vide. Le nombre de lignes par bloc n'est plus fixe (variable selon présence de données) — la
+référence `Content_2_Line_N` pour Feel n'a donc plus de correspondance stable, notée dans le TODO.
+
+---
+
+## 2026-08-19 — Récap : structure UXML (au lieu de générée par code)
+
+Après plusieurs rounds infructueux à essayer de faire fonctionner un rebond Feel/MMFeedbacks sur
+l'écran de récap (voir entrées précédentes), l'utilisateur a posé la bonne question : pourquoi ne
+pas reprendre la structure de la démo Feel (`FeelUIToolkitFeedbacksDemo`), qui charge un **UXML**
+plutôt que de construire son arbre par code ? Bonne intuition — c'est la cause racine de toute la
+saga : un élément créé PAR CODE dans `Start()` n'existe pas encore quand `MMF_Player` tente de le
+retrouver par nom au démarrage (peu importe l'ordre des composants) ; un UXML, lui, est cloné par
+`UIDocument` dans son PROPRE `OnEnable()`, avant absolument tout `Start()` de la scène — l'élément
+existe donc de façon fiable dès le début, exactement comme dans la démo.
+
+Nouveau fichier `Assets/Scripts/UI/DayEndPanel.uxml` — écrit directement en XML (pas besoin de l'UI
+Builder), définit uniquement la STRUCTURE statique et les noms (`DayEndRoot`, `Panel`, `TabBar`,
+`Tab_0`/`Tab_1`/`Tab_2`, `ContentArea`, `Content_0`/`Content_1`/`Content_2`, `DismissPrompt`) — aucun
+style dedans, pour que tout reste piloté depuis l'Inspector comme avant.
+
+`DayEndPanel.cs` : `BuildLayout()`/`BuildTabBar()`/`BuildContentArea()` (qui créaient les éléments)
+remplacées par `QueryElements()` (les retrouve par nom dans l'arbre déjà cloné par UIDocument) +
+`ApplyStyling()` (applique les couleurs/dimensions réglables de l'Inspector aux éléments trouvés) +
+`WireTabClicks()`. Le contenu dynamique (lignes de stats, généré par `RebuildLines`) est inchangé —
+un UXML ne peut pas exprimer un contenu qui change chaque jour, seule la structure fixe en bénéficie.
+
+Le rebond natif (`PlayBounce`, ajouté puis débogué sans succès sur plusieurs rounds) est **retiré** :
+l'utilisateur veut piloter les effets uniquement via Feel, et cette structure UXML est justement ce
+qui manquait pour que Feel fonctionne de façon fiable.
+
+🔍 **Setup Unity requis** (en plus de l'UIDocument + PanelSettings déjà en place) :
+1. Sur `DayEndCanvas`, glisser `Assets/Scripts/UI/DayEndPanel.uxml` dans le champ **Source Asset**
+   du composant `UI Document` (même champ que `Panel Settings`, juste en dessous).
+2. Le `MMF Player` existant (feedback `UITK Scale` ciblant `"Panel"`) n'a rien à changer — la Query
+   par nom devrait maintenant trouver l'élément de façon fiable dès le lancement.
+3. D'autres éléments sont désormais ciblables par Feel de la même façon : `TabBar`, `Tab_0`/`Tab_1`/
+   `Tab_2` (les boutons d'onglet individuellement), `ContentArea`, `Content_0`/`1`/`2`,
+   `DismissPrompt`.
+
+⚠️ Non testé en jeu par l'assistant (pas d'accès à l'éditeur Unity) — à vérifier en priorité : que le
+rebond Feel sur "Panel" fonctionne enfin à l'ouverture du récap.
+
+**Cause finale, enfin trouvée** — après avoir vérifié la structure (UXML, ok), la config du
+feedback (comparée en détail à celle de la démo Feel, ok), et répliqué la structure de la démo
+(`MMF_Player` sur un GameObject séparé du UIDocument, ok mais pas la cause) : le `Timescale Mode` du
+feedback était sur **`Scaled`**. Or `DayScoreManager` met le jeu en pause (`Time.timeScale = 0`)
+juste après avoir appelé `panel.Show()` (qui déclenche `showFeedback.PlayFeedbacks()`) — l'animation
+du feedback, pilotée par du temps *scaled*, se figeait donc quasiment à sa valeur de départ dès que
+la pause tombait, sur la même frame. Résultat : `"Panel"` restait à l'échelle de départ (proche de
+0 selon la courbe configurée), donc invisible — pas juste "pas de rebond", le panel entier
+disparaissait. Fix (aucun code, réglage Inspector) : passer `Timescale Mode` sur **`Unscaled`** sur
+le feedback — confirmé fonctionnel par l'utilisateur.
+
+Ajout ensuite : `DayEndPanel.tabBounceFeedbacks` (nouveau champ, tableau de 3 `MMF_Player`) — Feel ne
+peut pas savoir tout seul quel bouton d'onglet vient d'être cliqué, donc `SwitchTab(int tab)` déclenche
+explicitement `tabBounceFeedbacks[tab]?.PlayFeedbacks()`. Setup : un `MMF_Player` séparé par onglet
+(`Query` = `Tab_0`/`Tab_1`/`Tab_2`), **`Timescale Mode` = `Unscaled`** sur les trois également.
+
+**Ajusté ensuite (clarté)** : "Clients servis" affichait le détail chambre/resto/non-servis, jugé
+trop dense pour un coup d'œil — simplifié en `Clients servis : X | Non servis : Y` (X = servis
+chambre + servis resto confondus, Y = resto non servis uniquement — le chambre est toujours "servi"
+par définition, voir G12) dans Récap général ET Récap journalier. Aucun changement du nombre de
+lignes (les noms `Content_X_Line_N` pour Feel restent valables).
+
+**Ajusté ensuite** : le panel utilisait `maxHeight` (hauteur variable selon le contenu, jusqu'à ce
+plafond) — l'utilisateur veut une hauteur fixe, qui ne bouge jamais. Champ renommé
+`panelMaxHeightPercent` → `panelHeightPercent`, appliqué via `style.height` au lieu de
+`style.maxHeight`. Le contenu qui dépasserait continue de scroller dans l'onglet concerné (chaque
+onglet est déjà un `ScrollView`), inchangé.
+
+---
+
+## 2026-08-19 — Récap : migration vers UI Toolkit
+
+Le correctif précédent (pitch automatique basé sur la police) n'a pas suffi : toujours "trop haut",
+et le retour à la ligne d'un texte wrap-é n'était toujours pas pris en compte par la ligne suivante
+(chevauchement). Cause racine : `GetPreferredValues()` sur un `TextMeshProUGUI` fraîchement créé par
+`AddComponent` est peu fiable pour mesurer une hauteur de texte wrap-é — tout le système reposait sur
+un calcul de position à la main (uGUI/RectTransform), fragile par construction. Sur suggestion de
+l'utilisateur (inspiré du plugin `FeelUIToolkitFeedbacksDemo`, déjà présent dans le projet), décision
+de migrer ce panel vers **UI Toolkit** (`UIDocument`/`VisualElement`, layout Flexbox) — le wrap et
+l'empilement y sont gérés nativement par le moteur de layout (Yoga), plus aucun calcul de position à
+la main. Migration scopée à ce seul panel, le reste de l'UI du jeu reste en uGUI.
+
+`DayEndPanel.cs` entièrement réécrit : plus aucun champ `GameObject`/`TMP_Text`/`RectTransform`, un
+seul `[RequireComponent(typeof(UIDocument))]`. Tout l'arbre visuel (barre d'onglets, 3 `ScrollView`
+de contenu, bouton Submit) est généré par code dans `Awake()` — même philosophie "code-généré" que
+le reste du projet, aucun UXML/USS à créer dans l'UI Builder. `PanelSettings` créé à l'exécution si
+non assigné (`ScriptableObject.CreateInstance<PanelSettings>()`, réglages cohérents avec le Canvas
+Scaler déjà en place ailleurs — Match 0.5) : aucun asset à faire créer à l'utilisateur. Police
+récupérée automatiquement via `TMP_Settings.defaultFontAsset.sourceFontFile` (le `Font` source ayant
+servi à générer l'atlas SDF du TMP Font Asset par défaut du projet) — cohérence visuelle avec le
+reste du jeu sans rien assigner à la main ; `fontOverride` en secours si besoin d'une police
+différente pour cet écran.
+
+Chaque ligne de stat devient un `Label` avec `whiteSpace: Normal` dans un conteneur `flexDirection:
+Column` — le wrap et l'espacement (`marginBottom`) sont automatiques, plus de mesure ni de calcul de
+`_linePitch`. Le bouton Submit est ajouté comme **dernier enfant** du conteneur actif à chaque
+changement d'onglet (`ScrollView.Add()` le détache automatiquement de son ancien parent) : il se
+positionne donc toujours juste après la dernière ligne réelle, sans aucun calcul — contrairement à
+uGUI, un `VisualElement` retiré d'un conteneur (`Clear()`) n'est jamais détruit, donc plus de risque
+de perdre le bouton en reconstruisant les listes.
+
+`DayScoreManager.cs` **non modifié** — la signature `panel.Show(daily, general, statsByType)` est
+restée identique, toute la logique de calcul des stats (chambre/resto, gain resto, etc.) est
+inchangée, seul le rendu a changé.
+
+🔍 **Setup Unity requis** :
+1. Sur le GameObject qui porte déjà le composant `DayEndPanel` (inutile de le déplacer, la référence
+   `DayScoreManager.panel` reste valide), ajouter un composant **UIDocument** (`Add Component > UI
+   Toolkit > UI Document`). Laisser `Panel Settings` **vide** — créé automatiquement au démarrage.
+2. Supprimer l'ancienne hiérarchie devenue inutile (`DayEndRoot` et tout ce qu'il contenait :
+   GeneralContent, RecapContent, MonstresContent, RecapExtraContent, tous les textes manuels) — plus
+   aucun champ du script ne les référence.
+3. (Optionnel) Glisser une police dans `Font Override` sur `DayEndPanel` si la police récupérée
+   automatiquement ne convient pas pour cet écran.
+
+⚠️ Non testé en jeu par l'assistant (pas d'accès à l'éditeur Unity) — à vérifier : affichage/masquage
+au changement de jour, contenu identique sur les 3 onglets sans chevauchement, navigation
+Submit/NextTab/PrevTab, et que le panel s'affiche bien au-dessus du reste du jeu/UI (sinon augmenter
+`PanelSettings.sortingOrder`, actuellement 100 en dur dans `CreateRuntimePanelSettings()`).
+
+**Bug 1 trouvé au premier test** : rien ne s'affichait. Cause : la construction de l'arbre visuel se
+faisait dans `Awake()`, mais `UIDocument` crée son `rootVisualElement` dans son propre `OnEnable()`
+— et l'ordre d'exécution des `Awake()`/`OnEnable()` entre composants d'un même GameObject suit
+l'ordre d'affichage dans l'Inspector (`Day End Panel` listé avant `UI Document` dans la hiérarchie
+de l'utilisateur). `rootVisualElement` était donc encore `null` au moment où le code essayait d'y
+ajouter l'arbre généré. Fix : construction déplacée dans `Start()` (s'exécute après tous les
+`OnEnable()` de la scène, garanti peu importe l'ordre des composants), avec un garde `EnsureBuilt()`
+idempotent appelé aussi depuis `Show()` par sécurité.
+
+**Bug 2 trouvé au test suivant** : toujours rien, malgré le fix ci-dessus. Diagnostic par logs
+temporaires (retirés depuis) : `_root` avait une largeur correcte (1936) mais une **hauteur à 0**.
+Cause suspectée : `_root.style.position = Position.Absolute` avec les 4 marges (`left/right/top/
+bottom`) à 0 — le moteur de layout (Yoga) résolvait mal l'axe vertical dans ce contexte précis. Fix :
+remplacé par `width: 100%` / `height: 100%` (sans `position: absolute`), pattern standard et plus
+robuste pour "remplir tout l'écran" en UI Toolkit.
+
+**Bug 3 trouvé au test suivant** : hauteur passée de 0 à 174px (au lieu d'environ 1080) — toujours
+rien de visible à l'écran. Isolé en demandant à l'utilisateur d'assigner un **asset PanelSettings
+existant** (`FeelUIToolkitDemoPanelSettings.asset`, déjà présent dans le projet via le plugin Feel)
+à la place de celui généré à l'exécution (`CreateRuntimePanelSettings()`) — **ça fonctionne** avec
+l'asset existant. Confirme que le bug est dans la création runtime du `PanelSettings` (cause exacte
+non identifiée, pas d'accès à l'éditeur pour déboguer davantage). Décision : garder
+`CreateRuntimePanelSettings()` comme filet de secours minimal (mieux qu'un crash si jamais réutilisé
+ailleurs sans asset assigné), mais documenter clairement que c'est un chemin non fiable — **assigner
+un asset PanelSettings dans l'Inspector est la voie recommandée et vérifiée**. Logs de diagnostic
+temporaires retirés du code une fois le problème isolé.
+
+🔍 **Setup Unity confirmé fonctionnel** : `UIDocument` sur `DayEndCanvas` (même GameObject que le
+script `DayEndPanel`), `Panel Settings` = `FeelUIToolkitDemoPanelSettings.asset` (réutilisé tel
+quel, aucun nouvel asset à créer). Testé en jeu par l'utilisateur — le panel s'affiche désormais.
+
+**Ajusté ensuite** : toutes les couleurs et dimensions (largeur/hauteur du panel, largeur de la
+barre d'onglets, taille de police, rayon des coins, marges) étaient codées en dur dans le script —
+sorties en champs publics réglables dans l'Inspector de `DayEndPanel` (sections "Design —
+dimensions" et "Design — couleurs"), sur le même principe que les autres valeurs tunables du projet
+(ex. les poids de score de `DayScoreManager`). Permet d'ajuster l'apparence sans toucher au code.
+
+**Étendu ensuite (effets Feel/MMFeedbacks)** : l'utilisateur a repéré que la démo
+`FeelUIToolkitFeedbacksDemo` du plugin Feel utilise des feedbacks pour animer des `VisualElement`
+(bounce, etc.). Le package fournit une suite complète de feedbacks UI Toolkit
+(`Assets/Feel/MMFeedbacks/MMFeedbacksForThirdParty/UIToolkit/Feedbacks/`) — `MMF_UIToolkitScale`,
+`Translate`, `Rotate`, `Opacity`, couleurs, etc. Tous ciblent un `VisualElement` via
+`MMF_UIToolkit.TargetDocument` (le `UIDocument`) + une requête par nom ou classe USS
+(`TargetDocument.rootVisualElement.Query(...)`) — comme tout l'arbre de `DayEndPanel` est déjà nommé
+par code (`"Panel"`, `"DayEndRoot"`, `"TabBar"`, etc.), ces feedbacks peuvent cibler ses éléments
+sans aucune modification du script de génération. Nouveau champ optionnel
+`DayEndPanel.showFeedback` (`MMF_Player`) : si assigné, joué à chaque `Show()`
+(`showFeedback?.PlayFeedbacks()`) — laissé vide, aucun changement de comportement.
+
+🔍 **Setup Unity pour ajouter un effet bounce** (optionnel) :
+1. Sur `DayEndCanvas` (ou un enfant), `Add Component > MMF Player`.
+2. Dans le MMF Player, `+` pour ajouter un feedback, chercher **"UITK Scale"** (catégorie UI
+   Toolkit).
+3. Sur ce feedback : `Target Document` = le `UI Document` de `DayEndCanvas`, `Query Mode` = Name,
+   `Query` = `Panel` (l'élément racine visible du panel, déjà nommé ainsi dans le code).
+4. `Mode` = Interpolate, `Curve Remap Zero` = 0.7 (X et Y), `Curve Remap One` = 1, et choisir une
+   courbe avec rebond sur `Curve X`/`Curve Y` (ex. `Bounce` ou `EaseOutElastic` dans le sélecteur de
+   courbe MMTween) — donne un effet de zoom qui rebondit à l'apparition.
+5. Glisser ce `MMF Player` dans le champ `Show Feedback` de `DayEndPanel`.
+
+Non testé en jeu par l'assistant (pas d'accès à l'éditeur Unity) — à ajuster/itérer visuellement.
+
+**Bug trouvé au test** : le rebond ne jouait pas. Cause : `MMF_Player` avec "Auto Play On Start"
+coché force son `InitializationMode` sur `Awake` — qui s'exécute donc dans son propre `Awake()`,
+AVANT `DayEndPanel.Start()` (tous les `Awake()` de la scène passent avant n'importe quel `Start()`,
+peu importe l'ordre des composants). Le feedback UI Toolkit interroge l'élément `"Panel"` avant qu'il
+n'existe, met en cache une liste vide (`_visualElements`), et ne la rafraîchit plus jamais tout seul
+— d'où l'absence totale d'effet, même une fois le panel réellement affiché. Fix côté
+`DayEndPanel.EnsureBuilt()` : appel de `showFeedback?.Initialization()` juste après `BuildLayout()`,
+qui force `MMF_Player` à refaire sa requête maintenant que `"Panel"` existe réellement — robuste
+quels que soient les réglages `Auto Play On Start`/`Initialization Mode` du feedback.
+
+**Toujours rien après ce fix.** Vérification complète de la config Feel avec l'utilisateur (capture
+d'écran) : `Target Document`, `Query Mode` = Name, `Query` = "Panel", feedback `Active`, courbe —
+tout correct. `showFeedback` bien assigné sur `DayEndPanel` (confirmé par log). `Auto Play On
+Start`/`On Enable` déjà décochés (donc pas le bug d'initialisation forcée sur Awake identifié
+juste avant). Cause exacte toujours non identifiée malgré 3 pistes vérifiées. Plutôt que continuer à
+déboguer à l'aveugle le cycle d'init de `MMF_Player`, remplacement par un **rebond natif** via l'API
+d'animation expérimentale d'UI Toolkit (`VisualElement.experimental.animation`, stable malgré le
+nom) : nouvelle méthode `DayEndPanel.PlayBounce()` anime `_panel` (référence conservée depuis
+`BuildLayout()`) de l'échelle 0.85 à 1 sur 220ms avec un easing `OutBack` (léger dépassement, effet
+rebond). Déclenchée depuis `SwitchTab()` — donc à l'ouverture (`Show()` appelle `SwitchTab(0)`) **et**
+à chaque clic d'onglet, comme demandé par l'utilisateur (le premier jet ne jouait qu'à l'ouverture).
+Le champ `showFeedback` (Feel) reste dans le code, optionnel, pour qui veut ajouter d'autres effets
+en parallèle — mais le rebond de base ne dépend plus de son bon fonctionnement.
+
+**Erreur de compilation** : `Easing` vit dans `UnityEngine.UIElements.Experimental`, pas
+`UnityEngine.UIElements` — ajout du `using` manquant.
+
+**Ajusté ensuite** : paramètres du rebond (échelle de départ, durée, courbe) sortis en Inspector
+(`bounceStartScale`/`bounceDurationMs`/`bounceEasing`, nouvel enum public `BounceEasingType` —
+sous-ensemble de `Easing` pertinent pour un effet rebond : OutBack/OutBounce/OutElastic/OutCubic/
+OutQuad) plutôt que codés en dur. Ajout de `bounceActiveTabButton` (activé par défaut) : en plus du
+panel entier, fait rebondir individuellement le bouton de l'onglet qui devient actif — `PlayBounce()`
+généralisé pour cibler n'importe quel `VisualElement`, appelé sur `_panel` et sur `_tabButtons[tab]`
+depuis `SwitchTab()`.
+
+**Trouvé la vraie cause du "rien ne se passe" côté Feel** : l'utilisateur voulait garder les effets
+Feel plutôt que ma solution native. Diagnostic ajouté (`rootVisualElement.Query("Panel")` reproduit
+manuellement juste avant `PlayFeedbacks()`) → confirme **1 élément trouvé** : `"Panel"` est bien
+discoverable au bon moment, le fix d'initialisation (round précédent) fonctionne. Le vrai problème :
+mon rebond natif (round précédent) animait `style.scale` sur ce **même** élément `"Panel"`, en même
+temps que le feedback Feel — deux systèmes d'animation indépendants se disputant la même propriété du
+même élément à chaque frame, l'un écrasant l'autre (probablement le natif, vu qu'aucun effet Feel
+n'était visible). Fix : le rebond natif ne cible plus que les boutons d'onglet (jamais touchés par
+Feel) ; `"Panel"` est désormais piloté **uniquement** par `showFeedback` (Feel). Logs de diagnostic
+retirés.
+
+**Le rebond des boutons d'onglet ne s'affichait toujours pas** (confirmé : la commutation d'onglet
+elle-même fonctionne bien au clic, contenu et surlignage changent — seule l'animation manque). Cause
+probable : `PlayBounce()` fixait `style.scale` puis appelait immédiatement
+`.experimental.animation.Scale(1f, ...)`, qui détermine sa valeur de départ via `resolvedStyle` —
+lequel ne reflète l'assignation qu'au prochain passage de layout, pas de façon synchrone. Fix :
+remplacé par `experimental.animation.Start(from, to, durationMs, callback)`, qui reçoit les deux
+bornes explicitement, sans dépendre d'une lecture de valeur "actuelle".
+
+---
+
+## 2026-08-19 — Récap : mise en page automatique (espacement + position du bouton Submit)
+
+Retour utilisateur : le récap était devenu "illisible... trop haut" après l'ajout des stats
+chambre/resto, l'espacement entre lignes n'était pas automatique, et le bouton Submit restait à une
+position fixe qui ne suivait pas la quantité de contenu affichée (se retrouvait en plein milieu du
+texte ou très loin en dessous selon l'onglet).
+
+**Cause racine de "trop haut"** : `_linePitch` (l'espacement entre lignes générées, utilisé par les
+3 onglets) était mesuré sur l'écart entre `dayLabel` et `scoreLabel` — deux textes placés à la main
+dans l'éditeur au tout début de U2, avec un espacement large choisi à l'œil pour un panel de
+quelques lignes. Cet espacement se propageait tel quel à Général (10 lignes) et Monstres, d'où un
+contenu qui débordait largement l'écran.
+
+**Fix** : `_linePitch` est maintenant calculé depuis la police (`dayLabel.fontSize ×
+linePitchMultiplier`, nouveau champ public réglable sur `DayEndPanel`, 1.2 par défaut) — vraiment
+automatique, ne dépend plus d'un placement manuel. Le Récap journalier (`scoreLabel`, `starsLabel`,
+`goldLabel`, `satisfactionLabel`, `guestCountLabel`, `arrivalCountLabel`, `renownLabel` — 7 textes
+placés à la main) est désactivé en `Awake()` et remplacé par une liste générée par code unique dans
+`recapExtraContent`, au même pitch automatique que Général/Monstres — plus de doublon entre un total
+affiché en haut et le détail en dessous, un seul flux cohérent. `dayLabel` ("Jour X terminé") reste
+la seule ligne manuelle de cette section, sert d'ancrage pour tout le reste.
+
+**Position du bouton Submit** : `BuildLineList()` retourne maintenant le Y réel juste après la
+dernière ligne générée. Chaque `Show()` mesure ce point pour les 3 onglets (`_tabContentBottom[]`).
+`SwitchTab()` reparente `dismissPromptLabel` dans le conteneur généré de l'onglet actif et le
+recale à cette position — toujours juste sous le contenu réel, quel que soit le nombre de lignes,
+sans recalcul manuel. (Piège évité : `dismissPromptLabel` est sorti temporairement de son parent
+avant chaque reconstruction de listes, sinon `BuildLineList` l'aurait détruit avec les anciennes
+lignes du conteneur où il se trouvait depuis le dernier affichage.)
+
+🔍 **Rien à faire côté Unity** — entièrement résolu en code. Si l'espacement reste trop grand ou
+trop serré après test, ajuster `Line Pitch Multiplier` dans l'Inspector de `DayEndPanel` (1.2 par
+défaut, plage 1–2) plutôt que de retoucher des positions à la main.
+
+---
+
+## 2026-08-19 — Récap : distinction chambre/resto + gain resto + servi vs non servi
+
+Retour utilisateur : les stats du récap mélangeaient clients chambre et visiteurs repas sans
+distinction (arrivées, "clients servis"), le gain du restaurant n'était nulle part suivi, et surtout
+— un visiteur resto qui repart sans avoir été servi (file pleine, délai dépassé) était compté comme
+"servi" au même titre qu'un visiteur qui a effectivement mangé.
+
+Nouveau `GuestChannel` (`Room`/`Restaurant`, `HotelStatsManager.cs`) propagé de bout en bout :
+`SpawnScheduler.OnMonsterArrived` précise maintenant le canal (chambre via `TrySpawnRoomGuest` /
+resto via `TrySpawnMealVisitor`, un seul point d'instanciation partagé — voir G9).
+`HotelStatsManager.ReportGuestDeparture()` prend en plus `channel` et un nouveau `served` (a
+effectivement reçu le service attendu). Côté chambre, `served` est toujours vrai (occuper la
+chambre EST le service, dans `ReservationSystem.CheckoutNow`/`CheckoutEarly`) ; côté resto,
+`served = !angry` dans `MonsterNeedSeeker.ReportDeparture` — ce chemin n'est atteint qu'après un
+repas réussi (`TryStayOrExit`, non en colère) ou un abandon/délai dépassé sans avoir mangé
+(`ExitDissatisfied`, en colère), les deux restent mutuellement exclusifs aujourd'hui.
+
+Nouveau `HotelStatsManager.ReportMealRevenue(type, amount)` / événement `OnMealRevenue`, appelé
+depuis `EatingSpot.PayForMeal()` (déjà le point unique de paiement d'un repas, chambre ou resto
+confondus) — pour suivre le gain resto par type de monstre, demandé explicitement.
+
+`DayScoreManager` : nouveaux accumulateurs journaliers ET cumulés (jamais remis à zéro), par canal —
+arrivées, clients servis (chambre), clients servis/non servis (resto), gain resto (global et par
+type de monstre, deux nouveaux dictionnaires `_mealRevenueTodayByType`/`_mealRevenueTotalByType`).
+
+`DayEndPanel` : les labels manuels existants (`guestCountLabel`/`arrivalCountLabel`) affichent
+maintenant un total combiné chambre+resto en un coup d'œil ; le détail par canal (arrivées, servis
+vs non servis, gain resto) est ajouté juste en dessous via un nouveau conteneur généré par code,
+`recapExtraContent` — même mécanisme que Général/Monstres (`BuildLineList`), pas de nouveaux textes
+manuels à positionner un par un. Même détail (gain resto) ajouté par type dans l'onglet Monstres, et
+version cumulée dans Récap général.
+
+🔍 **Setup Unity requis** : créer **1 nouvel objet vide**, `RecapExtraContent`, comme **ENFANT** de
+`RecapContent` (pas de `DayEndRoot` directement — pour hériter automatiquement de son
+SetActive/désactivation avec l'onglet Journalier). L'assigner dans le champ `Recap Extra Content` de
+`DayEndPanel`. Rien d'autre à construire dedans, il est rempli par code au prochain `Show()`.
+
+---
+
+## 2026-08-19 — Récap fin de journée : mise en page identique sur les 3 onglets
+
+Retour utilisateur après test : Général et Monstres n'avaient pas la même mise en page que
+Journalier (largeur de boîte et taille de police différentes, réduites pour Général/Monstres). Pour
+Monstres en particulier, demande explicite de remplacer la réduction de police par un retour à la
+ligne quand le texte dépasse la largeur.
+
+`DayEndPanel.BuildLineList()` simplifiée : plus de `widthOverride`/`fontScale`, les 3 onglets
+utilisent maintenant exactement la même largeur (celle de `dayLabel`) et la même taille de police.
+Nouveau paramètre `wordWrap` (utilisé uniquement par Monstres) : active `enableWordWrapping` sur le
+texte et mesure sa hauteur réelle une fois retourné à la ligne via `TMP_Text.GetPreferredValues()`
+plutôt qu'une hauteur de ligne fixe — les lignes suivantes descendent d'autant pour ne jamais se
+chevaucher. Empilement généralisé à un curseur "haut de ligne" cumulatif (`top -= height` à chaque
+itération) qui se réduit exactement au comportement d'origine (`-i * _linePitch`) quand `wordWrap`
+est désactivé (Général, comme Journalier).
+
+🔍 Aucun setup Unity requis — les deux onglets concernés sont générés par code.
+
+---
+
+## 2026-08-19 — Récap fin de journée : 5 étoiles, score global, Récap général enrichi
+
+Suite au test du 3e onglet (round précédent) : questions sur où régler les seuils d'étoiles,
+demande de passer de 3 à 5 étoiles, et de mettre dans "Récap général" l'équivalent global/cumulé de
+**toutes** les stats du Récap journalier (pas juste jour/or/présents) — renommée globale,
+satisfaction globale incluses.
+
+`DayScoreManager.ComputeStars()` factorise le calcul de palier (5 seuils au lieu de 3,
+`fiveStarScore`/`fourStarScore` ajoutés à côté des seuils journaliers existants). Nouveau **score
+global**, calculé séparément du score journalier avec ses propres poids/seuils
+(`globalGoldWeight`/`globalSatisfactionWeight`/`globalRenownWeight` + 5 `globalXStarScore`) — pas
+de réutilisation des poids journaliers, les échelles ne sont pas comparables (or cumulé en caisse
+vs or gagné dans la seule journée). Tous ces champs (journalier ET global) sont des champs publics
+sur le composant `DayScoreManager`, réglables dans l'Inspector — valeurs de départ à équilibrer.
+
+Nouveaux accumulateurs **jamais remis à zéro** (`_totalArrivalsAllTime`, `_totalDeparturesAllTime`,
+`_satisfactionSumAllTime`), à côté des accumulateurs journaliers existants qui eux continuent d'être
+resetés à chaque `HandleNewDay`. Renommée totale = somme de `HotelStatsManager.RenownForCategory()`
+sur toutes les valeurs de l'enum `MonsterType` (déjà calculée par catégorie depuis G1, jamais
+sommée jusqu'ici).
+
+`DayEndPanel.RebuildGeneralTab()` passe de 3 à 9 lignes (jour actuel, score global, étoiles
+globales, or total, satisfaction moyenne globale, renommée totale, clients servis au total,
+arrivées au total, monstres présents) — réutilise `BuildLineList()` avec la même police réduite que
+l'onglet Monstres (0.85 au lieu de 0.65, texte moins dense) pour limiter le risque de débordement.
+À surveiller en jeu : 9 lignes n'ont pas encore été testées visuellement, contrairement au reste du
+panel qui a déjà nécessité plusieurs ajustements de ce type.
+
+🔍 **Aucun setup Unity requis** — l'onglet Général est entièrement généré par code (contrairement au
+Récap journalier), donc pas de nouveau texte manuel à créer.
+
+---
+
+## 2026-08-19 — Récap fin de journée : 3e onglet "Récap général" + nouvelles stats
+
+Suite à des questions de l'utilisateur sur ce qu'affichait déjà le récap (tout était journalier,
+remis à zéro chaque jour) — demande d'ajouter des stats non-journalières (arrivées du jour, nombre
+de monstres actuellement présents, renommée globale par type) et de séparer ça d'un vrai "Récap
+général" plutôt que de tout entasser dans l'onglet journalier existant.
+
+Nouveau `SpawnScheduler.OnMonsterArrived` (déclenché dans `SpawnMonsterObject()`, point
+d'instanciation unique partagé par les 2 flux de spawn — voir G9) pour compter les arrivées du
+jour, symétrique à `HotelStatsManager.OnGuestDeparted` déjà existant pour les départs. Compte des
+monstres présents fait par scan live (`FindObjectsByType<MonsterDataReference>()`, même pattern
+déjà utilisé par `RoomManagementPanel.cs`) plutôt qu'un nouveau système de tracking. Renommée
+globale par type = `HotelStatsManager.RenownForCategory()`, déjà calculée depuis G1, jamais
+affichée jusqu'ici. Le delta de renommée par départ était déjà signé (positif/négatif) — juste
+reparti dans deux accumulateurs séparés (`_renownGainedByType`/`_renownLostByType`) au lieu d'un
+seul net.
+
+`DayEndPanel` passe à 3 onglets (`TabCount = 3`) : Récap général (nouveau, généré par code) / Récap
+journalier (existant) / Monstres (existant, enrichi). La génération de liste de texte par code
+(déjà mise au point pour l'onglet Monstres après plusieurs itérations de calage visuel) a été
+factorisée dans `BuildLineList()`, réutilisée par les deux onglets générés — évite de refaire le
+travail d'ajustement de police/position à la main pour le nouvel onglet.
+
+🔍 **Setup Unity requis** : créer `GeneralContent` (objet vide sous `DayEndRoot`, comme
+`MonstresContent`) et l'assigner sur `DayEndPanel`. Créer aussi **1 nouveau texte manuel** dans la
+section Récap journalier existante (`ArrivalCountLabel`, même procédure que les autres textes de
+cette section) pour le nombre d'arrivées du jour — celui-là n'est pas généré par code contrairement
+aux deux nouveaux onglets, il rejoint les textes existants de `RecapContent`.
+
+---
+
+## 2026-08-18 — Récap fin de journée : onglet latéral "Monstres" par type
+
+Suite de U2 (score journalier), testé en jeu la veille : la satisfaction n'y apparaissait qu'en
+moyenne globale. Demandé par l'utilisateur : un détail par type de monstre, pensé pour les futurs
+monstres (sorcière G10, fantôme G8...) sans reconstruction UI à chaque ajout.
+
+Premier essai de plan (onglets directement par type de monstre) rejeté par l'utilisateur : voulait
+une structure à 2 niveaux — un onglet latéral "Monstres" à côté de "Récap", et à l'intérieur une
+**liste** (pas des sous-onglets) avec un type par ligne.
+
+`DayScoreManager` agrège maintenant la satisfaction par `MonsterType` en plus du total global (qui
+continue seul à alimenter le score — pas de changement de formule). `DayEndPanel` gagne une barre
+d'onglets latérale générée par code — repris du pattern déjà éprouvé
+`RoomManagementPanel.CreateTabBar()`/`SwitchTab()`/`RefreshTabBar()`, adapté en vertical. La liste
+de l'onglet Monstres est générée depuis `System.Enum.GetValues(typeof(MonsterType))` à chaque
+`Show()` : un monstre ajouté à l'enum obtient sa ligne automatiquement, aucune construction UI
+manuelle nécessaire pour lui.
+
+Bug corrigé en cours de route : la barre d'onglets était initialement parentée sous le composant
+`DayEndPanel` lui-même (qui vit sur `DayEndCanvas`, toujours actif) au lieu de sous `root`
+(`DayEndRoot`, activé/désactivé avec le reste de l'écran) — elle serait restée visible en permanence.
+
+🔍 **Setup Unity requis** : regrouper les 7 textes existants sous un nouveau `RecapContent`, créer
+un `MonstresContent` vide à côté (les deux sous `DayEndRoot`), assigner les deux sur `DayEndPanel`.
+`DismissPromptLabel` reste hors des deux, toujours visible. Rien à construire pour la barre
+d'onglets ni la liste par type, générées au Play.
+
+## 2026-08-17 (suite) — A2 : P2 avec un personnage différent (pas un clone)
+
+Demandé par l'utilisateur : P1 et P2 utilisaient le même `Player.prefab` instancié tel quel des
+deux côtés, donc P2 était visuellement un clone de P1. En explorant le prefab, bonne surprise :
+un second modèle ("Small") existait déjà en enfant désactivé, avec son propre Animator — le
+prefab était déjà structuré pour supporter plusieurs skins, juste jamais exploité.
+
+Nouveau `PlayerSkinSelector.cs` sur le root du prefab, active le bon enfant modèle selon
+`PlayerInput.playerIndex`, appelé explicitement juste après chaque `PlayerInput.Instantiate()`
+(`AutoSpawnP1.cs` + les 3 points de spawn de `LocalJoinOnHold.cs` — `LocalJoinManager.cs`, dont le
+nom suggérait qu'il gérait ça, s'est révélé être du code mort absent de la scène `Main.unity`).
+Piège trouvé au passage : `TopDownController.Awake()` met en cache l'Animator actif via
+`GetComponentInChildren` (qui ignore les enfants inactifs) — comme `Awake()` tourne pendant
+`Instantiate()`, avant que le sélecteur ait pu changer l'enfant actif, la référence reste
+périmée sans un `RefreshAnimator()` explicite (nouvelle méthode) appelé après le switch.
+
+Rejet du premier essai de plan par l'utilisateur : "il faut qu'il ait ses propres animations" —
+laisser le stub Idle/Walk à 2 clips existant (rig Generic) n'était pas acceptable. Recherche
+complémentaire : contrairement à l'hypothèse initiale, **Small est l'exception du projet, pas la
+norme** — Tall (joueur) et les 3 monstres (confirmé sur Zombie) sont tous importés en Humanoid,
+ce qui leur permet de piocher librement dans `EverydayMotionPack` + des packs dédiés (Mixamo,
+`Zombie_27`) via retargeting Mecanim. Small seul était en Generic. Réimporté en Humanoid
+(`animationType: 2` → `3`, mêmes réglages que Tall/Zombie) pour rejoindre ce système.
+
+🔍 **Setup Unity requis, dans cet ordre** : (1) vérifier Configure Avatar sur le FBX Small — pas
+d'os rouge/manquant (point de bascule, pas vérifiable par simple lecture de fichier) ; (2) si OK,
+assigner `Tall.controller` (ou reconstruire un `Monster_AC.controller` équivalent) sur l'Animator
+de Small — si le mapping échoue, revenir en Generic et sourcer un pack d'anims dédié (Claude ne
+peut pas générer de contenu d'animation 3D) ; (3) ajouter `PlayerSkinSelector` sur le root de
+`Player.prefab`, Tall en index 0 / Small en index 1 ; (4) vérifier le `CapsuleCollider` du root si
+les proportions diffèrent trop. Sans ce setup, comportement inchangé.
+
+## 2026-08-17 — G1 (Renommée par satisfaction) + U2 (Score journalier)
+
+Deux chantiers liés, planifiés et implémentés ensemble à la demande de l'utilisateur.
+
+**G1** : la Renommée qui débloque les monstres légendaires (`SpawnScheduler.PassesLegendaryGate`)
+dépendait uniquement des décorations posées (`HotelStatsManager.TotalRenown`). Elle dépend
+désormais aussi de la satisfaction des clients à leur départ, **par catégorie de monstre**
+(Zombie/Vampire/Werewolf séparément) — nouveau `HotelStatsManager.RenownForCategory(MonsterType)`
+et `ReportGuestDeparture(type, satisfaction, angry)`, appelé à chaque départ réel (check-out
+chambre normal/anticipé, visiteur repas satisfait ou qui abandonne). Comble au passage un trou
+documenté de longue date : un visiteur repas insatisfait (jamais servi à temps) n'avait
+littéralement aucun effet en dehors de lui-même — `MonsterNeedSeeker.VisitTimeoutRoutine()`
+appelait `ExitHotel()` directement au lieu de `ExitDissatisfied()`, aucune donnée ne remontait nulle
+part.
+
+**U2** : nouveau `DayScoreManager`, accroché à `TimeManager.OnNewDay` (événement déjà présent,
+jamais utilisé jusqu'ici) et au nouvel `OnGuestDeparted` de G1 — calcule un score pondéré (or net de
+la journée + satisfaction moyenne + renommée gagnée) et affiche `DayEndPanel` en pausant le jeu via
+`GameManager.PauseGame()`, dont c'est le tout premier usage réel dans le projet (l'état existait
+mais n'était déclenché nulle part). Écran partagé entre les deux joueurs, fermable par l'un ou
+l'autre.
+
+Aucun champ ScriptableObject touché par ce chantier (contrairement à G3/G9) — `HotelStatsManager`,
+`DayScoreManager` sont des `MonoBehaviour` de scène, pas de risque "script layout incompatible".
+
+🔍 **À faire dans l'éditeur pour que U2 s'affiche** : construire la hiérarchie Canvas/Panel/TMP
+Texts de l'écran de fin de journée (comme toute nouvelle UI de ce projet), assigner les champs sur
+`DayEndPanel`, ajouter `DayScoreManager` sur un objet persistant de la scène avec `panel` assigné.
+Sans ce setup, le calcul de score tourne en silence mais rien ne s'affiche.
+
 ## 2026-08-14 (suite) — Fix : débris de table impossibles à ramasser
 
 Signalé par l'utilisateur : impossible de nettoyer les déchets laissés sur la table à manger après

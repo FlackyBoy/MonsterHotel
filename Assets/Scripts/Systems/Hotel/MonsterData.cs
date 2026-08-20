@@ -40,10 +40,17 @@ public class MonsterData : ScriptableObject
     [Header("Spawn")]
     [Tooltip("Poids de sélection aléatoire — 1 = normal, 2 = deux fois plus fréquent, 0.5 = rare")]
     public float spawnWeight = 1f;
-    [Tooltip("Intervalle en secondes entre deux apparitions de ce type (0 = utilise l'intervalle par défaut du SpawnScheduler)")]
+    [Tooltip("Intervalle en secondes entre deux apparitions de ce type EN CLIENT CHAMBRE (0 = utilise l'intervalle par défaut du SpawnScheduler)")]
     public float spawnInterval = 0f;
-    [Tooltip("Nombre max de ce type de monstre en attente simultanément")]
+    [Tooltip("Nombre max de ce type de monstre en attente simultanément (client chambre uniquement — pas de plafond équivalent pour les visiteurs repas, limitation connue)")]
     public int maxPending = 3;
+    [Tooltip("Intervalle en secondes entre deux apparitions de ce type EN VISITEUR REPAS uniquement " +
+             "(sans chambre) — flux de spawn indépendant de spawnInterval, tourne en parallèle (pas " +
+             "un ratio partagé entre les deux). 0 = utilise l'intervalle par défaut " +
+             "(HotelConfig.Spawn.defaultMealVisitorSpawnInterval). Sans effet si ce monstre n'a aucun " +
+             "besoin assigné (section Besoins ci-dessous) — il ne peut de toute façon jamais devenir " +
+             "visiteur repas dans ce cas.")]
+    public float mealVisitorSpawnInterval = 0f;
 
     [Header("Besoins")]
     [Tooltip("Types de besoins que ce monstre a (NeedType assets). Laisse vide = aucun besoin.")]
@@ -54,6 +61,14 @@ public class MonsterData : ScriptableObject
 
     [Header("Arrivée")]
     public SpawnTime preferredSpawnTime = SpawnTime.Any;
+
+    [Header("Sommeil (reste en chambre)")]
+    [Tooltip("Période pendant laquelle ce monstre DOIT rester dans sa chambre (dort) — n'en sort " +
+             "pas se balader. Distinct de preferredSpawnTime (qui contrôle seulement l'heure " +
+             "d'ARRIVÉE, à ne pas confondre). Any = jamais confiné. DayOnly = reste en chambre le " +
+             "jour (monstre nocturne, ex: vampire). NightOnly = reste en chambre la nuit pour " +
+             "dormir (ex: zombie).")]
+    public SpawnTime sleepTime = SpawnTime.Any;
 
     [Header("Départ")]
     [Tooltip("Heure minimale à laquelle ce monstre peut quitter l'hôtel (0-24)")]

@@ -24,9 +24,4 @@ public class DayNightConfig : ScriptableObject
     public float dayDuration = 300f;
     [Tooltip("Heure de départ (0-24)")]
     public float startHour = 8f;
-
-    [Header("Séjour")]
-    [Tooltip("Durée réelle (secondes) d'une \"nuit\" de séjour — découplée de dayDuration pour " +
-             "permettre plusieurs séjours par chambre et par jour (sinon 1 nuit = 1 jour entier).")]
-    public float nightStayDuration = 60f;
 }

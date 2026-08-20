@@ -22,4 +22,5 @@ public static class HotelConfig
     public static EmployeeConfig     Employee     => EmployeeConfig.Instance;
     public static DebugConfig        Debug        => DebugConfig.Instance;
     public static HotelCatalog       Catalog      => HotelCatalog.Instance;
+    public static ScoreConfig        Score        => ScoreConfig.Instance;
 }

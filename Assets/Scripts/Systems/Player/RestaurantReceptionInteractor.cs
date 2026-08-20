@@ -54,9 +54,9 @@ public class RestaurantReceptionInteractor : MonoBehaviour
         var desk = NearestDesk();
         var rrs  = RestaurantReservationSystem.Instance;
 
-        // N'affiche le prompt que si le monstre est physiquement arrivé au comptoir
-        var nextUnchecked = rrs?.NextUnchecked;
-        if (nextUnchecked != null && !nextUnchecked.HasArrived) nextUnchecked = null;
+        // NextServiceableUnchecked (au lieu de NextUnchecked) saute le 1er de la file si aucune
+        // place n'est dispo pour lui mais qu'un autre pourrait être accepté (G6-B24).
+        var nextUnchecked = rrs?.NextServiceableUnchecked;
 
         if (desk == null || nextUnchecked == null)
         {
@@ -68,7 +68,7 @@ public class RestaurantReceptionInteractor : MonoBehaviour
         ShowPrompt(desk.transform.position + Vector3.up * 0.8f, label);
 
         if (_playerInput.WasPressed(interactActionName))
-            rrs.CheckInNext();
+            rrs.CheckInNext(nextUnchecked);
     }
 
     // ─── Helpers ──────────────────────────────────────────────────

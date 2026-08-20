@@ -16,8 +16,8 @@ MonoBehaviour:
   monsterType: 1
   icon: {fileID: 0}
   prefab: {fileID: 8076749505103883583, guid: 33f7cd5156e8063409c2d5af24d3a780, type: 3}
-  revenuePerNight: 80
-  mealRevenue: 25
+  revenuePerNight: 125
+  mealRevenue: 75
   stayMinNights: 2
   stayMaxNights: 3
   maxWaitTime: 40
@@ -25,17 +25,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 48f9539b6a40e8b42a989079baabb1d0, type: 2}
   moveSpeed: 3
   spawnOffset: {x: 0, y: 0, z: 0}
-  spawnWeight: 1
+  spawnWeight: 0.5
   spawnInterval: 60
   maxPending: 1
+  mealVisitorSpawnInterval: 120
   needs:
   - {fileID: 11400000, guid: f09f6bc256abb78419a99ce4783ae6c6, type: 2}
   needOverrides: []
   preferredSpawnTime: 2
+  sleepTime: 1
   checkoutWindowStart: 8
   checkoutWindowEnd: 10
   isLegendary: 0
-  roamLitterChance: 0.1
+  roamLitterChance: 0
   litterPrefabs:
   - {fileID: 7800008161810468366, guid: 1864f56f60d38814d96adfe34c8ae249, type: 3}
   compatibleSocialTypes: 00000000

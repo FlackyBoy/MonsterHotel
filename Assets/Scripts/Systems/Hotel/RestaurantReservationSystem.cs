@@ -93,6 +93,23 @@ public class RestaurantReservationSystem : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Comme NextUnchecked, mais saute ceux pour qui aucune place n'est disponible — utilisé par
+    /// RestaurantReceptionInteractor (joueur), voir ReservationSystem.NextServiceableUnchecked pour
+    /// la même logique côté hôtel (TODO G6-B24). Ignore volontairement IsClaimed, comme côté hôtel.
+    /// </summary>
+    public PendingVisitor NextServiceableUnchecked
+    {
+        get
+        {
+            foreach (var g in _pending)
+                if (g.Monster != null && !g.IsCheckedIn && g.HasArrived &&
+                    FacilityRoomInstance.FindNearestFreeSpot(g.Monster.transform.position) != null)
+                    return g;
+            return null;
+        }
+    }
+
     public IReadOnlyList<PendingVisitor> Pending => _pending;
 
     /// <summary>Déclenché quand la file change (arrivée, prise en charge, départ).</summary>

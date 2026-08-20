@@ -1,0 +1,23 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="DayEndRoot">
+        <ui:VisualElement name="Panel">
+            <ui:VisualElement name="TabBar">
+                <ui:VisualElement name="Tab_0">
+                    <ui:Label name="TabLabel_0" text="Récap général" />
+                </ui:VisualElement>
+                <ui:VisualElement name="Tab_1">
+                    <ui:Label name="TabLabel_1" text="Récap journalier" />
+                </ui:VisualElement>
+                <ui:VisualElement name="Tab_2">
+                    <ui:Label name="TabLabel_2" text="Monstres" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:VisualElement name="ContentArea">
+                <ui:ScrollView name="Content_0" />
+                <ui:ScrollView name="Content_1" />
+                <ui:ScrollView name="Content_2" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:Label name="DismissPrompt" />
+    </ui:VisualElement>
+</ui:UXML>
