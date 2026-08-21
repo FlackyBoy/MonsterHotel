@@ -15,4 +15,4 @@ MonoBehaviour:
   ditherFadeSpeed: 10
   ditherMaxAlpha: 1
   ditherHeightOffset: 0.8
-  ditherFadeRadius: 5
+  ditherFadeRadius: 50

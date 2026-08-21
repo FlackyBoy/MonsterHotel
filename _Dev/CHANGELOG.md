@@ -40,6 +40,23 @@ coordination entre eux.
 ajouter le composant `PlayerSilhouette` sur le root de `Player.prefab` et assigner ce matériau dans
 son champ `Silhouette Material`.
 
+**Suite — auto-occultation résolue** : la version ci-dessus ne distinguait pas "caché par soi-même"
+(bras devant le torse) de "caché par un objet externe", la silhouette apparaissait aussi sur le
+joueur lui-même. Après une tentative par stencil (abandonnée, cassait le cas normal sans cause
+identifiée) et une fausse alerte (des screenshots de "bug" qui montraient en fait juste la texture
+du sol), solution retenue : nouveau `Assets/Scripts/Systems/Player/PlayerOccluderDepthFeature.cs`
+(`ScriptableRendererFeature` URP) qui capture la profondeur de l'environnement dans une texture
+globale `_EnvironmentDepthTex`, en excluant la layer du joueur — cette texture ne contient donc
+jamais sa propre géométrie. `PlayerSilhouette.shader` compare sa profondeur à cette texture
+manuellement (`ZTest Always`) au lieu du depth buffer matériel classique.
+
+Cause réelle de la persistance du bug pendant le debug : le layer `Player` avait été assigné au
+root de `Player.prefab` sans être propagé aux enfants (les `SkinnedMeshRenderer` des skins
+Tall/Small/Female restaient sur `Default`) — le filtrage par `LayerMask` d'URP se fait par
+GameObject, pas hérité de la hiérarchie. Une fois propagé ("Yes, change children"), confirmé
+fonctionnel. Layer `Monster` ajoutée et également exclue de `Occluder Layers` pour que les monstres
+ne déclenchent plus l'effet (seuls blocs/murs/décor comptent comme occultants désormais).
+
 ---
 
 ## 2026-08-20 — Score : fichier de config + Confort + attractivité des chambres dans la renommée
