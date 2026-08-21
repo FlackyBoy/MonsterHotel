@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DitherConfig
   ditherFadeSpeed: 10
   ditherMaxAlpha: 1
-  ditherHeightOffset: 500
-  ditherFadeRadius: 100
+  ditherHeightOffset: 0.8
+  ditherFadeRadius: 5

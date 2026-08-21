@@ -27,6 +27,7 @@ GameObject:
   - component: {fileID: 6709632468771404503}
   - component: {fileID: 4937420771019970400}
   - component: {fileID: 8353345747124897398}
+  - component: {fileID: 5094403768787251566}
   m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
@@ -372,6 +373,19 @@ MonoBehaviour:
   skins:
   - {fileID: 5517331508027701304}
   - {fileID: 2168795102309654004}
+--- !u!114 &5094403768787251566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1149814101898545290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbe56343dbc15e5428d68e673eeefc55, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerSilhouette
+  silhouetteMaterial: {fileID: 2100000, guid: 35f425a6d6a9ab748b028a8f31420740, type: 2}
 --- !u!1 &9178940014838422812
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,6 +2,46 @@
 
 ---
 
+## 2026-08-21 — Visibilité joueur derrière un occluant : silhouette au lieu du dithering
+
+Plusieurs itérations de dithering des murs/blocs (raycast caméra→joueur, puis disque de proximité
+autour du joueur) ont fini par casser le comportement des pièces à chaque nouvelle tentative
+(déclencheur cassé par un mauvais réglage de config, tiling de texture cassé sur les blocs...) —
+**tout le chantier a été reverté** à l'état d'avant (`git checkout` sur le commit `137fcc8` pour
+`RoomDither.cs`, `BuildingDither.cs`, `ExpansionBlock.cs`, `DitherConfig.cs`, `RoomPlacer.cs`,
+`BlockData.cs`, `RoomWallFade.shader`, `RD_ChambreVampire.mat`, `Cube.prefab` ; restauration de
+`RoomWallDither.shader` ; suppression de `BlockFade.shader`/`Dithering.mat`, créés puis abandonnés
+pendant ce chantier). Le dithering des pièces (raycast caméra→joueur) redevient strictement celui
+d'avant, sans modification.
+
+Nouvelle approche pour "un bloc destructible cache le joueur", décidée par l'utilisateur : au lieu
+de rendre l'objet occultant transparent, **le joueur se dessine en silhouette par-dessus ce qui le
+cache**. Technique X-ray/see-through standard en URP — nouveau shader
+`Assets/Shaders/PlayerSilhouette.shader` : un second pass sur le mesh du joueur avec `ZTest Greater`
+(ne dessine que les pixels déjà occultés dans le depth buffer par quelque chose de plus proche —
+purement porté par le GPU, par caméra, aucune détection géométrique/raycast/distance côté C#,
+élimine tous les pièges rencontrés côté dithering). Nouveau composant
+`Assets/Scripts/Systems/Player/PlayerSilhouette.cs`, sur le root de `Player.prefab` à côté de
+`PlayerSkinSelector` : ajoute le matériau silhouette comme entrée **supplémentaire** dans
+`sharedMaterials` de chaque renderer du skin actif (pas un remplacement — technique standard Unity
+pour un pass additionnel, comme pour un outline). Le skin actif est déjà déterminé au moment où
+`Start()` tourne (`PlayerSkinSelector.ApplyForCurrentPlayer()` est appelé explicitement juste après
+`PlayerInput.Instantiate()`, avant tout `Start()` de la scène), donc `GetComponentsInChildren<Renderer>()`
+(qui n'inclut que les objets actifs par défaut) trouve directement les bons renderers sans logique
+supplémentaire. S'applique aux deux joueurs (composant sur le prefab partagé) — un joueur voit
+aussi la silhouette de son coéquipier s'il passe derrière un bloc.
+
+Pourquoi ça n'interfère pas avec le dithering des pièces : `RoomWallFade.shader` a `ZWrite Off`
+(transparent), n'écrit donc jamais de profondeur — ne peut par construction jamais déclencher le
+test `ZTest Greater` de la silhouette. Les deux systèmes restent indépendants sans aucun code de
+coordination entre eux.
+
+**🔍 Setup Unity requis** : créer un matériau utilisant le shader `MonsterHotel/PlayerSilhouette`,
+ajouter le composant `PlayerSilhouette` sur le root de `Player.prefab` et assigner ce matériau dans
+son champ `Silhouette Material`.
+
+---
+
 ## 2026-08-20 — Score : fichier de config + Confort + attractivité des chambres dans la renommée
 
 Suite aux questions de l'utilisateur sur le calcul du score : poids/seuils étoiles n'étaient pas
