@@ -26,7 +26,7 @@ MonoBehaviour:
   moveSpeed: 2
   spawnOffset: {x: 0, y: 0, z: 0}
   spawnWeight: 1
-  spawnInterval: 60
+  spawnInterval: 40
   maxPending: 5
   mealVisitorSpawnInterval: 45
   needs:

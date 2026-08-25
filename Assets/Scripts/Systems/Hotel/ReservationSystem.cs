@@ -338,7 +338,6 @@ public class ReservationSystem : MonoBehaviour
             guest.MonsterObject.GetComponent<MonsterFightBehavior>()?.Activate();
         }
 
-        guest.MonsterObject?.GetComponent<GuestBubble>()?.Hide();
         int stayRevenue = guest.Data.revenuePerNight * nights;
         EconomyManager.Instance?.Earn(stayRevenue);
         Debug.Log($"[Paiement] {guest.Data.monsterName} check-in chambre '{room.Data?.roomName}' — " +

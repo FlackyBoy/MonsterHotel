@@ -15,7 +15,7 @@ public class MealVisitorBadge : MonoBehaviour
 
     [Header("Apparence")]
     public string label = "Repas";
-    [Tooltip("Orange par défaut — distinct du noir de GuestBubble (monstres en file pour une chambre)")]
+    [Tooltip("Orange par défaut — distinct du noir des bulles de file d'attente (GuestBubbleSlot, monstres en file pour une chambre/le resto)")]
     public Color backgroundColor = new Color(0.85f, 0.55f, 0.1f, 0.85f);
 
     GameObject _root;

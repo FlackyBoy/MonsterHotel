@@ -2,6 +2,38 @@
 
 ---
 
+## 2026-08-21 — Bulle file resto (G6-B23) + jauges radiales Feel (MMProgressBar)
+
+Découverte en creusant U6/G6-B23/refonte des bulles d'attente : `GuestBubble.cs` (bulle world-space
+au-dessus du monstre) n'était en réalité jamais instancié nulle part dans le projet — code mort,
+sans doute superseded silencieusement par un système plus récent sans nettoyage. Le vrai système
+actif pour la file hôtel est **`GuestQueueHUD`/`GuestBubbleSlot`** (HUD écran-space : une bulle par
+monstre en attente, alignées horizontalement, fill radial déjà en place). `GuestBubble.cs` supprimé,
+ainsi que l'appel `.Hide()` orphelin correspondant dans `ReservationSystem.CheckoutNow()`.
+
+**G6-B23** : nouveau `RestaurantQueueHUD.cs`, calqué sur `GuestQueueHUD.cs`, branché sur
+`RestaurantReservationSystem.Pending`/`OnQueueChanged` au lieu de `ReservationSystem` — réutilise
+tel quel le prefab `GuestBubbleSlot` (aucune duplication de UI), résolvant l'absence de retour
+visuel pour la file resto.
+
+**Jauges radiales Feel** : sur suggestion de l'utilisateur (démo `FeelMMProgressBar` du plugin Feel,
+scène `Assets/Feel/FeelDemos/MMProgressBar/`), `GuestBubbleSlot.cs` délègue maintenant l'animation du
+fill à `MMProgressBar` (`MoreMountains.Tools`) au lieu d'un `Image.fillAmount`/`Color.Lerp` fait à la
+main — apporte gratuitement l'interpolation lissée, la barre "retardée" (traîne visuelle façon jauge
+de dégâts RPG) et le "bump" (flash + scale au changement de valeur). L'utilisateur a extrait l'objet
+de démo `RadialBarCircle30` en prefab réutilisable (`Assets/Prefabs/UI/RadialBarCircle30.prefab`) —
+compte 4 objets enfants (`BgWhite`/`BarBg`/`DelayedBarIncreasing`/`DelayedBarDecreasing`/`BarFront`)
+plus 4 déclencheurs `OnIncreaseStart/Stop`/`OnDecreaseStart/Stop` avec leurs propres `MMF_Player`
+(flash couleur + `MMF_ScaleSpring`) câblés sur les events `OnBarMovementXStart/Stop` de
+`MMProgressBar` — tout est réutilisable tel quel en l'imbriquant dans n'importe quel prefab de bulle.
+
+**🔍 Setup Unity requis** : imbriquer `RadialBarCircle30.prefab` dans `GuestBubbleSlot.prefab`
+(remplace `Fill`/`Bg`), assigner son `MMProgressBar` au champ `progressBar` de `GuestBubbleSlot.cs` ;
+créer un `RestaurantQueueHUD` en scène (même pattern que `GuestQueueHUD` existant), assigner
+`Container`/`Bubble Prefab`.
+
+---
+
 ## 2026-08-21 — Visibilité joueur derrière un occluant : silhouette au lieu du dithering
 
 Plusieurs itérations de dithering des murs/blocs (raycast caméra→joueur, puis disque de proximité
