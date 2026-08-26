@@ -162,6 +162,17 @@ public class SpawnScheduler : MonoBehaviour
 
     // ─── Instanciation commune ───────────────────────────────────────
 
+    /// <summary>Tire au hasard un skin parmi data.prefab + data.skinVariants (poids égal) —
+    /// data.skinVariants vide = toujours data.prefab, comportement inchangé.</summary>
+    static GameObject PickSkinPrefab(MonsterData data)
+    {
+        if (data.skinVariants == null || data.skinVariants.Length == 0) return data.prefab;
+
+        int count = data.skinVariants.Length + 1; // +1 pour data.prefab lui-même
+        int index = Random.Range(0, count);
+        return index == 0 ? data.prefab : data.skinVariants[index - 1];
+    }
+
     GameObject SpawnMonsterObject(MonsterData data, GuestChannel channel)
     {
         Vector3 spawnRot = spawnPoint != null ? spawnPoint.eulerAngles : Vector3.zero;
@@ -170,8 +181,9 @@ public class SpawnScheduler : MonoBehaviour
             : data.spawnOffset;
 
         GameObject go;
-        if (data.prefab != null)
-            go = Instantiate(data.prefab, pos, Quaternion.identity);
+        var skinPrefab = PickSkinPrefab(data);
+        if (skinPrefab != null)
+            go = Instantiate(skinPrefab, pos, Quaternion.identity);
         else
         {
             go = GameObject.CreatePrimitive(PrimitiveType.Capsule);

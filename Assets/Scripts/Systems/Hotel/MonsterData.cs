@@ -12,6 +12,8 @@ public class MonsterData : ScriptableObject
     public MonsterType monsterType;
     public Sprite icon;
     public GameObject prefab;
+    [Tooltip("Variantes visuelles optionnelles pour ce type de monstre — si rempli, un skin est tiré au hasard parmi prefab + ce tableau à chaque spawn (poids égal). Vide = toujours prefab, comportement actuel inchangé.")]
+    public GameObject[] skinVariants;
 
     [Header("Séjour")]
     [Tooltip("Revenus générés par nuit de séjour")]
