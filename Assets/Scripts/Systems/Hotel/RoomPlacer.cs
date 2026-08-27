@@ -37,6 +37,12 @@ public class RoomPlacer : MonoBehaviour
     public float ditherMaxAlpha     = 0.82f;
     public float ditherHeightOffset = 0.8f;
 
+    [Header("Indicateur d'état de chambre (Libre/À nettoyer/À réparer)")]
+    [Tooltip("Décalage monde additionnel de la bulle par rapport au-dessus du toit — X/Z pour latéral, Y pour affiner la hauteur")]
+    public Vector3 roomStateIndicatorOffset = Vector3.zero;
+    [Tooltip("Marge au-dessus du toit de la chambre, avant le décalage ci-dessus")]
+    public float roomStateIndicatorHeightMargin = 1f;
+
     // ─── Privé ────────────────────────────────────────────────────
 
     bool          _isPlacing;
@@ -161,6 +167,7 @@ public class RoomPlacer : MonoBehaviour
         foreach (var col in room.GetComponentsInChildren<Collider>())
             col.enabled = false;
         room.GetComponent<RoomSign>()?.HidePrompt();
+        room.GetComponent<RoomStateIndicator>()?.Hide();
 
         // Sauvegarde les positions/rotations des meubles et leurs offsets locaux
         var flist = room.PlacedFurniture;
@@ -201,6 +208,7 @@ public class RoomPlacer : MonoBehaviour
             foreach (var col in _movingRoom.GetComponentsInChildren<Collider>())
                 col.enabled = true;
             _movingRoom.GetComponent<RoomSign>()?.RefreshPrompt();
+            _movingRoom.GetComponent<RoomStateIndicator>()?.RefreshVisibility();
         }
 
         _furnitureSavedPos = null;
@@ -443,8 +451,15 @@ public class RoomPlacer : MonoBehaviour
         instance.Init(_roomData);
         instance.InitCells(new Vector2Int(ox, oy), footprint);
 
-        // Ajoute la pancarte d'interaction et le dithering
+        // Ajoute la pancarte d'interaction, l'indicateur d'état (chambres classiques uniquement —
+        // "Libre/À nettoyer/À réparer" n'a pas de sens pour une facilité comme la cuisine) et le dithering
         room.AddComponent<RoomSign>();
+        if (!_roomData.isFacility)
+        {
+            var stateIndicator = room.AddComponent<RoomStateIndicator>();
+            stateIndicator.offset       = roomStateIndicatorOffset;
+            stateIndicator.heightMargin = roomStateIndicatorHeightMargin;
+        }
         var dither = room.AddComponent<RoomDither>();
         dither.fadeSpeed          = ditherFadeSpeed;
         dither.maxDitherAlpha     = ditherMaxAlpha;

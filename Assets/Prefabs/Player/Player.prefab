@@ -196,6 +196,8 @@ MonoBehaviour:
   ditherFadeSpeed: 6
   ditherMaxAlpha: 1
   ditherHeightOffset: 0.8
+  roomStateIndicatorOffset: {x: 0, y: 0, z: 0}
+  roomStateIndicatorHeightMargin: 0
   ghostMoveSmooth: 15
   ghostRotateSmooth: 20
   cursorMoveSpeed: 10

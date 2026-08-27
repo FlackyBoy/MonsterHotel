@@ -15,7 +15,9 @@ MonoBehaviour:
   monsterName: Vampire
   monsterType: 1
   icon: {fileID: 0}
-  prefab: {fileID: 8076749505103883583, guid: 33f7cd5156e8063409c2d5af24d3a780, type: 3}
+  prefab: {fileID: 5297260103576533629, guid: d7245ff1624f60c4a85545b3eb4d714f, type: 3}
+  skinVariants:
+  - {fileID: 5297260103576533629, guid: 538d35b0446dcfd48b7d130048fd4111, type: 3}
   revenuePerNight: 125
   mealRevenue: 75
   stayMinNights: 2
