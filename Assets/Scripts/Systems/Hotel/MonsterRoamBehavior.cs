@@ -68,11 +68,20 @@ public class MonsterRoamBehavior : MonoBehaviour
         }
     }
 
-    /// <summary>Appelé par ReservationSystem quand la chambre est assignée.</summary>
+    /// <summary>Appelé par ReservationSystem quand la chambre est assignée (ou par PossessableHuman.Possess()).</summary>
     public void Activate()
     {
         if (_active) return; // évite un 2e RoamLoop en parallèle (ex : conversion visiteur→client)
         ApplyConfig();
+        // Rafraîchit tout, pas seulement _roomRef : pour l'humain possédé (G8), ce composant est
+        // bake sur le prefab et son Awake() se déclenche au spawn de l'humain, bien avant que
+        // PossessableHuman.Possess() n'ajoute MonsterDataReference/MonsterNeedSeeker/etc. — sans ce
+        // rafraîchissement ces caches resteraient null à vie (même piège que MonsterSocialBehavior).
+        _mover   = GetComponent<MonsterMover>();
+        _seeker  = GetComponent<MonsterNeedSeeker>();
+        _social  = GetComponent<MonsterSocialBehavior>();
+        _fight   = GetComponent<MonsterFightBehavior>();
+        _dataRef = GetComponent<MonsterDataReference>();
         _roomRef = GetComponent<GuestRoomReference>();
         _active  = true;
         StartCoroutine(RoamLoop());
@@ -86,9 +95,14 @@ public class MonsterRoamBehavior : MonoBehaviour
     {
         while (_active)
         {
-            // Attente en chambre avant de sortir
-            float wait = Random.Range(minWaitInRoom, maxWaitInRoom);
-            yield return new WaitForSeconds(wait);
+            // Attente en chambre avant de sortir — n'a de sens que pour un résident avec une vraie
+            // chambre. L'humain possédé (G8) n'en a jamais (_roomRef reste null à vie) : il balade
+            // en continu, sans ce délai artificiel d'"attente en chambre" qui n'existe pas pour lui.
+            if (_roomRef?.Room != null)
+            {
+                float wait = Random.Range(minWaitInRoom, maxWaitInRoom);
+                yield return new WaitForSeconds(wait);
+            }
 
             // Ne sort pas si un besoin est en cours de satisfaction, une conversation en cours,
             // ou si ce n'est pas le moment autorisé pour ce monstre (G3)

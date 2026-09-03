@@ -23,6 +23,10 @@ public class MonsterMover : MonoBehaviour
     [Tooltip("Lissage (Animator.SetFloat dampTime) du paramètre Speed — valeur de départ, à ajuster.")]
     public float speedBlendDampTime = 0.15f;
 
+    [Header("Traversée des murs")]
+    [Tooltip("Si coché, ignore complètement le NavMesh — se déplace toujours en ligne droite (DirectMove), murs compris. Lu automatiquement depuis MonsterData.canPhaseThroughWalls au spawn (voir SpawnScheduler), modifiable directement ici aussi.")]
+    public bool ignoresWalls = false;
+
     NavMeshAgent _agent;
     Animator     _animator;
     Coroutine    _moveCoroutine;
@@ -136,6 +140,7 @@ public class MonsterMover : MonoBehaviour
         float floorY = transform.position.y;
         target.y = floorY;
 
+        if (ignoresWalls) { yield return DirectMove(target); yield break; }
         if (_agent == null) { yield return DirectMove(target); yield break; }
 
         if (!_agent.enabled || !_agent.isOnNavMesh)

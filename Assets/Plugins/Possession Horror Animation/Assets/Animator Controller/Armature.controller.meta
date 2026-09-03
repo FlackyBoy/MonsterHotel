@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 042967550873261458be9a697b2d5e36
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 9100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 379992
+  packageName: Possession Horror Animation
+  packageVersion: 1.0
+  assetPath: Assets/Possession Horror Animation/Assets/Animator Controller/Armature.controller
+  uploadId: 918544

@@ -78,7 +78,15 @@ public class MonsterSocialBehavior : MonoBehaviour
     // se déclenche après la fin de l'appel synchrone à SpawnScheduler.TrySpawn() (tous ses
     // AddComponent), donc robuste peu importe si ce composant est bake sur le prefab ou ajouté au
     // runtime.
-    void Start()
+    //
+    // Insuffisant pour l'humain possédé (G8) : le prefab Human est instancié (et son Start()
+    // déclenché) bien avant que le fantôme ne le possède — MonsterDataReference n'existe donc pas
+    // encore à ce moment-là, et resterait null à vie si on ne comptait que sur Start(). D'où le
+    // second appel à CacheReferences() dans Activate() ci-dessous, garanti postérieur à
+    // l'ajout de MonsterDataReference dans les deux flux (spawn normal ET possession).
+    void Start() => CacheReferences();
+
+    void CacheReferences()
     {
         _mover        = GetComponent<MonsterMover>();
         _seeker       = GetComponent<MonsterNeedSeeker>();
@@ -88,17 +96,16 @@ public class MonsterSocialBehavior : MonoBehaviour
         // SatisfactionComponent n'est pas mis en cache ici : fetch paresseux dans
         // ApplySatisfactionBonus() (même raison, par cohérence — pas de risque à ce stade mais
         // évite de dépendre implicitement de l'ordre d'ajout de SpawnScheduler).
-
-        Debug.Log($"[Social] {name} — Start(). dataRef={(_dataRef != null)}, data={_dataRef?.Data?.monsterName ?? "null"}, mover={(_mover != null)}, animator={(_animator != null)}, active(déjà appelé Activate avant Start ?)={_active}");
     }
 
     void OnEnable()  => All.Add(this);
     void OnDisable() => All.Remove(this);
 
-    /// <summary>Appelé par ReservationSystem quand la chambre est assignée.</summary>
+    /// <summary>Appelé par ReservationSystem quand la chambre est assignée (ou par PossessableHuman.Possess()).</summary>
     public void Activate()
     {
         if (_active) return;
+        CacheReferences(); // voir commentaire sur Start() — rafraîchit dataRef/etc. pour le cas possession
         _active = true;
         Debug.Log($"[Social] {name} — comportement social activé (recherche toutes les ~{searchInterval}s, rayon {searchRadius}m).");
         _searchCoroutine = StartCoroutine(SearchLoop());

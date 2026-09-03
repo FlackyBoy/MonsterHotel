@@ -112,7 +112,13 @@ public class MonsterFightBehavior : MonoBehaviour
     // Instantiate(), avant que SpawnScheduler ait ajouté MonsterDataReference/autres composants
     // dynamiques juste après. Start() se déclenche après la fin de l'appel synchrone à
     // SpawnScheduler.TrySpawn(), donc robuste peu importe où ce composant est ajouté.
-    void Start()
+    //
+    // Insuffisant pour l'humain possédé (G8) : voir le commentaire équivalent dans
+    // MonsterSocialBehavior — Activate() rafraîchit ces références en plus, pour le cas où
+    // MonsterDataReference n'existe encore qu'après Start() (possession différée dans le temps).
+    void Start() => CacheReferences();
+
+    void CacheReferences()
     {
         _mover         = GetComponent<MonsterMover>();
         _seeker        = GetComponent<MonsterNeedSeeker>();
@@ -124,10 +130,11 @@ public class MonsterFightBehavior : MonoBehaviour
     void OnEnable()  => All.Add(this);
     void OnDisable() => All.Remove(this);
 
-    /// <summary>Appelé par ReservationSystem quand la chambre est assignée.</summary>
+    /// <summary>Appelé par ReservationSystem quand la chambre est assignée (ou par PossessableHuman.Possess()).</summary>
     public void Activate()
     {
         if (_active) return;
+        CacheReferences();
         _active = true;
         Debug.Log($"[Fight] {name} — comportement de bagarre activé (recherche toutes les ~{searchInterval}s, rayon {searchRadius}m).");
         _searchCoroutine = StartCoroutine(SearchLoop());

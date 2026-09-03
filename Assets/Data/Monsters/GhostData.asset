@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b22151ac5c12554c8dd204bd2d1eeb8, type: 3}
+  m_Name: GhostData
+  m_EditorClassIdentifier: Assembly-CSharp::MonsterData
+  monsterName: Monstre
+  monsterType: 3
+  icon: {fileID: 0}
+  prefab: {fileID: 7470742274824020593, guid: 492a778bddd0c224bbd1fece61987b1c, type: 3}
+  skinVariants: []
+  revenuePerNight: 50
+  mealRevenue: 15
+  stayMinNights: 1
+  stayMaxNights: 2
+  maxWaitTime: 30
+  compatibleRoomTypes: []
+  moveSpeed: 3
+  spawnOffset: {x: 0, y: 0, z: 0}
+  canPhaseThroughWalls: 1
+  spawnWeight: 1
+  spawnInterval: 0
+  maxPending: 3
+  mealVisitorSpawnInterval: 0
+  needs: []
+  needOverrides: []
+  preferredSpawnTime: 0
+  sleepTime: 0
+  checkoutWindowStart: 8
+  checkoutWindowEnd: 10
+  isLegendary: 0
+  roamLitterChance: 0.1
+  litterPrefabs: []
+  possessionVomitIntervalMin: 20
+  possessionVomitIntervalMax: 60
+  possessionVomitDebrisPrefab: {fileID: 7800008161810468366, guid: 1864f56f60d38814d96adfe34c8ae249, type: 3}
+  compatibleSocialTypes: 
+  incompatibleTypes: 

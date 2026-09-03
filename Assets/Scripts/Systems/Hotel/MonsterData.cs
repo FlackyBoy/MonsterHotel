@@ -38,6 +38,8 @@ public class MonsterData : ScriptableObject
     public float moveSpeed = 3f;
     [Tooltip("Décalage local appliqué à la position de spawn (relatif au forward du SpawnPoint)")]
     public Vector3 spawnOffset;
+    [Tooltip("Si coché, ce monstre ignore le NavMesh et les murs — se déplace toujours en ligne droite vers sa cible (ex: fantôme).")]
+    public bool canPhaseThroughWalls = false;
 
     [Header("Spawn")]
     [Tooltip("Poids de sélection aléatoire — 1 = normal, 2 = deux fois plus fréquent, 0.5 = rare")]
@@ -90,6 +92,22 @@ public class MonsterData : ScriptableObject
     [Tooltip("Prefabs de détritus pouvant être laissés en balade par ce monstre. Vide = ce monstre n'en laisse jamais, quel que soit roamLitterChance.")]
     public GameObject[] litterPrefabs;
 
+    [Header("Fantôme — humain possédé (G8)")]
+    [Tooltip("Intervalle minimum entre deux vomis de l'humain possédé par ce fantôme (secondes). Sans effet pour les monstres normaux.")]
+    public float possessionVomitIntervalMin = 20f;
+    [Tooltip("Intervalle maximum entre deux vomis de l'humain possédé par ce fantôme (secondes). Sans effet pour les monstres normaux.")]
+    public float possessionVomitIntervalMax = 60f;
+    [Tooltip("Débris optionnel laissé au sol après un vomi — réutilise le système de nettoyage existant. Vide = pas de débris, juste le comportement/log.")]
+    public GameObject possessionVomitDebrisPrefab;
+    [Tooltip("Intervalle minimum entre deux quirks visuels aléatoires (lévitation / cogne la tête) de l'humain possédé. Sans effet pour les monstres normaux.")]
+    public float possessionQuirkIntervalMin = 15f;
+    [Tooltip("Intervalle maximum entre deux quirks visuels aléatoires. Sans effet pour les monstres normaux.")]
+    public float possessionQuirkIntervalMax = 45f;
+    [Tooltip("Intervalle (secondes) entre deux tirages de départ anticipé du fantôme (\"fatigué\") — indépendant du départ normal (fenêtre de checkout). À chaque tirage, possessionEarlyLeaveChance est testé.")]
+    public float possessionEarlyLeaveCheckInterval = 30f;
+    [Tooltip("Probabilité à chaque tirage que le fantôme quitte le corps avant l'heure (0 = jamais). L'humain panique alors jusqu'à ce que le joueur le rattrape et le ramène dans une cage. Valeur de départ — à ajuster.")]
+    [Range(0f, 1f)] public float possessionEarlyLeaveChance = 0.05f;
+
     [Header("Compatibilité sociale")]
     [Tooltip("Types de monstres avec lesquels ce monstre peut engager une conversation. Laissé vide par défaut — à toi de définir les affinités. La compatibilité doit être mutuelle (l'autre monstre doit aussi lister ce type) pour qu'une conversation démarre.")]
     public MonsterType[] compatibleSocialTypes;
@@ -125,7 +143,7 @@ public class MonsterData : ScriptableObject
     }
 }
 
-public enum MonsterType  { Zombie, Vampire, Werewolf }
+public enum MonsterType  { Zombie, Vampire, Werewolf, Ghost }
 public enum SpawnTime    { Any, DayOnly, NightOnly }
 
 [System.Serializable]

@@ -50,6 +50,13 @@ public class MonsterNeedSeeker : MonoBehaviour
     public void Activate()
     {
         if (_active) return; // évite un 2e NeedCheckLoop en parallèle (ex : conversion visiteur→client)
+        // Rafraîchit — pas seulement Awake() : pour l'humain possédé (G8), ce composant est bake sur
+        // le prefab et son Awake() se déclenche au spawn de l'humain, bien avant que
+        // PossessableHuman.Possess() n'ajoute MonsterNeedsComponent. Sans ce rafraîchissement,
+        // _needs resterait null à vie et NeedCheckLoop() ne ferait jamais rien (voir garde
+        // "_needs == null" ci-dessous).
+        _needs = GetComponent<MonsterNeedsComponent>();
+        _mover = GetComponent<MonsterMover>();
         _active = true;
         StartCoroutine(NeedCheckLoop());
     }

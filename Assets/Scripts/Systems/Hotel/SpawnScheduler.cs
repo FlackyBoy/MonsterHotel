@@ -82,12 +82,17 @@ public class SpawnScheduler : MonoBehaviour
             _timers[i] -= Time.deltaTime;
             if (_timers[i] <= 0f)
             {
+                // Le fantôme (G8) passe aussi par ce flux — il rejoint la même file de réception
+                // que n'importe quel client, ReservationSystem sait ne jamais lui assigner de
+                // chambre (voir IsServiceable/CheckInGhost).
                 TrySpawnRoomGuest(data);
                 _timers[i] = IntervalFor(data);
             }
 
-            // Flux visiteur repas — indépendant, seulement si ce monstre a un besoin à satisfaire
-            if (data.needs != null && data.needs.Length > 0)
+            // Flux visiteur repas — indépendant, seulement si ce monstre a un besoin à satisfaire.
+            // Sans objet pour le fantôme : pas de besoin propre avant possession, et une fois possédé
+            // c'est PossessableHuman/MonsterNeedSeeker qui gère la faim, pas ce timer de spawn.
+            if (data.monsterType != MonsterType.Ghost && data.needs != null && data.needs.Length > 0)
             {
                 _visitorTimers[i] -= Time.deltaTime;
                 if (_visitorTimers[i] <= 0f)
@@ -197,7 +202,8 @@ public class SpawnScheduler : MonoBehaviour
 
         // Applique la vitesse définie dans le MonsterData
         var mover = go.GetComponent<MonsterMover>() ?? go.AddComponent<MonsterMover>();
-        mover.moveSpeed = data.moveSpeed;
+        mover.moveSpeed    = data.moveSpeed;
+        mover.ignoresWalls = data.canPhaseThroughWalls;
 
         // Doivent être ajoutés avant Needs/Seeker/Roam ci-dessous : AddComponent déclenche Awake()
         // immédiatement et de façon synchrone, donc un GetComponent<MonsterSocialBehavior>()/

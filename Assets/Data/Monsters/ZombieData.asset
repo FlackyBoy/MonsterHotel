@@ -16,6 +16,8 @@ MonoBehaviour:
   monsterType: 0
   icon: {fileID: 0}
   prefab: {fileID: 1426335082431845788, guid: d7331b32c9c961e4ab24c7554795e4a7, type: 3}
+  skinVariants:
+  - {fileID: 1426335082431845788, guid: 084480c1e04f11348bc28675a0b061a8, type: 3}
   revenuePerNight: 80
   mealRevenue: 45
   stayMinNights: 1
@@ -25,6 +27,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 84c800b7496d4304ea563e8ccbfc1353, type: 2}
   moveSpeed: 2
   spawnOffset: {x: 0, y: 0, z: 0}
+  canPhaseThroughWalls: 0
   spawnWeight: 1
   spawnInterval: 40
   maxPending: 5
@@ -40,5 +43,8 @@ MonoBehaviour:
   roamLitterChance: 0.82
   litterPrefabs:
   - {fileID: 7800008161810468366, guid: 1864f56f60d38814d96adfe34c8ae249, type: 3}
+  possessionVomitIntervalMin: 20
+  possessionVomitIntervalMax: 60
+  possessionVomitDebrisPrefab: {fileID: 0}
   compatibleSocialTypes: 000000000100000002000000
   incompatibleTypes: 

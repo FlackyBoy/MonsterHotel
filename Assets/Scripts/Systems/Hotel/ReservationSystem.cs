@@ -108,7 +108,7 @@ public class ReservationSystem : MonoBehaviour
         {
             foreach (var g in _pending)
                 if (g.MonsterObject != null && !g.IsCheckedIn && g.HasArrived && !g.IsClaimed &&
-                    GetCompatibleRooms(g.Data).Count > 0)
+                    IsServiceable(g.Data))
                     return g;
             return null;
         }
@@ -127,11 +127,19 @@ public class ReservationSystem : MonoBehaviour
         {
             foreach (var g in _pending)
                 if (g.MonsterObject != null && !g.IsCheckedIn && g.HasArrived &&
-                    GetCompatibleRooms(g.Data).Count > 0)
+                    IsServiceable(g.Data))
                     return g;
             return null;
         }
     }
+
+    /// <summary>
+    /// True si ce monstre peut être accueilli maintenant. Pour un client normal : une chambre
+    /// compatible doit être disponible. Le fantôme (G8) n'a jamais besoin de chambre — toujours
+    /// "servicable" dès qu'il est en tête de file, voir CheckInNext/CheckInGhost.
+    /// </summary>
+    bool IsServiceable(MonsterData data) =>
+        data.monsterType == MonsterType.Ghost || GetCompatibleRooms(data).Count > 0;
 
     /// <summary>Prochain monstre checked-in mais sans chambre assignée.</summary>
     public PendingGuest NextCheckedInWaiting
@@ -241,7 +249,9 @@ public class ReservationSystem : MonoBehaviour
     /// <summary>
     /// Prend en charge le monstre en tête de file (appelé par ReceptionInteractor ou ReceptionEmployeeAI).
     /// N'accepte que si une chambre compatible est déjà disponible — sinon le monstre reste
-    /// en tête de file, en attente, sans jamais bloquer ou dupliquer sa position.
+    /// en tête de file, en attente, sans jamais bloquer ou dupliquer sa position. Exception : le
+    /// fantôme (G8) est toujours accepté, voir IsServiceable/CheckInGhost — il ne demande jamais de
+    /// chambre, seulement le passage par la réception.
     /// </summary>
     public void CheckInNext(PendingGuest specific = null)
     {
@@ -249,9 +259,12 @@ public class ReservationSystem : MonoBehaviour
         if (guest == null) return;
         if (guest.IsCheckedIn) return; // déjà traité entre-temps (ex : joueur a validé avant l'employé)
 
-        // La condition d'acceptation inclut la disponibilité d'une chambre.
-        // Tant qu'aucune chambre compatible n'existe, le monstre continue d'attendre en tête de file.
-        if (GetCompatibleRooms(guest.Data).Count == 0)
+        bool isGhost = guest.Data.monsterType == MonsterType.Ghost;
+
+        // La condition d'acceptation inclut la disponibilité d'une chambre — sauf pour le fantôme,
+        // qui n'en demande jamais. Tant qu'aucune chambre compatible n'existe (client normal), le
+        // monstre continue d'attendre en tête de file.
+        if (!isGhost && GetCompatibleRooms(guest.Data).Count == 0)
         {
             LogNoCompatibleRoom(guest.Data);
             return;
@@ -281,9 +294,35 @@ public class ReservationSystem : MonoBehaviour
 
         OnQueueChanged?.Invoke();
 
+        if (isGhost)
+        {
+            CheckInGhost(guest);
+            return;
+        }
+
         // Une chambre compatible existait à l'instant du check — rien n'a pu changer
         // entre-temps (exécution synchrone) donc l'assignation réussit toujours ici.
         TryAssignRoom(guest);
+    }
+
+    /// <summary>
+    /// Équivalent de TryAssignRoom pour le fantôme (G8) — retiré de la file, mais jamais de
+    /// RoomInstance assignée. Active directement GhostPossessionBehavior, qui part à la recherche
+    /// d'un humain à posséder (voir PossessableHuman).
+    /// </summary>
+    void CheckInGhost(PendingGuest guest)
+    {
+        int idx = _pending.IndexOf(guest);
+        if (idx >= 0)
+        {
+            _pending.RemoveAt(idx);
+            OnQueueChanged?.Invoke();
+        }
+
+        if (guest.MonsterObject == null) return;
+        var ghost = guest.MonsterObject.GetComponent<GhostPossessionBehavior>()
+                 ?? guest.MonsterObject.AddComponent<GhostPossessionBehavior>();
+        ghost.Activate();
     }
 
     // ─── Attribution ──────────────────────────────────────────────
